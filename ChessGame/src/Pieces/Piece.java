@@ -19,8 +19,8 @@ public abstract class Piece {
     public static Colour colour;
     public static int weight;
     
-    Piece(int colour){
-        
+    public Piece(Colour c){
+        colour = c;
     }
     
     // Part 2 & 3 Ethan
