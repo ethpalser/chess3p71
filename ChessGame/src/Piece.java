@@ -6,7 +6,7 @@
 public interface Piece {
     // Part 1
     public int getValue();
-    public int getColour(); // could be managed elsewhere but is needed
+    public boolean getColour(); // could be managed elsewhere but is needed
     // Part 2 & 3 Ethan
     public int getWeigth();
     public int heuristic(Board board);

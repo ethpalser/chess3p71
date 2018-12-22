@@ -6,11 +6,10 @@
 public class Board {
     
     private Piece board[][];
-    private int[] pieceCount; // should be size 7, for weighting by piece quicker
     private int heuristicVal; // used to check value later without calculating again
     
     public Board(){
-        pieceCount = new int[7];
+        // Empty
     }
     
     // Part 3 Ethan
