@@ -18,6 +18,8 @@ public interface Piece {
     // May be useful earlier but can be costly depedning on implementation
     public boolean[][] validMoves();
     
+    public String printToBoard(); // prints piece board
+    
     // Other notable actions that need to be checked
     // hasMoved for King and both Rooks
     // canEnPassant for Pawns (did it move 2 this turn)
