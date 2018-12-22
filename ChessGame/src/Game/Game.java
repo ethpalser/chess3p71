@@ -40,12 +40,15 @@ public class Game {
     public Board nextBoard(Piece toMove){
         if(currentTurn == Colour.White){
             if(toMove.colour == Colour.Black){
-                
+                return currentBoard;
             }
             currentTurn = Colour.Black;
             return white.movePiece(toMove, currentBoard);
         }
         else{
+            if(toMove.colour == Colour.White){
+                return currentBoard;
+            }
             currentTurn = Colour.White;
             return black.movePiece(toMove, currentBoard);
         }
