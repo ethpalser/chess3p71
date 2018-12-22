@@ -31,7 +31,10 @@ public class Board {
     
     // Part 2 Param
     public void printBoard(){
-        // Empty
+            // Empty
     }
     
+    public String printToLog(){
+        
+    }
 }
