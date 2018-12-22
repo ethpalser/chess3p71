@@ -37,7 +37,7 @@ public class Queen extends Piece{
 
     @Override
     public String printToBoard() {
-       return (Piece.colour == Colour.Black) ? "BQ" : "WQ";
+       return Piece.colour == Colour.Black ? "bQ" : "wQ";
     }
     
 }
