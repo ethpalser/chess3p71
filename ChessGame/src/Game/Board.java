@@ -35,6 +35,6 @@ public class Board {
     }
     
     public String printToLog(){
-        
+        return null;
     }
 }
