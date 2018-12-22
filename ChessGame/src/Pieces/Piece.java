@@ -1,3 +1,8 @@
+package Pieces;
+
+import Game.Board;
+import Game.Colour;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,13 +13,13 @@
  *
  * @author E
  */
-public abstract class PieceAbstract {
+public abstract class Piece {
     
     public static PieceType piece;
     public static Colour colour;
     public static int weight;
     
-    PieceAbstract(int colour){
+    Piece(int colour){
         
     }
     

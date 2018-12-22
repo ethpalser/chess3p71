@@ -1,10 +1,11 @@
+package Game;
+
 /**
  * 
  * 
  * @author Ethan Palser, Param Jansari
  */
 
-// NOTE: This can be elsewhere if you have another idea to implement these
 public class Player {
     
     boolean colour; // Black or White
