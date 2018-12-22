@@ -1,3 +1,8 @@
+package Game;
+
+
+import Pieces.Piece;
+
 /**
  * 
  * 

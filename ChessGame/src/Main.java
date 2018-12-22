@@ -1,3 +1,6 @@
+import Game.*;
+import Pieces.*;
+
 /**
  *
  * @author E
