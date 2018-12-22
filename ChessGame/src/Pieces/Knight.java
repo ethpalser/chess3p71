@@ -37,7 +37,7 @@ public class Knight extends Piece{
 
     @Override
     public String printToBoard() {
-       return (Piece.colour == Colour.Black) ? "BK" : "WK";
+       return (Piece.colour == Colour.Black) ? "BN" : "WN";
     }
     
 }
