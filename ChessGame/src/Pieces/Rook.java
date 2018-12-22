@@ -1,5 +1,8 @@
 package Pieces;
 
+import Game.Board;
+import Game.Colour;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,6 +13,36 @@ package Pieces;
  *
  * @author E
  */
-public class Rook {
+public class Rook extends Piece{
+
+    public static PieceType piece;
+    public static Colour colour;
+    public static int weight;
+    
+    public Rook(Colour c) {
+        super(c);
+        piece = PieceType.Rook;
+        weight = 5;
+    }
+
+    @Override
+    public int heuristic(Board board) {
+        return 0;
+    }
+
+    @Override
+    public int threats(Board board) {
+        return 0;
+    }
+
+    @Override
+    public boolean[][] validMoves() {
+        return null;
+    }
+
+    @Override
+    public String printToBoard() {
+        return colour == Colour.White ? "wR" : "bR";
+    }
     
 }

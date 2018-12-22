@@ -42,9 +42,10 @@ public class King extends Piece{
 
     @Override
     public String printToBoard() {
-        return "K";
+        return colour == Colour.White ? "wK" : "bK";
     }
     
-    
-    
+    public boolean castle(Rook rook){
+        return false; // need to check if rook has moved
+    }
 }
