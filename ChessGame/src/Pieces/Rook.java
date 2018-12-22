@@ -19,10 +19,8 @@ public class Rook extends Piece{
     public static Colour colour;
     public static int weight;
     
-    public Rook(Colour c) {
-        super(c);
-        piece = PieceType.Rook;
-        weight = 5;
+    public Rook(Colour colour) {
+        super(PieceType.Rook, colour, 5);
     }
 
     @Override
@@ -36,13 +34,13 @@ public class Rook extends Piece{
     }
 
     @Override
-    public boolean[][] validMoves() {
+    public boolean[][] validMoves(int boardX, char boardY) {
         return null;
     }
 
     @Override
     public String printToBoard() {
-        return colour == Colour.White ? "wR" : "bR";
+        return this.colour == Colour.White ? "wR" : "bR";
     }
     
 }

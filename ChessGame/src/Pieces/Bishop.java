@@ -14,30 +14,28 @@ import Game.Colour;
  */
 public class Bishop extends Piece{
 
-    public Bishop(Colour c) {
-        super(c);
-        Piece.piece = PieceType.Bishop;
-        Piece.weight = 3;
+    public Bishop(Colour colour) {
+        super(PieceType.Bishop, colour, 3);
     }
 
     @Override
     public int heuristic(Board board) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 
     @Override
     public int threats(Board board) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 
     @Override
-    public boolean[][] validMoves() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean[][] validMoves(int boardX, char boardY) {
+        return null;
     }
 
     @Override
     public String printToBoard() {
-       return Piece.colour == Colour.Black ? "bB" : "wB";
+       return this.colour == Colour.Black ? "bB" : "wB";
     }
     
 }
