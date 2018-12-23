@@ -102,7 +102,70 @@ public class Knight extends Piece {
 
     @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
-        return null;
+        Piece[][] currentBoard = board.getBoard();
+        Piece toExamine;
+        boolean[][] validPositions = new boolean[8][8];
+        // top-left
+        if (indexX >= 2 && indexY >= 1) {
+            toExamine = currentBoard[indexX - 2][indexY - 1];
+            validPositions[indexX - 2][indexY - 1] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX - 2][indexY - 1] = false;
+            }
+        }
+        if (indexX >= 1 && indexY >= 2) {
+            toExamine = currentBoard[indexX - 1][indexY - 2];
+            validPositions[indexX - 1][indexY - 2] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX - 1][indexY - 2] = false;
+            }
+        }
+        // top-right
+        if (indexX >= 2 && indexY <= 6) {
+            toExamine = currentBoard[indexX - 2][indexY + 1];
+            validPositions[indexX - 2][indexY + 1] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX - 2][indexY + 1] = false;
+            }
+        }
+        if (indexX >= 1 && indexY <= 5) {
+            toExamine = currentBoard[indexX - 1][indexY + 2];
+            validPositions[indexX - 1][indexY + 2] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX - 1][indexY + 2] = false;
+            }
+        }
+        // bottom-left
+        if (indexX <= 5 && indexY >= 1) {
+            toExamine = currentBoard[indexX + 2][indexY - 1];
+            validPositions[indexX + 2][indexY - 1] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX + 2][indexY - 1] = false;
+            }
+        }
+        if (indexX <= 6 && indexY >= 2) {
+            toExamine = currentBoard[indexX + 1][indexY - 2];
+            validPositions[indexX + 1][indexY - 2] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX + 1][indexY - 2] = false;
+            }
+        }
+        // bottom-right
+        if (indexX <= 5 && indexY <= 6) {
+            toExamine = currentBoard[indexX + 2][indexY + 1];
+            validPositions[indexX + 2][indexY + 1] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX + 2][indexY + 1] = false;
+            }
+        }
+        if (indexX <= 6 && indexY <= 5) {
+            toExamine = currentBoard[indexX + 1][indexY + 2];
+            validPositions[indexX + 1][indexY + 2] = true;
+            if (toExamine != null && !this.isOppositeColour(toExamine)) {
+                validPositions[indexX + 1][indexY + 2] = false;
+            }
+        }
+        return validPositions;
     }
 
     @Override

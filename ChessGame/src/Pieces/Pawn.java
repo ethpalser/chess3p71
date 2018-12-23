@@ -31,26 +31,26 @@ public class Pawn extends Piece {
         int threatened = 0;
         if (colour == Colour.White && indexY >= 1) {
             if (indexX >= 1) {
-                toExamine = currentBoard[indexX--][indexY--];
+                toExamine = currentBoard[indexX - 1][indexY - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
             if (indexX <= 6) {
-                toExamine = currentBoard[indexX++][indexY--];
+                toExamine = currentBoard[indexX + 1][indexY - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         } else if (colour == Colour.Black && indexY <= 6) {
             if (indexX >= 1) {
-                toExamine = currentBoard[indexX--][indexY++];
+                toExamine = currentBoard[indexX - 1][indexY + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
             if (indexX <= 6) {
-                toExamine = currentBoard[indexX++][indexY++];
+                toExamine = currentBoard[indexX + 1][indexY + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
@@ -61,7 +61,41 @@ public class Pawn extends Piece {
 
     @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
-        return null;
+        Piece[][] currentBoard = board.getBoard();
+        Piece toExamine;
+        boolean[][] validPositions = new boolean[8][8];
+        if (colour == Colour.White && indexY >= 1) {
+            if (indexX >= 1) {
+                toExamine = currentBoard[indexX - 1][indexY - 1];
+                validPositions[indexX - 1][indexY - 1] = true;
+                if (toExamine != null && !isOppositeColour(toExamine)) {
+                    validPositions[indexX - 1][indexY - 1] = false;
+                }
+            }
+            if (indexX <= 6) {
+                toExamine = currentBoard[indexX + 1][indexY - 1];
+                validPositions[indexX + 1][indexY - 1] = true;
+                if (toExamine != null && !isOppositeColour(toExamine)) {
+                    validPositions[indexX + 1][indexY - 1] = false;
+                }
+            }
+        } else if (colour == Colour.Black && indexY <= 6) {
+            if (indexX >= 1) {
+                toExamine = currentBoard[indexX - 1][indexY + 1];
+                validPositions[indexX - 1][indexY + 1] = true;
+                if (toExamine != null && !isOppositeColour(toExamine)) {
+                    validPositions[indexX - 1][indexY + 1] = false;
+                }
+            }
+            if (indexX <= 6) {
+                toExamine = currentBoard[indexX + 1][indexY + 1];
+                validPositions[indexX + 1][indexY + 1] = true;
+                if (toExamine != null && !isOppositeColour(toExamine)) {
+                    validPositions[indexX + 1][indexY + 1] = false;
+                }
+            }
+        }
+        return validPositions;
     }
 
     @Override

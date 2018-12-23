@@ -17,19 +17,21 @@ public class Board {
         // Empty
     }
     
-    // Part 3 Ethan
-    /**
-     * Uses each piece heuristic to calculate total value.
-     * 
-     * @return 
-     */
-    public int heristic(){
+    public int heristic(Colour playerColour){
+        Piece piece;
         int result = 0;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                piece = board[i][j];
+                if(piece != null && piece.colour == playerColour){
+                    result += board[i][j].heuristic(this, i, j);
+                }
+            }
+        }
         heuristicVal = result;
         return result;
     }
         
-    // Part 2 Param
     public void printBoard(){
             // Empty
     }
