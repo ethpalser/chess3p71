@@ -28,8 +28,21 @@ public class Board {
         heuristicVal = result;
         return result;
     }
+        
+    // Part 2 Param
+    public void printBoard(){
+            // Empty
+    }
     
-    public int boardToIndexX(int boardX){
+    public String printToLog(){
+        return null;
+    }
+    
+    public Piece[][] getBoard(){
+        return board;
+    }
+    
+    public static int boardToIndexX(int boardX){
         switch(boardX){
             case 1:
                 return 7; // Bottom of Board in White's persepective
@@ -52,7 +65,7 @@ public class Board {
         }
     }
     
-    public int boardToIndexY(char boardY){
+    public static int boardToIndexY(char boardY){
         switch(boardY){
             case 'A':
                 return 0; // Left of Board in White's persepective
@@ -75,7 +88,7 @@ public class Board {
         }
     }
     
-    public int indexToBoardX(int indexX){
+    public static int indexToBoardX(int indexX){
         switch(indexX){
             case 0:
                 return 8; // Top of Board in White's persepective
@@ -98,7 +111,7 @@ public class Board {
         }
     }
     
-    public char indexToBoardY(int indexY){
+    public static char indexToBoardY(int indexY){
         switch(indexY){
             case 0:
                 return 'A'; // Left of Board in White's persepective
@@ -119,14 +132,5 @@ public class Board {
             default:
                 return '-';
         }
-    }
-    
-    // Part 2 Param
-    public void printBoard(){
-            // Empty
-    }
-    
-    public String printToLog(){
-        return null;
     }
 }
