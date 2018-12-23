@@ -19,10 +19,8 @@ public class Pawn extends Piece{
     public static Colour colour;
     public static int weight;
     
-    public Pawn(Colour c) {
-        super(c);
-        piece = PieceType.Pawn;
-        weight = 1;
+    public Pawn(Colour colour) {
+        super(PieceType.Pawn, colour, 1);
     }
 
     @Override
@@ -36,13 +34,13 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean[][] validMoves() {
-       return null;
+    public boolean[][] validMoves(int boardX, char boardY) {
+        return null;
     }
 
     @Override
     public String printToBoard() {
-      return colour == Colour.White ? "wP" : "bP";
+      return this.colour == Colour.White ? "wP" : "bP";
     }
     
     public boolean canEnPassant(Pawn pawn){

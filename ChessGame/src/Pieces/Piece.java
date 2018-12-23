@@ -15,12 +15,14 @@ import Game.Colour;
  */
 public abstract class Piece {
     
-    public static PieceType piece;
-    public static Colour colour;
-    public static int weight;
+    public final PieceType piece;
+    public final Colour colour;
+    public final int weight;
     
-    public Piece(Colour c){
-        colour = c;
+    public Piece(PieceType piece, Colour colour, int weight){
+        this.piece = piece;
+        this.colour = colour;
+        this.weight = weight;
     }
     
     // Part 2 & 3 Ethan
@@ -35,7 +37,7 @@ public abstract class Piece {
     }
     // May used for part 6 or other
     // May be useful earlier but can be costly depedning on implementation
-    public abstract boolean[][] validMoves();
+    public abstract boolean[][] validMoves(int boardX, char boardY);
     public abstract String printToBoard(); // prints piece board
     
     // Other notable actions that need to be checked

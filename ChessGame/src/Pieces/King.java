@@ -19,10 +19,8 @@ public class King extends Piece{
     public static Colour colour;
     public static int weight;
 
-    public King(Colour c) {
-        super(c);
-        piece = PieceType.King;
-        weight = 13; // will change
+    public King(Colour colour) {
+        super(PieceType.King, colour, Integer.MAX_VALUE);
     }
     
     @Override
@@ -36,13 +34,13 @@ public class King extends Piece{
     }
 
     @Override
-    public boolean[][] validMoves() {
+    public boolean[][] validMoves(int boardX, char boardY) {
         return null;
     }
 
     @Override
     public String printToBoard() {
-        return colour == Colour.White ? "wK" : "bK";
+        return this.colour == Colour.White ? "wK" : "bK";
     }
     
     public boolean castle(Rook rook){
