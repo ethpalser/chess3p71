@@ -176,7 +176,7 @@ public class King extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.White ? "wK" : "bK";
+        return this.colour == Colour.White ? "\u2654" : "\u265A";
     }
 
     public boolean castle(Rook rook) {

@@ -142,7 +142,7 @@ public class Bishop extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.Black ? "bB" : "wB";
+        return this.colour == Colour.White ? "\u2657" : "\u265D";
     }
 
 }

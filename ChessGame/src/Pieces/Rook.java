@@ -126,7 +126,7 @@ public class Rook extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.White ? "wR" : "bR";
+        return this.colour == Colour.White ? "\u2656" : "\u265C";
     }
 
 }

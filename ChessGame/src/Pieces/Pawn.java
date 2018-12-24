@@ -100,7 +100,7 @@ public class Pawn extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.White ? "wP" : "bP";
+        return this.colour == Colour.White ? "\u2659" : "\u265F";
     }
 
     public boolean canEnPassant(Pawn pawn) {

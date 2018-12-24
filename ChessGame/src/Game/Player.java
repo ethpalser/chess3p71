@@ -21,7 +21,7 @@ public class Player {
         colour = c;
     }
     
-    public Board movePiece(Piece toMove, Board prevBoard){
+    public Board movePiece(Piece toMove, Board prevBoard){       
         return null;
     }
     
