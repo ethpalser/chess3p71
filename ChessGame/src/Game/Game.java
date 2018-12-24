@@ -13,8 +13,8 @@ import Pieces.Piece;
  */
 public class Game {
     
-    private Player white;
-    private Player black;
+    private final Player white;
+    private final Player black;
     private Board currentBoard;
     private Colour currentTurn;
         
@@ -37,24 +37,38 @@ public class Game {
         return currentBoard;
     }
     
-    public Board nextBoard(Piece toMove){
+    public Board nextBoard(String log){
+        // Parse log input
+        // Check if piece colour matches piece colour on board
+        // Check if piece type matches piece type on board
+        // Convert boardX and boardY into usable indecies for array access
+        // Call other nextBoard method
+        return currentBoard;
+    }
+    
+    public Board nextBoard(int startX, int startY, int nextX, int nextY){
+        Piece toMove = currentBoard.getBoard()[startX][startY];
         if(currentTurn == Colour.White){
+            // ensure a move is not applied on wrong turn
             if(toMove.colour == Colour.Black){
                 return currentBoard;
             }
-            currentTurn = Colour.Black;
-            return white.movePiece(toMove, currentBoard);
+            // will check if move is valid, otherwise does nothing
+            return white.movePiece(currentBoard, startX, startY, nextX, nextY);
         }
         else{
             if(toMove.colour == Colour.White){
                 return currentBoard;
             }
-            currentTurn = Colour.White;
-            return black.movePiece(toMove, currentBoard);
+            // will check if move is valid, otherwise does nothing
+            return black.movePiece(currentBoard, startX, startY, nextX, nextY);
         }
     }
     
     public void setBoard(Board board){
+        // Ensure the next board is changed using nextBoard before setting
+        // changes turn to next player
+        currentTurn = currentTurn == Colour.Black ? Colour.White : Colour.Black;
         currentBoard = board;
     }
 }
