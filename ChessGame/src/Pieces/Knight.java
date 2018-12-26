@@ -170,7 +170,7 @@ public class Knight extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.Black ? "bN" : "wN";
+        return this.colour == Colour.White ? "\u2658" : "\u265E";
     }
 
 }

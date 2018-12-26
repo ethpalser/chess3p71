@@ -226,7 +226,7 @@ public class Queen extends Piece {
 
     @Override
     public String printToBoard() {
-        return this.colour == Colour.Black ? "bQ" : "wQ";
+        return this.colour == Colour.White ? "\u2655" : "\u265B";
     }
 
 }
