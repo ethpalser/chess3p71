@@ -319,5 +319,17 @@ public abstract class Piece {
         }
         return 0;
     }
+    
+    public Colour getColour(){
+        return this.colour;
+    }
+    
+    public PieceType getType(){
+        return this.piece;
+    }
+    
+    public boolean equals(Piece p){
+        return this.colour == p.getColour() && this.piece == p.getType();
+    }
 
 }

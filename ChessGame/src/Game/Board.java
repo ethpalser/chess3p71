@@ -11,7 +11,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +30,16 @@ public class Board {
 
     public Board() {
         log = new File("log.txt");
-        
+
+        //Empties file for new log
+        PrintWriter pW;
+        try {
+            pW = new PrintWriter(log);
+            pW.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         //Initializ White Pieces
         board[7][0] = new Rook(Colour.White);
         board[7][1] = new Knight(Colour.White);
@@ -41,7 +52,7 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             board[6][i] = new Pawn(Colour.White);
         }
-        
+
         //initailize Black Pieces
         board = new Piece[8][8];
         board[0][0] = new Rook(Colour.Black);
@@ -88,17 +99,34 @@ public class Board {
         }
     }
 
-    public String printToLog() {
+    public void printToLog(int startX, int startY, int nextX, int nextY) {
+        FileWriter fR
         try {
-            BufferedReader bR = new BufferedReader(new FileReader(log));
+            //Write to log
+            fR = new FileWriter(log);
+            Piece piece = board[startX][startY]; // get piece
+            String move = piece.printToBoard() + indexToBoardX(startX) + indexToBoardY(startY) + " to " + piece.printToBoard() + indexToBoardX(nextX) + indexToBoardY(nextY);
+            fR.write(move);
+            fR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void printLog() {
+        BufferedReader bR;
+        try {
+            bR = new BufferedReader(new FileReader(log));
             String line = bR.readLine();
             String output = "";
-            while(line != null){
+            while (line != null) {
                 output += line;
                 line = bR.readLine();
             }
-        } catch (Exception e) {}
-        return null;
+            bR.close();
+        } catch (Exception e) {
+        }
+
     }
 
     public Piece[][] getBoard() {
