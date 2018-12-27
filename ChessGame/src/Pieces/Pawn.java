@@ -65,34 +65,60 @@ public class Pawn extends Piece {
         Piece toExamine;
         boolean[][] validPositions = new boolean[8][8];
         if (colour == Colour.White && indexY >= 1) {
+            // check if there are pieces that can be taken
             if (indexX >= 1) {
                 toExamine = currentBoard[indexX - 1][indexY - 1];
-                validPositions[indexX - 1][indexY - 1] = true;
-                if (toExamine != null && !isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY - 1] = false;
+                if (toExamine != null && isOppositeColour(toExamine)) {
+                    validPositions[indexX - 1][indexY - 1] = true;
                 }
             }
             if (indexX <= 6) {
                 toExamine = currentBoard[indexX + 1][indexY - 1];
-                validPositions[indexX + 1][indexY - 1] = true;
-                if (toExamine != null && !isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY - 1] = false;
+                if (toExamine != null && isOppositeColour(toExamine)) {
+                    validPositions[indexX + 1][indexY - 1] = true;
                 }
             }
+            // check if it can move up 2
+            if (indexY == 6) {
+                toExamine = currentBoard[indexX][indexY - 2];
+                validPositions[indexX][indexY - 2] = true;
+                if (toExamine != null) {
+                    validPositions[indexX][indexY - 2] = false;
+                }
+            }
+            // check if it can move up
+            toExamine = currentBoard[indexX][indexY - 1];
+            validPositions[indexX][indexY - 1] = true;
+            if (toExamine != null) {
+                validPositions[indexX][indexY - 1] = false;
+            }
         } else if (colour == Colour.Black && indexY <= 6) {
+            // check if there are pieces that can be taken
             if (indexX >= 1) {
                 toExamine = currentBoard[indexX - 1][indexY + 1];
-                validPositions[indexX - 1][indexY + 1] = true;
-                if (toExamine != null && !isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY + 1] = false;
+                if (toExamine != null && isOppositeColour(toExamine)) {
+                    validPositions[indexX - 1][indexY + 1] = true;
                 }
             }
             if (indexX <= 6) {
                 toExamine = currentBoard[indexX + 1][indexY + 1];
-                validPositions[indexX + 1][indexY + 1] = true;
-                if (toExamine != null && !isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY + 1] = false;
+                if (toExamine != null && isOppositeColour(toExamine)) {
+                    validPositions[indexX + 1][indexY + 1] = true;
                 }
+            }
+            // check if it can move up 2
+            if (indexY == 1) {
+                toExamine = currentBoard[indexX][indexY + 2];
+                validPositions[indexX][indexY + 2] = true;
+                if (toExamine != null) {
+                    validPositions[indexX][indexY + 2] = false;
+                }
+            }
+            // check if it can move up
+            toExamine = currentBoard[indexX][indexY + 1];
+            validPositions[indexX][indexY + 1] = true;
+            if (toExamine != null) {
+                validPositions[indexX][indexY + 1] = false;
             }
         }
         return validPositions;
