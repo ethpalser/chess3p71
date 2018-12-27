@@ -41,28 +41,28 @@ public class Board {
         }
 
         //Initializ White Pieces
-        board[7][0] = new Rook(Colour.White);
+        board[7][0] = new Rook(Colour.White); // Bottom left square black
         board[7][1] = new Knight(Colour.White);
         board[7][2] = new Bishop(Colour.White);
-        board[7][3] = new King(Colour.White);
-        board[7][4] = new Queen(Colour.White);
+        board[7][3] = new Queen(Colour.White);
+        board[7][4] = new King(Colour.White); // On black square
         board[7][5] = new Bishop(Colour.White);
         board[7][6] = new Knight(Colour.White);
-        board[7][7] = new Rook(Colour.White);
+        board[7][7] = new Rook(Colour.White); // Bottom right square white
         for (int i = 0; i < 8; i++) {
             board[6][i] = new Pawn(Colour.White);
         }
 
         //initailize Black Pieces
         board = new Piece[8][8];
-        board[0][0] = new Rook(Colour.Black);
+        board[0][0] = new Rook(Colour.Black); // Top left square white
         board[0][1] = new Knight(Colour.Black);
         board[0][2] = new Bishop(Colour.Black);
-        board[0][3] = new King(Colour.Black);
-        board[0][4] = new Queen(Colour.Black);
+        board[0][3] = new Queen(Colour.Black);
+        board[0][4] = new King(Colour.Black); // On white squre
         board[0][5] = new Bishop(Colour.Black);
         board[0][6] = new Knight(Colour.Black);
-        board[0][7] = new Rook(Colour.Black);
+        board[0][7] = new Rook(Colour.Black); // Top right square black
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn(Colour.Black);
         }
@@ -100,12 +100,20 @@ public class Board {
     }
 
     public void printToLog(int startX, int startY, int nextX, int nextY) {
-        FileWriter fR
+        FileWriter fR;
+        Piece piece = board[startX][startY]; // get piece
+        // Hopefully ensures that the move is valid before logging
+        if(piece == null){
+            return; // could log invalid move, but actual games do not
+        }
         try {
             //Write to log
             fR = new FileWriter(log);
-            Piece piece = board[startX][startY]; // get piece
-            String move = piece.printToBoard() + indexToBoardX(startX) + indexToBoardY(startY) + " to " + piece.printToBoard() + indexToBoardX(nextX) + indexToBoardY(nextY);
+            String move = piece.printToBoard()
+                    + indexToBoardX(startX) + indexToBoardY(startY)
+                    + " to "
+                    + piece.printToBoard()
+                    + indexToBoardX(nextX) + indexToBoardY(nextY);
             fR.write(move);
             fR.close();
         } catch (IOException ex) {

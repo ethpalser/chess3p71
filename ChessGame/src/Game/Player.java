@@ -29,8 +29,11 @@ public class Player {
         if (toMove.validMoves(board, startX, startY)[nextX][nextY] == false) {
             return board; // invalid action
         } else {
+            // May need to have repeated check before move is considered (maybe in board)
             // valid action occurs
             lastMoved = toMove;
+            lastX = nextX;
+            lastY = nextY;
             // gets a copy of the board to modify
             Board nextBoard = board;
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
@@ -47,7 +50,6 @@ public class Player {
         }else{
             repeatedMoves = 0;
         }
-
         return repeatedMoves == 3;
     }
 
