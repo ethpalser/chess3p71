@@ -71,4 +71,9 @@ public class Game {
         currentTurn = currentTurn == Colour.Black ? Colour.White : Colour.Black;
         currentBoard = board;
     }
+    
+    // need a means to efficiently check this for main loop
+    public boolean checkmate(Player opponent){
+        return false;
+    }
 }

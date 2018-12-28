@@ -108,70 +108,95 @@ public class King extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         boolean[][] validPositions = new boolean[8][8];
+        int nextX, nextY;
         if (indexY >= 1) {
             // top
-            toExamine = currentBoard[indexX][indexY - 1];
-            validPositions[indexX][indexY - 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX][indexY - 1] = false;
+            nextX = indexX;
+            nextY = indexY - 1;
+            toExamine = currentBoard[nextX][nextY];
+            validPositions[nextX][nextY] = true;
+            if ((toExamine != null && !this.isOppositeColour(toExamine))
+                    || this.isThreatened(board, nextX, nextY) > 0) {
+                validPositions[nextX][nextY] = false;
             }
             if (indexX >= 1) {
                 // top-left
-                toExamine = currentBoard[indexX - 1][indexY - 1];
-                validPositions[indexX - 1][indexY - 1] = true;
-                if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY - 1] = false;
+                nextX = indexX - 1;
+                nextY = indexY - 1;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
                 }
             }
             if (indexX <= 6) {
                 // top-right
-                toExamine = currentBoard[indexX + 1][indexY - 1];
-                validPositions[indexX + 1][indexY - 1] = true;
-                if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY - 1] = false;
+                nextX = indexX + 1;
+                nextY = indexY - 1;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
                 }
             }
         }
         if (indexY <= 6) {
             // bottom
-            toExamine = currentBoard[indexX][indexY + 1];
-            validPositions[indexX][indexY + 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX][indexY + 1] = false;
+            nextX = indexX;
+            nextY = indexY + 1;
+            toExamine = currentBoard[nextX][nextY];
+            validPositions[nextX][nextY] = true;
+            if ((toExamine != null && !this.isOppositeColour(toExamine))
+                    || this.isThreatened(board, nextX, nextY) > 0) {
+                validPositions[nextX][nextY] = false;
             }
             if (indexX >= 1) {
                 // bottom-left
-                toExamine = currentBoard[indexX - 1][indexY + 1];
-                validPositions[indexX - 1][indexY + 1] = true;
-                if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY + 1] = false;
+                nextX = indexX - 1;
+                nextY = indexY + 1;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
                 }
             }
             if (indexX <= 6) {
                 // bottom-right
-                toExamine = currentBoard[indexX + 1][indexY + 1];
-                validPositions[indexX + 1][indexY + 1] = true;
-                if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY + 1] = false;
+                nextX = indexX + 1;
+                nextY = indexY + 1;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
+                }
+            }
+            if (indexX >= 1) {
+                // right
+                nextX = indexX + 1;
+                nextY = indexY;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
+                }
+            }
+            if (indexY <= 6) {// left
+                nextX = indexX - 1;
+                nextY = indexY;
+                toExamine = currentBoard[nextX][nextY];
+                validPositions[nextX][nextY] = true;
+                if ((toExamine != null && !this.isOppositeColour(toExamine))
+                        || this.isThreatened(board, nextX, nextY) > 0) {
+                    validPositions[nextX][nextY] = false;
                 }
             }
         }
-        if (indexX >= 1) {
-            // right
-            toExamine = currentBoard[indexX - 1][indexY];
-            validPositions[indexX - 1][indexY] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX - 1][indexY] = false;
-            }
-        }
-        if (indexY <= 6) {// left
-            toExamine = currentBoard[indexX + 1][indexY];
-            validPositions[indexX + 1][indexY] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX + 1][indexY] = false;
-            }
-        }
-        return null;
+        return validPositions;
     }
 
     @Override
