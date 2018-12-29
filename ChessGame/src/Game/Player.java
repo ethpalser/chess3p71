@@ -1,7 +1,7 @@
 package Game;
 
 import Pieces.Piece;
-import Pieces.Pawn;
+import Pieces.Queen;
 
 /**
  *
@@ -38,7 +38,13 @@ public class Player {
             Board nextBoard = board;
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
             nextBoard.getBoard()[startX][startY] = null;
-            nextBoard.printToLog(startX, startY, nextX, nextY);
+            
+            //variables 
+            Action action = Action.Move;
+            Piece promotionTo = new Queen(colour);
+            boolean castleKingSide = false; 
+            
+            nextBoard.printToLog(toMove, nextX, nextY, action, promotionTo, castleKingSide);
             return nextBoard; // returns new board state after applying move
         }
     }

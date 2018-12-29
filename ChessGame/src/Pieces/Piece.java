@@ -31,6 +31,8 @@ public abstract class Piece {
     public abstract boolean[][] validMoves(Board board, int indexX, int indexY);
 
     public abstract String printToBoard(); // prints piece board
+    
+    public abstract String printToLog(); // prints piece to log
 
     public int isThreatened(Board board, int indexX, int indexY) {
         Piece[][] currentBoard = board.getBoard();

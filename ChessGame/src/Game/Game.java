@@ -16,7 +16,9 @@ public class Game {
     private final Player white;
     private final Player black;
     private Board currentBoard;
-    private Colour currentTurn;
+    private Colour currentTurn; 
+    int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
+    
         
     public Game(){
         white = new Player(Colour.White);
@@ -75,5 +77,19 @@ public class Game {
     // need a means to efficiently check this for main loop
     public boolean checkmate(Player opponent){
         return false;
+    }
+    
+    //check repeated moves
+    public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
+        Player p = black;
+        if(currentTurn == Colour.White)
+            p = white;
+        Piece toMove = board.getBoard()[startX][startY];
+        if (p.getLastMoved().equals(toMove) && p.getLastX() == nextX && p.getLastY() == nextY && repeatedMoves < 3) {
+            repeatedMoves++;
+        }else{
+            repeatedMoves = 0;
+        }
+        return repeatedMoves == 3;
     }
 }
