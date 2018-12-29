@@ -50,7 +50,7 @@ public class Queen extends Piece {
             }
         }
         // check up
-        for (int y = indexY - 1; y < 0; y--) {
+        for (int y = indexY - 1; y > 0; y--) {
             toExamine = currentBoard[indexX][y];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -72,7 +72,7 @@ public class Queen extends Piece {
         int posx = indexX;
         int posy = indexY;
         // diagonal top-left
-        while (posx < 0 && posy < 0) {
+        while (posx > 0 && posy > 0) {
             toExamine = currentBoard[posx--][posy--];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -84,7 +84,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal top-right
-        while (posx > 8 && posy < 0) {
+        while (posx < 8 && posy > 0) {
             toExamine = currentBoard[posx++][posy--];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -96,7 +96,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-left
-        while (posx < 0 && posy > 8) {
+        while (posx > 0 && posy < 8) {
             toExamine = currentBoard[posx--][posy++];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -108,7 +108,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-right
-        while (posx > 8 && posy > 8) {
+        while (posx < 8 && posy < 8) {
             toExamine = currentBoard[posx++][posy++];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -118,6 +118,94 @@ public class Queen extends Piece {
             }
         }
         return threatened;
+    }
+
+    @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        Piece[][] currentBoard = board.getBoard();
+        Piece toExamine;
+        int[][] attacked = new int[8][8];
+        // check left
+        for (int x = indexX - 1; x > 0; x--) {
+            toExamine = currentBoard[x][indexY];
+            attacked[x][indexY]++;
+            if (toExamine != null) {
+                attacked[x][indexY]--;
+                break;
+            }
+        }
+        // check right
+        for (int x = indexX + 1; x < 8; x++) {
+            toExamine = currentBoard[x][indexY];
+            attacked[x][indexY]++;
+            if (toExamine != null) {
+                attacked[x][indexY]--;
+                break;
+            }
+        }
+        // check up
+        for (int y = indexY - 1; y > 0; y--) {
+            toExamine = currentBoard[indexX][y];
+            attacked[indexX][y]++;
+            if (toExamine != null) {
+                attacked[indexX][y]--;
+                break;
+            }
+        }
+        // check down
+        for (int y = indexY + 1; y < 8; y++) {
+            toExamine = currentBoard[indexX][y];
+            attacked[indexX][y]++;
+            if (toExamine != null) {
+                attacked[indexX][y]--;
+                break;
+            }
+        }
+        int posx = indexX;
+        int posy = indexY;
+        // diagonal top-left
+        while (posx > 0 && posy > 0) {
+            toExamine = currentBoard[posx--][posy--];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal top-right
+        while (posx < 8 && posy > 0) {
+            toExamine = currentBoard[posx++][posy--];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal bottom-left
+        while (posx > 0 && posy < 8) {
+            toExamine = currentBoard[posx--][posy++];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal bottom-right
+        while (posx < 8 && posy < 8) {
+            toExamine = currentBoard[posx++][posy++];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        return attacked;
     }
 
     @Override
@@ -148,7 +236,7 @@ public class Queen extends Piece {
             }
         }
         // check up
-        for (int y = indexY - 1; y < 0; y--) {
+        for (int y = indexY - 1; y > 0; y--) {
             toExamine = currentBoard[indexX][y];
             validPositions[indexX][y] = true;
             if (toExamine != null) {
@@ -172,7 +260,7 @@ public class Queen extends Piece {
         int posx = indexX;
         int posy = indexY;
         // diagonal top-left
-        while (posx < 0 && posy < 0) {
+        while (posx > 0 && posy > 0) {
             toExamine = currentBoard[posx--][posy--];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -185,7 +273,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal top-right
-        while (posx > 8 && posy < 0) {
+        while (posx < 8 && posy > 0) {
             toExamine = currentBoard[posx++][posy--];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -198,7 +286,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-left
-        while (posx < 0 && posy > 8) {
+        while (posx > 0 && posy < 8) {
             toExamine = currentBoard[posx--][posy++];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -211,7 +299,7 @@ public class Queen extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-right
-        while (posx > 8 && posy > 8) {
+        while (posx < 8 && posy < 8) {
             toExamine = currentBoard[posx++][posy++];
             validPositions[posx][posy] = true;
             if (toExamine != null) {

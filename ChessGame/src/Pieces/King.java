@@ -102,7 +102,61 @@ public class King extends Piece {
         }
         return threatened;
     }
-
+    
+    @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        int[][] attacked = new int[8][8];
+        int nextX, nextY;
+        if (indexY >= 1) {
+            // top
+            nextX = indexX;
+            nextY = indexY - 1;
+            attacked[nextX][nextY]++;
+            if (indexX >= 1) {
+                // top-left
+                nextX = indexX - 1;
+                nextY = indexY - 1;
+                attacked[nextX][nextY]++;
+            }
+            if (indexX <= 6) {
+                // top-right
+                nextX = indexX + 1;
+                nextY = indexY - 1;
+                attacked[nextX][nextY]++;
+            }
+        }
+        if (indexY <= 6) {
+            // bottom
+            nextX = indexX;
+            nextY = indexY + 1;
+            attacked[nextX][nextY]++;
+            if (indexX >= 1) {
+                // bottom-left
+                nextX = indexX - 1;
+                nextY = indexY + 1;
+                attacked[nextX][nextY]++;
+            }
+            if (indexX <= 6) {
+                // bottom-right
+                nextX = indexX + 1;
+                nextY = indexY + 1;
+                attacked[nextX][nextY]++;
+            }
+            if (indexX >= 1) {
+                // right
+                nextX = indexX + 1;
+                nextY = indexY;
+                attacked[nextX][nextY]++;
+            }
+            if (indexY <= 6) {// left
+                nextX = indexX - 1;
+                nextY = indexY;
+                attacked[nextX][nextY]++;
+            }
+        }
+        return attacked;
+    }
+    
     @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
         Piece[][] currentBoard = board.getBoard();

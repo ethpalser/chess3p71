@@ -2,6 +2,7 @@ package Game;
 
 import Pieces.Piece;
 import Pieces.Pawn;
+import Pieces.PieceType;
 
 /**
  *
@@ -16,9 +17,14 @@ public class Player {
     int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
     Piece lastMoved;
     int lastX, lastY;
+    int[][] attacks;
 
     public Player(Colour c) {
         colour = c;
+        piecesCentred = 0;
+        lastX = -1; // defaults that indicate no piece
+        lastY = -1; // defaults that indicate no piece
+        attacks = new int[8][8];
     }
 
     public Board movePiece(Board board, int startX, int startY, int nextX, int nextY) {
@@ -39,8 +45,25 @@ public class Player {
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
             nextBoard.getBoard()[startX][startY] = null;
             nextBoard.printToLog(startX, startY, nextX, nextY);
+            updateAttacks(board, startX, startY, nextX, nextY); // update what this player can attack/protect
+            // may need more updated as other pieces will need to update if current was threatened
             return nextBoard; // returns new board state after applying move
         }
+    }
+    
+    public Action checkAction(Board board, PieceType toMove, int nextX, int nextY){
+        // check if king, then check if location is for castling
+        // castling will be validated before method is called
+        
+        // check if pawn
+        // en passant will be validated before method is called
+        // if pawn moving diagonal and no piece there, then en passant
+        // if pawn moving diagonal and has piece there, then capture
+        
+        // if neither castle or en passant check if next location is null or not
+        // no piece is move
+        // has piece is capture
+        return null;
     }
 
     public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
@@ -64,4 +87,34 @@ public class Player {
         return piecesCentred;
     }
 
+    public void setupAttacks(Board board, int startX, int startY){
+        Piece toExamine = board.getBoard()[startX][startY];
+        int[][] examinedAttacks = toExamine.attacks(board, startX, startY);
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                // could have attacks be changed to boolean
+               if(examinedAttacks[i][j] > 0){
+                   attacks[i][j]++;
+               }
+            }
+        }
+    }
+    
+    private void updateAttacks(Board board, int startX, int startY, int nextX, int nextY){
+        Piece toExamine = board.getBoard()[startX][startY];
+        int[][] examinedAttacks = toExamine.attacks(board, startX, startY);
+        int[][] nextAttacks = toExamine.attacks(board, nextX, nextY);
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                // could have attacks be changed to boolean
+               if(examinedAttacks[i][j] > 0){
+                   attacks[i][j]--;
+               }
+                // could have attacks be changed to boolean
+               if(nextAttacks[i][j] > 0){
+                   attacks[i][j]++;
+               }
+            }
+        }
+    }
 }

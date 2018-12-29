@@ -60,6 +60,33 @@ public class Pawn extends Piece {
     }
 
     @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        int[][] attacked = new int[8][8];
+        if (colour == Colour.White && indexY >= 1) {
+            // check if there are pieces that can be taken
+            if (indexX >= 1) {
+                attacked[indexX - 1][indexY - 1]++;
+
+            }
+            if (indexX <= 6) {
+                attacked[indexX + 1][indexY - 1]++;
+
+            }
+        } else if (colour == Colour.Black && indexY <= 6) {
+            // check if there are pieces that can be taken
+            if (indexX >= 1) {
+                attacked[indexX - 1][indexY + 1]++;
+
+            }
+            if (indexX <= 6) {
+                attacked[indexX + 1][indexY + 1]++;
+
+            }
+        }
+        return attacked;
+    }
+
+    @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;

@@ -27,6 +27,9 @@ public abstract class Piece {
     public abstract int heuristic(Board board, int indexX, int indexY);
 
     public abstract int threats(Board board, int indexX, int indexY);
+    
+    // could have attacks be changed to boolean[][] instead of int[][]
+    public abstract int[][] attacks(Board board, int indexX, int indexY);
 
     public abstract boolean[][] validMoves(Board board, int indexX, int indexY);
 

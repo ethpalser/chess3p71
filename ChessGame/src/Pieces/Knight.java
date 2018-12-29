@@ -101,6 +101,40 @@ public class Knight extends Piece {
     }
 
     @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        int[][] attacked = new int[8][8];
+        // top-left
+        if (indexX >= 2 && indexY >= 1) {
+            attacked[indexX - 2][indexY - 1]++;
+        }
+        if (indexX >= 1 && indexY >= 2) {
+            attacked[indexX - 1][indexY - 2]++;
+        }
+        // top-right
+        if (indexX >= 2 && indexY <= 6) {
+            attacked[indexX - 2][indexY + 1]++;
+        }
+        if (indexX >= 1 && indexY <= 5) {
+            attacked[indexX - 1][indexY + 2]++;
+        }
+        // bottom-left
+        if (indexX <= 5 && indexY >= 1) {
+            attacked[indexX + 2][indexY - 1]++;
+        }
+        if (indexX <= 6 && indexY >= 2) {
+            attacked[indexX + 1][indexY - 2]++;
+        }
+        // bottom-right
+        if (indexX <= 5 && indexY <= 6) {
+            attacked[indexX + 2][indexY + 1]++;
+        }
+        if (indexX <= 6 && indexY <= 5) {
+            attacked[indexX + 1][indexY + 2]++;
+        }
+        return attacked;
+    }
+
+    @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;

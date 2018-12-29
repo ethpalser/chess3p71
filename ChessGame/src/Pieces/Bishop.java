@@ -32,7 +32,7 @@ public class Bishop extends Piece {
         int posx = indexX;
         int posy = indexY;
         // diagonal top-left
-        while (posx < 0 && posy < 0) {
+        while (posx > 0 && posy > 0) {
             toExamine = currentBoard[posx--][posy--];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -44,7 +44,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal top-right
-        while (posx > 8 && posy < 0) {
+        while (posx < 8 && posy > 0) {
             toExamine = currentBoard[posx++][posy--];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -56,7 +56,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-left
-        while (posx < 0 && posy > 8) {
+        while (posx > 0 && posy < 8) {
             toExamine = currentBoard[posx--][posy++];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -68,7 +68,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-right
-        while (posx > 8 && posy > 8) {
+        while (posx < 8 && posy < 8) {
             toExamine = currentBoard[posx++][posy++];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -79,6 +79,58 @@ public class Bishop extends Piece {
         }
         return threatened;
     }
+    
+    @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        Piece[][] currentBoard = board.getBoard();
+        Piece toExamine;
+        int[][] attacked = new int[8][8];
+        int posx = indexX;
+        int posy = indexY;
+        // diagonal top-left
+        while (posx > 0 && posy > 0) {
+            toExamine = currentBoard[posx--][posy--];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal top-right
+        while (posx < 8 && posy > 0) {
+            toExamine = currentBoard[posx++][posy--];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal bottom-left
+        while (posx > 0 && posy < 8) {
+            toExamine = currentBoard[posx--][posy++];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        posx = indexX;
+        posy = indexY;
+        // diagonal bottom-right
+        while (posx < 8 && posy < 8) {
+            toExamine = currentBoard[posx++][posy++];
+            attacked[posx][posy]++;
+            if (toExamine != null) {
+                attacked[posx][posy]--;
+                break;
+            }
+        }
+        return attacked;
+    }
 
     @Override
     public boolean[][] validMoves(Board board, int indexX, int indexY) {
@@ -88,7 +140,7 @@ public class Bishop extends Piece {
         int posx = indexX;
         int posy = indexY;
         // diagonal top-left
-        while (posx < 0 && posy < 0) {
+        while (posx > 0 && posy > 0) {
             toExamine = currentBoard[posx--][posy--];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -101,7 +153,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal top-right
-        while (posx > 8 && posy < 0) {
+        while (posx < 8 && posy > 0) {
             toExamine = currentBoard[posx++][posy--];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -114,7 +166,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-left
-        while (posx < 0 && posy > 8) {
+        while (posx > 0 && posy < 8) {
             toExamine = currentBoard[posx--][posy++];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
@@ -127,7 +179,7 @@ public class Bishop extends Piece {
         posx = indexX;
         posy = indexY;
         // diagonal bottom-right
-        while (posx > 8 && posy > 8) {
+        while (posx < 8 && posy < 8) {
             toExamine = currentBoard[posx++][posy++];
             validPositions[posx][posy] = true;
             if (toExamine != null) {
