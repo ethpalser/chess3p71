@@ -90,6 +90,6 @@ public class Game {
         }else{
             repeatedMoves = 0;
         }
-        return repeatedMoves == 3;
+        return repeatedMoves == 6;
     }
 }

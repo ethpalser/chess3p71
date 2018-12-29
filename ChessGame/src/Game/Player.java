@@ -42,7 +42,11 @@ public class Player {
             //variables 
             Action action = Action.Move;
             Piece promotionTo = new Queen(colour);
-            boolean castleKingSide = false; 
+            boolean castleKingSide = false;
+            
+            // check if castling is king side or queen side
+            
+            // check action
             
             nextBoard.printToLog(toMove, nextX, nextY, action, promotionTo, castleKingSide);
             return nextBoard; // returns new board state after applying move
@@ -68,6 +72,18 @@ public class Player {
             }
         }
         return piecesCentred;
+    }
+    
+    public int getLastX(){
+        return lastX;
+    }
+    
+    public int getLastY(){
+        return lastY;
+    }
+    
+    public Piece getLastMoved(){
+        return lastMoved;
     }
 
 }
