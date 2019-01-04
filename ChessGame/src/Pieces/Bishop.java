@@ -144,5 +144,9 @@ public class Bishop extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2657" : "\u265D";
     }
+    
+    public String printToLog(){
+        return "B";
+    }
 
 }
