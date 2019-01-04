@@ -57,6 +57,7 @@ public class Game {
     }
 
     public Board nextBoard(String log) {
+        //exf8=Q+
         // Parse log input
         // Check if piece colour matches piece colour on board
         // Check if piece type matches piece type on board
@@ -138,7 +139,7 @@ public class Game {
         }
         if (pieceMoved.getType() == PieceType.Pawn) {
             //Promotion
-            if (currentTurn == Colour.White && nextY == 0 || currentTurn == Colour.Black && nextY == 7) {
+            if (currentTurn == Colour.White && nextX == 0 || currentTurn == Colour.Black && nextX == 7) {
                 actions.add(Action.Promotion);
             }
             Player player = white;
@@ -151,12 +152,12 @@ public class Game {
             Piece lastMoved = opponent.lastMoved;
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
-                if (currentTurn == Colour.White && startY == 3 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
-                    if (nextY == player.lastY) {
+                if (currentTurn == Colour.White && startX == 3 && (player.lastY == startY - 1 || player.lastY == startY + 1)) {
+                    if (nextX == player.lastX) {
                         actions.add(Action.EnPassant);
                     }
-                } else if (currentTurn == Colour.Black && startY == 4 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
-                    if (nextY == player.lastY) {
+                } else if (currentTurn == Colour.Black && startX == 4 && (player.lastY == startY - 1 || player.lastY == startY + 1)) {
+                    if (nextX == player.lastX) {
                         actions.add(Action.EnPassant);
                     }
                 }
