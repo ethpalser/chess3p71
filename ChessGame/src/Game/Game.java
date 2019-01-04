@@ -73,13 +73,13 @@ public class Game {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(black, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(white, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
         }
     }
 
@@ -151,11 +151,13 @@ public class Game {
             Piece lastMoved = opponent.lastMoved;
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
-                if (currentTurn == Colour.White && startY == 3 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
+                if (currentTurn == Colour.White && startY == 3
+                        && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
                     if (nextY == player.lastY) {
                         actions.add(Action.EnPassant);
                     }
-                } else if (currentTurn == Colour.Black && startY == 4 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
+                } else if (currentTurn == Colour.Black && startY == 4
+                        && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
                     if (nextY == player.lastY) {
                         actions.add(Action.EnPassant);
                     }

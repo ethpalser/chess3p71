@@ -2,6 +2,7 @@ package Pieces;
 
 import Game.Board;
 import Game.Colour;
+import Game.Player;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,43 +16,43 @@ import Game.Colour;
 public class King extends Piece {
 
     private boolean hasMoved;
-    
+
     public King(Colour colour) {
         super(PieceType.King, colour, Integer.MAX_VALUE);
         hasMoved = false;
     }
 
     @Override
-    public int heuristic(Board board, int indexX, int indexY) {
-        return threats(board, indexX, indexY)
-                + this.isThreatened(board, indexX, indexY);
+    public int heuristic(Board board, int row, int column) {
+        return threats(board, row, column)
+                + this.isThreatened(board, row, column);
     }
 
     @Override
-    public int threats(Board board, int indexX, int indexY) {
+    public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
-        if (indexY >= 1) {
+        if (row >= 1) {
             // top
-            toExamine = currentBoard[indexX][indexY - 1];
+            toExamine = currentBoard[row - 1][column];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // top-left
-                toExamine = currentBoard[indexX - 1][indexY - 1];
+                toExamine = currentBoard[row - 1][column - 1];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
                         threatened += toExamine.weight;
                     }
                 }
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // top-right
-                toExamine = currentBoard[indexX + 1][indexY - 1];
+                toExamine = currentBoard[row - 1][column + 1];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
                         threatened += toExamine.weight;
@@ -59,26 +60,26 @@ public class King extends Piece {
                 }
             }
         }
-        if (indexY <= 6) {
+        if (row <= 6) {
             // bottom
-            toExamine = currentBoard[indexX][indexY + 1];
+            toExamine = currentBoard[row + 1][column];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // bottom-left
-                toExamine = currentBoard[indexX - 1][indexY + 1];
+                toExamine = currentBoard[row + 1][column - 1];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
                         threatened += toExamine.weight;
                     }
                 }
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // bottom-right
-                toExamine = currentBoard[indexX + 1][indexY + 1];
+                toExamine = currentBoard[row + 1][column + 1];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
                         threatened += toExamine.weight;
@@ -86,17 +87,18 @@ public class King extends Piece {
                 }
             }
         }
-        if (indexX >= 1) {
-            // right
-            toExamine = currentBoard[indexX - 1][indexY];
+        if (column >= 1) {
+            // left
+            toExamine = currentBoard[row][column - 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         }
-        if (indexY <= 6) {// left
-            toExamine = currentBoard[indexX + 1][indexY];
+        if (column <= 6) {
+            // right
+            toExamine = currentBoard[row][column + 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
@@ -105,81 +107,82 @@ public class King extends Piece {
         }
         return threatened;
     }
-    
+
     @Override
-    public int[][] attacks(Board board, int indexX, int indexY) {
+    public int[][] attacks(Board board, int row, int column) {
         int[][] attacked = new int[8][8];
         int nextX, nextY;
-        if (indexY >= 1) {
+        if (row >= 1) {
             // top
-            nextX = indexX;
-            nextY = indexY - 1;
+            nextX = row - 1;
+            nextY = column;
             attacked[nextX][nextY]++;
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // top-left
-                nextX = indexX - 1;
-                nextY = indexY - 1;
+                nextX = row - 1;
+                nextY = column - 1;
                 attacked[nextX][nextY]++;
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // top-right
-                nextX = indexX + 1;
-                nextY = indexY - 1;
+                nextX = row - 1;
+                nextY = column + 1;
                 attacked[nextX][nextY]++;
             }
         }
-        if (indexY <= 6) {
+        if (row <= 6) {
             // bottom
-            nextX = indexX;
-            nextY = indexY + 1;
+            nextX = row + 1;
+            nextY = column;
             attacked[nextX][nextY]++;
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // bottom-left
-                nextX = indexX - 1;
-                nextY = indexY + 1;
+                nextX = row + 1;
+                nextY = column - 1;
                 attacked[nextX][nextY]++;
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // bottom-right
-                nextX = indexX + 1;
-                nextY = indexY + 1;
+                nextX = row + 1;
+                nextY = column + 1;
                 attacked[nextX][nextY]++;
             }
-            if (indexX >= 1) {
-                // right
-                nextX = indexX + 1;
-                nextY = indexY;
-                attacked[nextX][nextY]++;
-            }
-            if (indexY <= 6) {// left
-                nextX = indexX - 1;
-                nextY = indexY;
-                attacked[nextX][nextY]++;
-            }
+        }
+        if (column >= 1) {
+            // right
+            nextX = row;
+            nextY = column + 1;
+            attacked[nextX][nextY]++;
+        }
+        if (column <= 6) {
+            // left
+            nextX = row;
+            nextY = column - 1;
+            attacked[nextX][nextY]++;
         }
         return attacked;
     }
-    
+
     @Override
-    public boolean[][] validMoves(Board board, int indexX, int indexY) {
+    public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         boolean[][] validPositions = new boolean[8][8];
         int nextX, nextY;
-        if (indexY >= 1) {
+        if (row >= 1) {
             // top
-            nextX = indexX;
-            nextY = indexY - 1;
+            nextX = row - 1;
+            nextY = column;
             toExamine = currentBoard[nextX][nextY];
             validPositions[nextX][nextY] = true;
             if ((toExamine != null && !this.isOppositeColour(toExamine))
                     || this.isThreatened(board, nextX, nextY) > 0) {
                 validPositions[nextX][nextY] = false;
             }
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // top-left
-                nextX = indexX - 1;
-                nextY = indexY - 1;
+                nextX = row - 1;
+                nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
@@ -187,10 +190,10 @@ public class King extends Piece {
                     validPositions[nextX][nextY] = false;
                 }
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // top-right
-                nextX = indexX + 1;
-                nextY = indexY - 1;
+                nextX = row - 1;
+                nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
@@ -199,20 +202,20 @@ public class King extends Piece {
                 }
             }
         }
-        if (indexY <= 6) {
+        if (row <= 6) {
             // bottom
-            nextX = indexX;
-            nextY = indexY + 1;
+            nextX = row + 1;
+            nextY = column;
             toExamine = currentBoard[nextX][nextY];
             validPositions[nextX][nextY] = true;
             if ((toExamine != null && !this.isOppositeColour(toExamine))
                     || this.isThreatened(board, nextX, nextY) > 0) {
                 validPositions[nextX][nextY] = false;
             }
-            if (indexX >= 1) {
+            if (column >= 1) {
                 // bottom-left
-                nextX = indexX - 1;
-                nextY = indexY + 1;
+                nextX = row + 1;
+                nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
@@ -220,10 +223,10 @@ public class King extends Piece {
                     validPositions[nextX][nextY] = false;
                 }
             }
-            if (indexX <= 6) {
+            if (column <= 6) {
                 // bottom-right
-                nextX = indexX + 1;
-                nextY = indexY + 1;
+                nextX = row + 1;
+                nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
@@ -231,10 +234,10 @@ public class King extends Piece {
                     validPositions[nextX][nextY] = false;
                 }
             }
-            if (indexX >= 1) {
+            if (row >= 1) {
                 // right
-                nextX = indexX + 1;
-                nextY = indexY;
+                nextX = row;
+                nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
@@ -242,27 +245,51 @@ public class King extends Piece {
                     validPositions[nextX][nextY] = false;
                 }
             }
-            if (indexY <= 6) {// left
-                nextX = indexX - 1;
-                nextY = indexY;
+            if (column <= 6) {
+                // left
+                nextX = row;
+                nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
                 validPositions[nextX][nextY] = true;
                 if ((toExamine != null && !this.isOppositeColour(toExamine))
                         || this.isThreatened(board, nextX, nextY) > 0) {
                     validPositions[nextX][nextY] = false;
+                }
+            }
+        }
+        // castle check
+        int pos = colour == Colour.White ? 7 : 0;
+        int[][] oppAttacks = opponent.getAttacks();
+        if (column == 4 && !hasMoved && this.isThreatened(board, pos, 4) == 0) {
+            // examine rooks
+            // check queen side
+            toExamine = currentBoard[pos][0];
+            if (toExamine != null && toExamine.validSpecial()) {
+                // check queen side
+                if (oppAttacks[pos][column - 1] == 0
+                        && oppAttacks[pos][column - 2] == 0) {
+                    validPositions[pos][2] = true;
+                }
+            }
+            toExamine = currentBoard[pos][7];
+            if (toExamine != null && toExamine.validSpecial()) {
+                // check king side
+                if (oppAttacks[pos][column + 1] == 0
+                        && oppAttacks[pos][column + 2] == 0) {
+                    validPositions[pos][6] = true;
                 }
             }
         }
         return validPositions;
     }
- 
+
     @Override
-    public boolean validSpecial(){
+    public boolean validSpecial() {
         return !hasMoved; // if it hasn't moved it can castle
     }
-    
+
     @Override
-    public void modifySpecial(){
+    public void modifySpecial() {
         hasMoved = true;
     }
 
@@ -270,8 +297,8 @@ public class King extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2654" : "\u265A";
     }
-    
-    public String printToLog(){
+
+    public String printToLog() {
         return "K";
     }
 
