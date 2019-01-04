@@ -56,52 +56,6 @@ public class Player {
         }
     }
 
-    public ArrayList<Action> actionTaken(Board board, int startX, int startY, int nextX, int nextY) {
-        Piece pieceMoved = board.getBoard()[startX][startY];
-        Piece pieceAt = board.getBoard()[nextX][nextY];
-        ArrayList<Action> actions = new ArrayList<>();
-
-        //Move
-        if (pieceAt == null) {
-            actions.add(Action.Move);
-        } else {
-            //Capture
-            if (pieceAt.getColour() != colour) {
-                //Checkmate
-                if (pieceAt.getType() == PieceType.King) {
-                    actions.add(Action.Checkmate);
-                }
-                actions.add(Action.Capture);
-            } else {
-                //Castling
-                if (pieceAt.getType() == PieceType.Rook) {
-                    actions.add(Action.Castle);
-                    if (startX < nextX) {
-                        castleKingSide = true;
-                    }
-                }
-            }
-        }
-        if (pieceMoved.getType() == PieceType.Pawn) {
-            //Promotion
-            if (colour == Colour.White && nextY == 0 || colour == Colour.Black && nextY == 7) {
-                actions.add(Action.Promotion);
-            }
-            //En Passant
-            if (colour == Colour.White && startY == 3 || colour == Colour.Black && startY == 4) {
-                int incre = (colour == Colour.White ? -1: 1);
-                Piece beside = board.getBoard()[nextX][nextY + incre];
-                if(beside.getType() == PieceType.Pawn && beside.getColour() != colour){
-                    actions.add(Action.EnPassant);
-                }
-            }
-
-
-        }
-
-        return actions;
-    }
-
     public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
         Piece toMove = board.getBoard()[startX][startY];
         if (lastMoved.equals(toMove) && lastX == nextX && lastY == nextY && repeatedMoves < 3) {
