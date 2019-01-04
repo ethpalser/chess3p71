@@ -109,46 +109,77 @@ public class Board {
         }
         try {
             //Write to log
-            fR = new FileWriter(log);
+            fR = new FileWriter(log, true);
             String s = "";
 
             for (Action action : actions) {
                 switch (action) {
                     case Move:
-                        s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        s += piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
                         break;
                     case Capture:
-                        s = piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        s += piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
                         break;
                     case Promotion:
-                        s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + promotionTo.printToLog();
+                        s += "=" + promotionTo.printToLog();
                         break;
-//                case Check:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "+";
-//                    break;
-//                case Checkmate:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "#";
-//                    break;
                     case Castle:
                         if (castleKingSide) {
-                            s = "0-0";
+                            s += "0-0";
                         } else {
-                            s = "0-0-0";
+                            s += "0-0-0";
                         }
                         break;
-                    case EnPassant:
-                        s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "e.p.";
+//                    case EnPassant:
+//                        s += "e.p.";
+//                        break;
+                    case Check:
+                        s += "+";
+                        break;
+                    case Checkmate:
+                        s += "#";
                         break;
                     default:
                         s = "Unknown Move";
                         break;
+
                 }
-                fR.write(s);
             }
+            fR.write(s);
             fR.close();
         } catch (IOException ex) {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void printToLogfinalOutcome(Colour winner) {
+        FileWriter fR;
+        try {
+            //Write to log
+            fR = new FileWriter(log, true);
+            String s = "";
+
+            if (null == winner) {
+                s = "1/2 - 1/2";
+            } else {
+                switch (winner) {
+                    case White:
+                        s = "1-0";
+                        break;
+                    case Black:
+                        s = "0-1";
+                        break;
+                    default:
+                        s = "unknown outcome";
+                        break;
+                }
+            }
+            fR.write(s);
+            fR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void printLog() {
