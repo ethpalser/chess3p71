@@ -73,13 +73,13 @@ public class Game {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(currentBoard, startX, startY, nextX, nextY);
+            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return black.movePiece(currentBoard, startX, startY, nextX, nextY);
+            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
         }
     }
 
@@ -141,15 +141,6 @@ public class Game {
             if (currentTurn == Colour.White && nextY == 0 || currentTurn == Colour.Black && nextY == 7) {
                 actions.add(Action.Promotion);
             }
-            //En Passant
-//            if (currentTurn == Colour.White && startY == 3 || currentTurn == Colour.Black && startY == 4) {
-//                
-//                int incre = (currentTurn == Colour.White ? -1: 1);
-//                Piece beside = board.getBoard()[nextX][nextY + incre];
-//                if(beside.getType() == PieceType.Pawn && beside.getColour() != currentTurn){
-//                    actions.add(Action.EnPassant);
-//                }
-//            }
             Player player = white;
             Player opponent = black;
             if (currentTurn != Colour.White) {
@@ -158,7 +149,7 @@ public class Game {
             }
             //check if opponent last moved pawn by two spaces
             Piece lastMoved = opponent.lastMoved;
-            if (lastMoved == PieceType.Pawn && lastMoved.movedTwo()) {
+            if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
                 if (currentTurn == Colour.White && startY == 3 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
                     if (nextY == player.lastY) {

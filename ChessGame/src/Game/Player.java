@@ -3,6 +3,7 @@ package Game;
 import Pieces.Piece;
 import Pieces.PieceType;
 import Pieces.Queen;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,9 +20,6 @@ public class Player {
     int lastX, lastY;
     int[][] attacks;
 
-    Piece promotionTo;
-    boolean castleKingSide;
-
     public Player(Colour c) {
         colour = c;
         piecesCentred = 0;
@@ -30,7 +28,7 @@ public class Player {
         attacks = new int[8][8];
     }
 
-    public Board movePiece(Board board, int startX, int startY, int nextX, int nextY) {
+    public Board movePiece(Board board, int startX, int startY, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo, boolean castleKingSide) {
         Piece toMove = board.getBoard()[startX][startY];
         if (toMove.colour != colour) {
             return board; // nothing happens to board state or player states
@@ -56,32 +54,9 @@ public class Player {
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
             nextBoard.getBoard()[startX][startY] = null;
 
-
-            //variables 
-            Action action = Action.Move;
-            Piece promotionTo = new Queen(colour);
-            boolean castleKingSide = false;
-
-            // check if castling is king side or queen side
-            // check action
-            nextBoard.printToLog(toMove, nextX, nextY, action, promotionTo, castleKingSide);
+            nextBoard.printToLog(toMove, nextX, nextY, actions, promotionTo, castleKingSide);
             return nextBoard; // returns new board state after applying move
         }
-    }
-    
-    public Action checkAction(Board board, PieceType toMove, int nextX, int nextY){
-        // check if king, then check if location is for castling
-        // castling will be validated before method is called
-        
-        // check if pawn
-        // en passant will be validated before method is called
-        // if pawn moving diagonal and no piece there, then en passant
-        // if pawn moving diagonal and has piece there, then capture
-        
-        // if neither castle or en passant check if next location is null or not
-        // no piece is move
-        // has piece is capture
-        return null;
     }
 
     public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
