@@ -1,8 +1,8 @@
 package Game;
 
 import Pieces.Piece;
-import Pieces.Pawn;
 import Pieces.PieceType;
+import Pieces.Queen;
 
 /**
  *
@@ -18,6 +18,9 @@ public class Player {
     Piece lastMoved;
     int lastX, lastY;
     int[][] attacks;
+
+    Piece promotionTo;
+    boolean castleKingSide;
 
     public Player(Colour c) {
         colour = c;
@@ -52,9 +55,16 @@ public class Player {
             Board nextBoard = board;
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
             nextBoard.getBoard()[startX][startY] = null;
-            nextBoard.printToLog(startX, startY, nextX, nextY);
-            updateAttacks(board, startX, startY, nextX, nextY); // update what this player can attack/protect
-            // may need more updated as other pieces will need to update if current was threatened
+
+
+            //variables 
+            Action action = Action.Move;
+            Piece promotionTo = new Queen(colour);
+            boolean castleKingSide = false;
+
+            // check if castling is king side or queen side
+            // check action
+            nextBoard.printToLog(toMove, nextX, nextY, action, promotionTo, castleKingSide);
             return nextBoard; // returns new board state after applying move
         }
     }
@@ -78,7 +88,7 @@ public class Player {
         Piece toMove = board.getBoard()[startX][startY];
         if (lastMoved.equals(toMove) && lastX == nextX && lastY == nextY && repeatedMoves < 3) {
             repeatedMoves++;
-        }else{
+        } else {
             repeatedMoves = 0;
         }
         return repeatedMoves == 3;
@@ -125,4 +135,16 @@ public class Player {
             }
         }
     }
+    public int getLastX() {
+        return lastX;
+    }
+
+    public int getLastY() {
+        return lastY;
+    }
+
+    public Piece getLastMoved() {
+        return lastMoved;
+    }
+
 }

@@ -6,6 +6,8 @@
 package Game;
 
 import Pieces.Piece;
+import Pieces.PieceType;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +19,10 @@ public class Game {
     private final Player black;
     private Board currentBoard;
     private Colour currentTurn;
+    int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
+
+    Piece promotionTo;
+    boolean castleKingSide;
 
     public Game() {
         white = new Player(Colour.White);
@@ -87,5 +93,85 @@ public class Game {
     // need a means to efficiently check this for main loop
     public boolean checkmate(Player opponent) {
         return false;
+    }
+
+    //check repeated moves
+    public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
+        Player p = black;
+        if (currentTurn == Colour.White) {
+            p = white;
+        }
+        Piece toMove = board.getBoard()[startX][startY];
+        if (p.getLastMoved().equals(toMove) && p.getLastX() == nextX && p.getLastY() == nextY && repeatedMoves < 3) {
+            repeatedMoves++;
+        } else {
+            repeatedMoves = 0;
+        }
+        return repeatedMoves == 6;
+    }
+
+    public ArrayList<Action> actionTaken(Board board, int startX, int startY, int nextX, int nextY) {
+        Piece pieceMoved = board.getBoard()[startX][startY];
+        Piece pieceAt = board.getBoard()[nextX][nextY];
+        ArrayList<Action> actions = new ArrayList<>();
+
+        //Move
+        if (pieceAt == null) {
+            actions.add(Action.Move);
+        } else {
+            //Capture
+            if (pieceAt.getColour() != currentTurn) {
+                //Checkmate
+                if (pieceAt.getType() == PieceType.King) {
+                    actions.add(Action.Checkmate);
+                }
+                actions.add(Action.Capture);
+            } else {
+                //Castling
+                if (pieceAt.getType() == PieceType.Rook) {
+                    actions.add(Action.Castle);
+                    if (startX < nextX) {
+                        castleKingSide = true;
+                    }
+                }
+            }
+        }
+        if (pieceMoved.getType() == PieceType.Pawn) {
+            //Promotion
+            if (currentTurn == Colour.White && nextY == 0 || currentTurn == Colour.Black && nextY == 7) {
+                actions.add(Action.Promotion);
+            }
+            //En Passant
+//            if (currentTurn == Colour.White && startY == 3 || currentTurn == Colour.Black && startY == 4) {
+//                
+//                int incre = (currentTurn == Colour.White ? -1: 1);
+//                Piece beside = board.getBoard()[nextX][nextY + incre];
+//                if(beside.getType() == PieceType.Pawn && beside.getColour() != currentTurn){
+//                    actions.add(Action.EnPassant);
+//                }
+//            }
+            Player player = white;
+            Player opponent = black;
+            if (currentTurn != Colour.White) {
+                player = black;
+                opponent = white;
+            }
+            //check if opponent last moved pawn by two spaces
+            Piece lastMoved = opponent.lastMoved;
+            if (lastMoved == PieceType.Pawn && lastMoved.movedTwo()) {
+                //checks if my pawn is in right position and moves to right space
+                if (currentTurn == Colour.White && startY == 3 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
+                    if (nextY == player.lastY) {
+                        actions.add(Action.EnPassant);
+                    }
+                } else if (currentTurn == Colour.Black && startY == 4 && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
+                    if (nextY == player.lastY) {
+                        actions.add(Action.EnPassant);
+                    }
+                }
+            }
+        }
+
+        return actions;
     }
 }

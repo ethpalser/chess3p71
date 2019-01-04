@@ -216,5 +216,9 @@ public class Knight extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2658" : "\u265E";
     }
+    
+    public String printToLog(){
+        return "N";
+    }
 
 }

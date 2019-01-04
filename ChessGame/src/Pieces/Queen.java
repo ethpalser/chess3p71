@@ -327,4 +327,7 @@ public class Queen extends Piece {
         return this.colour == Colour.White ? "\u2655" : "\u265B";
     }
 
+    public String printToLog(){
+        return "Q";
+    }
 }

@@ -170,4 +170,12 @@ public class Pawn extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2659" : "\u265F";
     }
+    
+    public String printToLog(){
+        return "";
+    }
+
+    public boolean canEnPassant(Pawn pawn) {
+        return false; // need to check if target pawn has moved 2 last turn
+    }
 }
