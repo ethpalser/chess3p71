@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -100,7 +101,7 @@ public class Board {
         }
     }
 
-    public void printToLog(Piece piece, int nextX, int nextY, Action action, Piece promotionTo, boolean castleKingSide) {
+    public void printToLog(Piece piece, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo, boolean castleKingSide) {
         FileWriter fR;
         // Hopefully ensures that the move is valid before logging
         if (piece == null) {
@@ -108,42 +109,77 @@ public class Board {
         }
         try {
             //Write to log
-            fR = new FileWriter(log);
+            fR = new FileWriter(log, true);
             String s = "";
-            switch (action) {
-                case Move:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
-                    break;
-                case Capture:
-                    s = piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
-                    break;
-                case Promotion:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + promotionTo.printToLog();
-                    break;
-//                case Check:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "+";
-//                    break;
-//                case Checkmate:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "#";
-//                    break;
-                case Castle:
-                    if (castleKingSide)
-                        s = "0-0";
-                    else
-                        s = "0-0-0";
-                    break;
-                case EnPassant:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "e.p.";
-                    break;
-                default:
-                    s = "Unknown Move";
-                    break;
+
+            for (Action action : actions) {
+                switch (action) {
+                    case Move:
+                        s += piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        break;
+                    case Capture:
+                        s += piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        break;
+                    case Promotion:
+                        s += "=" + promotionTo.printToLog();
+                        break;
+                    case Castle:
+                        if (castleKingSide) {
+                            s += "0-0";
+                        } else {
+                            s += "0-0-0";
+                        }
+                        break;
+//                    case EnPassant:
+//                        s += "e.p.";
+//                        break;
+                    case Check:
+                        s += "+";
+                        break;
+                    case Checkmate:
+                        s += "#";
+                        break;
+                    default:
+                        s = "Unknown Move";
+                        break;
+
+                }
             }
             fR.write(s);
             fR.close();
         } catch (IOException ex) {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void printToLogfinalOutcome(Colour winner) {
+        FileWriter fR;
+        try {
+            //Write to log
+            fR = new FileWriter(log, true);
+            String s = "";
+
+            if (null == winner) {
+                s = "1/2 - 1/2";
+            } else {
+                switch (winner) {
+                    case White:
+                        s = "1-0";
+                        break;
+                    case Black:
+                        s = "0-1";
+                        break;
+                    default:
+                        s = "unknown outcome";
+                        break;
+                }
+            }
+            fR.write(s);
+            fR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void printLog() {

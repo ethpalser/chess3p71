@@ -14,8 +14,11 @@ import Game.Colour;
  */
 public class Pawn extends Piece {
 
+    public boolean hasMovedTwo;
+    
     public Pawn(Colour colour) {
         super(PieceType.Pawn, colour, 1);
+        hasMovedTwo = false;
     }
 
     @Override
@@ -57,6 +60,33 @@ public class Pawn extends Piece {
             }
         }
         return threatened;
+    }
+
+    @Override
+    public int[][] attacks(Board board, int indexX, int indexY) {
+        int[][] attacked = new int[8][8];
+        if (colour == Colour.White && indexY >= 1) {
+            // check if there are pieces that can be taken
+            if (indexX >= 1) {
+                attacked[indexX - 1][indexY - 1]++;
+
+            }
+            if (indexX <= 6) {
+                attacked[indexX + 1][indexY - 1]++;
+
+            }
+        } else if (colour == Colour.Black && indexY <= 6) {
+            // check if there are pieces that can be taken
+            if (indexX >= 1) {
+                attacked[indexX - 1][indexY + 1]++;
+
+            }
+            if (indexX <= 6) {
+                attacked[indexX + 1][indexY + 1]++;
+
+            }
+        }
+        return attacked;
     }
 
     @Override
@@ -123,6 +153,18 @@ public class Pawn extends Piece {
         }
         return validPositions;
     }
+ 
+    @Override
+    public boolean validSpecial(){
+        // has moved two, thus can be en passant (other conditions elsewhere)
+        return hasMovedTwo;
+    }
+    
+    @Override
+    public void modifySpecial(){
+        // only call method if piece confirmed to move two
+        hasMovedTwo = true;
+    }
 
     @Override
     public String printToBoard() {
@@ -136,5 +178,4 @@ public class Pawn extends Piece {
     public boolean canEnPassant(Pawn pawn) {
         return false; // need to check if target pawn has moved 2 last turn
     }
-
 }
