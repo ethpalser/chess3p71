@@ -311,6 +311,16 @@ public class Queen extends Piece {
         }
         return validPositions;
     }
+ 
+    @Override
+    public boolean validSpecial(){
+        return false;
+    }
+    
+    @Override
+    public void modifySpecial(){
+        // nothing
+    }
 
     @Override
     public String printToBoard() {

@@ -14,8 +14,11 @@ import Game.Colour;
  */
 public class Rook extends Piece {
 
+    private boolean hasMoved;
+    
     public Rook(Colour colour) {
         super(PieceType.Rook, colour, 5);
+        hasMoved = false;
     }
 
     @Override
@@ -166,6 +169,16 @@ public class Rook extends Piece {
             }
         }
         return validPositions;
+    }
+ 
+    @Override
+    public boolean validSpecial(){
+        return !hasMoved;
+    }
+    
+    @Override
+    public void modifySpecial(){
+        hasMoved = true;
     }
 
     @Override

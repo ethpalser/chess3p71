@@ -14,8 +14,11 @@ import Game.Colour;
  */
 public class King extends Piece {
 
+    private boolean hasMoved;
+    
     public King(Colour colour) {
         super(PieceType.King, colour, Integer.MAX_VALUE);
+        hasMoved = false;
     }
 
     @Override
@@ -251,6 +254,16 @@ public class King extends Piece {
             }
         }
         return validPositions;
+    }
+ 
+    @Override
+    public boolean validSpecial(){
+        return !hasMoved; // if it hasn't moved it can castle
+    }
+    
+    @Override
+    public void modifySpecial(){
+        hasMoved = true;
     }
 
     @Override

@@ -40,6 +40,14 @@ public class Player {
             lastMoved = toMove;
             lastX = nextX;
             lastY = nextY;
+            if(toMove.piece == PieceType.Rook || toMove.piece == PieceType.King){
+                board.getBoard()[startX][startY].modifySpecial();
+            }
+            else if(toMove.piece == PieceType.Pawn &&
+                    (toMove.colour == Colour.White && nextX == startX - 2 ||
+                    toMove.colour == Colour.Black && nextX == startX + 2)){
+                board.getBoard()[startX][startY].modifySpecial();
+            }
             // gets a copy of the board to modify
             Board nextBoard = board;
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];

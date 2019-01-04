@@ -14,8 +14,11 @@ import Game.Colour;
  */
 public class Pawn extends Piece {
 
+    public boolean hasMovedTwo;
+    
     public Pawn(Colour colour) {
         super(PieceType.Pawn, colour, 1);
+        hasMovedTwo = false;
     }
 
     @Override
@@ -150,14 +153,21 @@ public class Pawn extends Piece {
         }
         return validPositions;
     }
+ 
+    @Override
+    public boolean validSpecial(){
+        // has moved two, thus can be en passant (other conditions elsewhere)
+        return hasMovedTwo;
+    }
+    
+    @Override
+    public void modifySpecial(){
+        // only call method if piece confirmed to move two
+        hasMovedTwo = true;
+    }
 
     @Override
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2659" : "\u265F";
     }
-
-    public boolean canEnPassant(Pawn pawn) {
-        return false; // need to check if target pawn has moved 2 last turn
-    }
-
 }
