@@ -1,9 +1,7 @@
 package Game;
 
 import Pieces.Piece;
-import Pieces.PieceType;
-import Pieces.Queen;
-import java.util.ArrayList;
+import Pieces.Pawn;
 
 /**
  *
@@ -18,9 +16,6 @@ public class Player {
     int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
     Piece lastMoved;
     int lastX, lastY;
-
-    Piece promotionTo;
-    boolean castleKingSide;
 
     public Player(Colour c) {
         colour = c;
@@ -43,15 +38,7 @@ public class Player {
             Board nextBoard = board;
             nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
             nextBoard.getBoard()[startX][startY] = null;
-
-            //variables 
-            Action action = Action.Move;
-            Piece promotionTo = new Queen(colour);
-            boolean castleKingSide = false;
-
-            // check if castling is king side or queen side
-            // check action
-            nextBoard.printToLog(toMove, nextX, nextY, action, promotionTo, castleKingSide);
+            nextBoard.printToLog(startX, startY, nextX, nextY);
             return nextBoard; // returns new board state after applying move
         }
     }
@@ -60,7 +47,7 @@ public class Player {
         Piece toMove = board.getBoard()[startX][startY];
         if (lastMoved.equals(toMove) && lastX == nextX && lastY == nextY && repeatedMoves < 3) {
             repeatedMoves++;
-        } else {
+        }else{
             repeatedMoves = 0;
         }
         return repeatedMoves == 3;
@@ -75,18 +62,6 @@ public class Player {
             }
         }
         return piecesCentred;
-    }
-
-    public int getLastX() {
-        return lastX;
-    }
-
-    public int getLastY() {
-        return lastY;
-    }
-
-    public Piece getLastMoved() {
-        return lastMoved;
     }
 
 }

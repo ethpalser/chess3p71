@@ -128,9 +128,5 @@ public class Rook extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2656" : "\u265C";
     }
-    
-    public String printToLog(){
-        return "R";
-    }
 
 }

@@ -5,7 +5,6 @@ import Pieces.King;
 import Pieces.Knight;
 import Pieces.Pawn;
 import Pieces.Piece;
-import Pieces.PieceType;
 import Pieces.Queen;
 import Pieces.Rook;
 import java.io.BufferedReader;
@@ -100,46 +99,22 @@ public class Board {
         }
     }
 
-    public void printToLog(Piece piece, int nextX, int nextY, Action action, Piece promotionTo, boolean castleKingSide) {
+    public void printToLog(int startX, int startY, int nextX, int nextY) {
         FileWriter fR;
+        Piece piece = board[startX][startY]; // get piece
         // Hopefully ensures that the move is valid before logging
-        if (piece == null) {
+        if(piece == null){
             return; // could log invalid move, but actual games do not
         }
         try {
             //Write to log
             fR = new FileWriter(log);
-            String s = "";
-            switch (action) {
-                case Move:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
-                    break;
-                case Capture:
-                    s = piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
-                    break;
-                case Promotion:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + promotionTo.printToLog();
-                    break;
-//                case Check:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "+";
-//                    break;
-//                case Checkmate:
-//                     s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "#";
-//                    break;
-                case Castle:
-                    if (castleKingSide)
-                        s = "0-0";
-                    else
-                        s = "0-0-0";
-                    break;
-                case EnPassant:
-                    s = piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY) + "e.p.";
-                    break;
-                default:
-                    s = "Unknown Move";
-                    break;
-            }
-            fR.write(s);
+            String move = piece.printToBoard()
+                    + indexToBoardX(startX) + indexToBoardY(startY)
+                    + " to "
+                    + piece.printToBoard()
+                    + indexToBoardX(nextX) + indexToBoardY(nextY);
+            fR.write(move);
             fR.close();
         } catch (IOException ex) {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
@@ -191,21 +166,21 @@ public class Board {
 
     public static int boardToIndexY(char boardY) {
         switch (boardY) {
-            case 'a':
+            case 'A':
                 return 0; // Left of Board in White's persepective
-            case 'b':
+            case 'B':
                 return 1;
-            case 'c':
+            case 'C':
                 return 2;
-            case 'd':
+            case 'D':
                 return 3;
-            case 'e':
+            case 'E':
                 return 4;
-            case 'f':
+            case 'F':
                 return 5;
-            case 'g':
+            case 'G':
                 return 6;
-            case 'h':
+            case 'H':
                 return 7; // Right of Board in White's persepctive
             default:
                 return -1;
@@ -238,21 +213,21 @@ public class Board {
     public static char indexToBoardY(int indexY) {
         switch (indexY) {
             case 0:
-                return 'a'; // Left of Board in White's persepective
+                return 'A'; // Left of Board in White's persepective
             case 1:
-                return 'b';
+                return 'B';
             case 2:
-                return 'c';
+                return 'C';
             case 3:
-                return 'd';
+                return 'D';
             case 4:
-                return 'e';
+                return 'E';
             case 5:
-                return 'f';
+                return 'F';
             case 6:
-                return 'g';
+                return 'G';
             case 7:
-                return 'h'; // Right of Board in White's persepctive
+                return 'H'; // Right of Board in White's persepctive
             default:
                 return '-';
         }

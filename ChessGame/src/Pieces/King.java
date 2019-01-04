@@ -203,10 +203,6 @@ public class King extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2654" : "\u265A";
     }
-    
-    public String printToLog(){
-        return "K";
-    }
 
     public boolean castle(Rook rook) {
         return false; // need to check if rook has moved
