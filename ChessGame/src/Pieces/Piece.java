@@ -2,6 +2,7 @@ package Pieces;
 
 import Game.Board;
 import Game.Colour;
+import Game.Player;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,57 +25,57 @@ public abstract class Piece {
         this.weight = weight;
     }
 
-    public abstract int heuristic(Board board, int indexX, int indexY);
+    public abstract int heuristic(Board board, int row, int column);
 
-    public abstract int threats(Board board, int indexX, int indexY);
-    
+    public abstract int threats(Board board, int row, int column);
+
     // could have attacks be changed to boolean[][] instead of int[][]
-    public abstract int[][] attacks(Board board, int indexX, int indexY);
+    public abstract int[][] attacks(Board board, int row, int column);
 
-    public abstract boolean[][] validMoves(Board board, int indexX, int indexY);
-    
+    public abstract boolean[][] validMoves(Player opponent, Board board, int row, int column);
+
     // check if an action it can perform a special action
     public abstract boolean validSpecial();
-    
+
     // execute under condition a move confirms (pawn) or invalidates (king/rook) its special action
     public abstract void modifySpecial();
 
     public abstract String printToBoard(); // prints piece board
-    
+
     public abstract String printToLog(); // prints piece to log
 
-    public int isThreatened(Board board, int indexX, int indexY) {
+    public int isThreatened(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         int threatCounter = 0; // increment if opponent, decrement if own
         // Pawn - White
-        if (indexY >= 1) {
-            if (indexX >= 1) {
+        if (column >= 1) {
+            if (row >= 1) {
                 threatCounter += checkPawnWhite(
-                        currentBoard, indexX - 1, indexY - 1);
+                        currentBoard, row - 1, column - 1);
             }
-            if (indexX <= 6) {
+            if (row <= 6) {
                 threatCounter += checkPawnWhite(
-                        currentBoard, indexX + 1, indexY - 1);
+                        currentBoard, row + 1, column - 1);
 
             }
         }
         // Pawn - Black
-        if (indexY <= 6) {
-            if (indexX >= 1) {
+        if (column <= 6) {
+            if (row >= 1) {
                 threatCounter += checkPawnBlack(
-                        currentBoard, indexX - 1, indexY - 1);
+                        currentBoard, row - 1, column - 1);
             }
-            if (indexX <= 6) {
+            if (row <= 6) {
                 threatCounter += checkPawnBlack(
-                        currentBoard, indexX + 1, indexY + 1);
+                        currentBoard, row + 1, column + 1);
 
             }
         }
         // Queen + Rook
         int result;
         // check left
-        for (int x = indexX - 1; x > 0; x--) {
-            result = checkPiece(currentBoard, x, indexY,
+        for (int x = row - 1; x > 0; x--) {
+            result = checkPiece(currentBoard, x, column,
                     PieceType.Queen, PieceType.Rook);
             // piece encountered
             if (result != 0) {
@@ -83,8 +84,8 @@ public abstract class Piece {
             }
         }
         // check right
-        for (int x = indexX + 1; x < 8; x++) {
-            result = checkPiece(currentBoard, x, indexY,
+        for (int x = row + 1; x < 8; x++) {
+            result = checkPiece(currentBoard, x, column,
                     PieceType.Queen, PieceType.Rook);
             // piece encountered
             if (result != 0) {
@@ -93,8 +94,8 @@ public abstract class Piece {
             }
         }
         // check up
-        for (int y = indexY - 1; y < 0; y--) {
-            result = checkPiece(currentBoard, indexX, y,
+        for (int y = column - 1; y < 0; y--) {
+            result = checkPiece(currentBoard, row, y,
                     PieceType.Queen, PieceType.Rook);
             // piece encountered
             if (result != 0) {
@@ -103,8 +104,8 @@ public abstract class Piece {
             }
         }
         // check down
-        for (int y = indexY + 1; y < 8; y++) {
-            result = checkPiece(currentBoard, indexX, y,
+        for (int y = column + 1; y < 8; y++) {
+            result = checkPiece(currentBoard, row, y,
                     PieceType.Queen, PieceType.Rook);
             // piece encountered
             if (result != 0) {
@@ -113,8 +114,8 @@ public abstract class Piece {
             }
         }
         // Queen + Bishop
-        int posx = indexX;
-        int posy = indexY;
+        int posx = row;
+        int posy = column;
         // diagonal top-left
         while (posx < 0 && posy < 0) {
             posx--;
@@ -127,8 +128,8 @@ public abstract class Piece {
                 break;
             }
         }
-        posx = indexX;
-        posy = indexY;
+        posx = row;
+        posy = column;
         // diagonal top-right
         while (posx > 8 && posy < 0) {
             posx++;
@@ -141,8 +142,8 @@ public abstract class Piece {
                 break;
             }
         }
-        posx = indexX;
-        posy = indexY;
+        posx = row;
+        posy = column;
         // diagonal bottom-left
         while (posx < 0 && posy > 8) {
             posx--;
@@ -155,8 +156,8 @@ public abstract class Piece {
                 break;
             }
         }
-        posx = indexX;
-        posy = indexY;
+        posx = row;
+        posy = column;
         // diagonal bottom-right
         while (posx > 8 && posy > 8) {
             posx++;
@@ -171,80 +172,80 @@ public abstract class Piece {
         }
         // Knight
         // top-left
-        if (indexX >= 2 && indexY >= 1) {
+        if (row >= 2 && column >= 1) {
             threatCounter += checkPiece(
-                    currentBoard, indexX - 2, indexY - 1, PieceType.Knight);
+                    currentBoard, row - 2, column - 1, PieceType.Knight);
         }
-        if (indexX >= 1 && indexY >= 2) {
+        if (row >= 1 && column >= 2) {
             threatCounter += checkPiece(
-                    currentBoard, indexX - 1, indexY - 2, PieceType.Knight);
+                    currentBoard, row - 1, column - 2, PieceType.Knight);
         }
         // top-right
-        if (indexX >= 2 && indexY <= 6) {
+        if (row >= 2 && column <= 6) {
             threatCounter += checkPiece(
-                    currentBoard, indexX - 2, indexY + 1, PieceType.Knight);
+                    currentBoard, row - 2, column + 1, PieceType.Knight);
         }
-        if (indexX >= 1 && indexY <= 5) {
+        if (row >= 1 && column <= 5) {
             threatCounter += checkPiece(
-                    currentBoard, indexX - 1, indexY + 2, PieceType.Knight);
+                    currentBoard, row - 1, column + 2, PieceType.Knight);
         }
         // bottom-left
-        if (indexX <= 5 && indexY >= 1) {
+        if (row <= 5 && column >= 1) {
             threatCounter += checkPiece(
-                    currentBoard, indexX + 2, indexY - 1, PieceType.Knight);
+                    currentBoard, row + 2, column - 1, PieceType.Knight);
         }
-        if (indexX <= 6 && indexY >= 2) {
+        if (row <= 6 && column >= 2) {
             threatCounter += checkPiece(
-                    currentBoard, indexX + 1, indexY - 2, PieceType.Knight);
+                    currentBoard, row + 1, column - 2, PieceType.Knight);
         }
         // bottom-right
-        if (indexX <= 5 && indexY <= 6) {
+        if (row <= 5 && column <= 6) {
             threatCounter += checkPiece(
-                    currentBoard, indexX + 2, indexY + 1, PieceType.Knight);
+                    currentBoard, row + 2, column + 1, PieceType.Knight);
         }
-        if (indexX <= 6 && indexY <= 5) {
+        if (row <= 6 && column <= 5) {
             threatCounter += checkPiece(
-                    currentBoard, indexX + 1, indexY + 2, PieceType.Knight);
+                    currentBoard, row + 1, column + 2, PieceType.Knight);
         }
         // King
-        if (indexY >= 1) {
+        if (column >= 1) {
             // top
             threatCounter += checkPiece(
-                    currentBoard, indexX, indexY - 1, PieceType.King);
-            if (indexX >= 1) {
+                    currentBoard, row, column - 1, PieceType.King);
+            if (row >= 1) {
                 // top-left
                 threatCounter += checkPiece(
-                        currentBoard, indexX - 1, indexY - 1, PieceType.King);
+                        currentBoard, row - 1, column - 1, PieceType.King);
             }
-            if (indexX <= 6) {
+            if (row <= 6) {
                 // top-right
                 threatCounter += checkPiece(
-                        currentBoard, indexX + 1, indexY - 1, PieceType.King);
+                        currentBoard, row + 1, column - 1, PieceType.King);
             }
         }
-        if (indexY <= 6) {
+        if (column <= 6) {
             // bottom
             threatCounter += checkPiece(
-                    currentBoard, indexX, indexY + 1, PieceType.King);
-            if (indexX >= 1) {
+                    currentBoard, row, column + 1, PieceType.King);
+            if (row >= 1) {
                 // bottom-left
                 threatCounter += checkPiece(
-                        currentBoard, indexX - 1, indexY + 1, PieceType.King);
+                        currentBoard, row - 1, column + 1, PieceType.King);
             }
-            if (indexX <= 6) {
+            if (row <= 6) {
                 // bottom-right
                 threatCounter += checkPiece(
-                        currentBoard, indexX + 1, indexY + 1, PieceType.King);
+                        currentBoard, row + 1, column + 1, PieceType.King);
             }
         }
-        if (indexX >= 1) {
+        if (row >= 1) {
             // right
             threatCounter += checkPiece(
-                    currentBoard, indexX - 1, indexY, PieceType.King);
+                    currentBoard, row - 1, column, PieceType.King);
         }
-        if (indexY <= 6) {// left
+        if (column <= 6) {// left
             threatCounter += checkPiece(
-                    currentBoard, indexX + 1, indexY, PieceType.King);
+                    currentBoard, row + 1, column, PieceType.King);
         }
         return threatCounter;
     }
@@ -267,9 +268,9 @@ public abstract class Piece {
         }
     }
 
-    private int checkPiece(Piece[][] board, int indexX, int indexY,
+    private int checkPiece(Piece[][] board, int row, int column,
             PieceType required) {
-        Piece toExamine = board[indexX][indexY];
+        Piece toExamine = board[row][column];
         if (toExamine != null) {
             if (toExamine.piece == required) {
                 if (this.isOppositeColour(toExamine)) {
@@ -282,9 +283,9 @@ public abstract class Piece {
         return 0;
     }
 
-    private int checkPiece(Piece[][] board, int indexX, int indexY,
+    private int checkPiece(Piece[][] board, int row, int column,
             PieceType required1, PieceType required2) {
-        Piece toExamine = board[indexX][indexY];
+        Piece toExamine = board[row][column];
         if (toExamine != null) {
             if (toExamine.piece == required1
                     || toExamine.piece == required2) {
@@ -298,8 +299,8 @@ public abstract class Piece {
         return 0;
     }
 
-    private int checkPawnWhite(Piece[][] board, int indexX, int indexY) {
-        Piece toExamine = board[indexX][indexY];
+    private int checkPawnWhite(Piece[][] board, int row, int column) {
+        Piece toExamine = board[row][column];
         if (toExamine != null) {
             if (toExamine.piece == PieceType.Pawn) {
                 if (this.colour == Colour.White
@@ -314,9 +315,9 @@ public abstract class Piece {
         return 0;
     }
 
-    private int checkPawnBlack(Piece[][] board, int indexX, int indexY) {
+    private int checkPawnBlack(Piece[][] board, int row, int column) {
         // ensure that for the current piece the piece to check is previous
-        Piece toExamine = board[indexX][indexY];
+        Piece toExamine = board[row][column];
         if (toExamine != null) {
             if (toExamine.piece == PieceType.Pawn) {
                 if (this.colour == Colour.Black
@@ -330,16 +331,16 @@ public abstract class Piece {
         }
         return 0;
     }
-    
-    public Colour getColour(){
+
+    public Colour getColour() {
         return this.colour;
     }
-    
-    public PieceType getType(){
+
+    public PieceType getType() {
         return this.piece;
     }
-    
-    public boolean equals(Piece p){
+
+    public boolean equals(Piece p) {
         return this.colour == p.getColour() && this.piece == p.getType();
     }
 

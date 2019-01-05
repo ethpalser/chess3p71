@@ -12,13 +12,13 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    Colour colour; // Black or White
+    private final Colour colour; // Black or White
     // Part 3 Param
-    int piecesCentred;
-    int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
-    Piece lastMoved;
-    int lastX, lastY;
-    int[][] attacks;
+    private int piecesCentred;
+    private int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
+    private Piece lastMoved;
+    private int lastX, lastY;
+    private int[][] attacks;
 
     public Player(Colour c) {
         colour = c;
@@ -28,40 +28,40 @@ public class Player {
         attacks = new int[8][8];
     }
 
-    public Board movePiece(Board board, int startX, int startY, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo, boolean castleKingSide) {
-        Piece toMove = board.getBoard()[startX][startY];
+    public Board movePiece(Player opponent, Board board, int startR, int startC, int nextR, int nextC, ArrayList<Action> actions, Piece promotionTo, boolean castleKingSide) {
+        Piece toMove = board.getBoard()[startR][startC];
         if (toMove.colour != colour) {
             return board; // nothing happens to board state or player states
         }
-        if (toMove.validMoves(board, startX, startY)[nextX][nextY] == false) {
+        if (toMove.validMoves(opponent, board, startR, startC)[nextR][nextC] == false) {
             return board; // invalid action
         } else {
             // May need to have repeated check before move is considered (maybe in board)
             // valid action occurs
             lastMoved = toMove;
-            lastX = nextX;
-            lastY = nextY;
+            lastX = nextR;
+            lastY = nextC;
             if(toMove.piece == PieceType.Rook || toMove.piece == PieceType.King){
-                board.getBoard()[startX][startY].modifySpecial();
+                board.getBoard()[startR][startC].modifySpecial();
             }
             else if(toMove.piece == PieceType.Pawn &&
-                    (toMove.colour == Colour.White && nextX == startX - 2 ||
-                    toMove.colour == Colour.Black && nextX == startX + 2)){
-                board.getBoard()[startX][startY].modifySpecial();
+                    (toMove.colour == Colour.White && nextR == startR - 2 ||
+                    toMove.colour == Colour.Black && nextR == startR + 2)){
+                board.getBoard()[startR][startC].modifySpecial();
             }
             // gets a copy of the board to modify
             Board nextBoard = board;
-            nextBoard.getBoard()[nextX][nextY] = nextBoard.getBoard()[startX][startY];
-            nextBoard.getBoard()[startX][startY] = null;
+            nextBoard.getBoard()[nextR][nextC] = nextBoard.getBoard()[startR][startC];
+            nextBoard.getBoard()[startR][startC] = null;
 
-            nextBoard.printToLog(toMove, nextX, nextY, actions, promotionTo, castleKingSide);
+            nextBoard.printToLog(toMove, nextR, nextC, actions, promotionTo, castleKingSide);
             return nextBoard; // returns new board state after applying move
         }
     }
 
-    public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
-        Piece toMove = board.getBoard()[startX][startY];
-        if (lastMoved.equals(toMove) && lastX == nextX && lastY == nextY && repeatedMoves < 3) {
+    public boolean checkRepeat(Board board, int startR, int startC, int nextR, int nextC) {
+        Piece toMove = board.getBoard()[startR][startC];
+        if (lastMoved.equals(toMove) && lastX == nextR && lastY == nextC && repeatedMoves < 3) {
             repeatedMoves++;
         } else {
             repeatedMoves = 0;
@@ -80,9 +80,9 @@ public class Player {
         return piecesCentred;
     }
 
-    public void setupAttacks(Board board, int startX, int startY){
-        Piece toExamine = board.getBoard()[startX][startY];
-        int[][] examinedAttacks = toExamine.attacks(board, startX, startY);
+    public void setupAttacks(Board board, int startR, int startC){
+        Piece toExamine = board.getBoard()[startR][startC];
+        int[][] examinedAttacks = toExamine.attacks(board, startR, startC);
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 // could have attacks be changed to boolean
@@ -93,10 +93,10 @@ public class Player {
         }
     }
     
-    private void updateAttacks(Board board, int startX, int startY, int nextX, int nextY){
-        Piece toExamine = board.getBoard()[startX][startY];
-        int[][] examinedAttacks = toExamine.attacks(board, startX, startY);
-        int[][] nextAttacks = toExamine.attacks(board, nextX, nextY);
+    private void updateAttacks(Board board, int startR, int startC, int nextR, int nextC){
+        Piece toExamine = board.getBoard()[startR][startC];
+        int[][] examinedAttacks = toExamine.attacks(board, startR, startC);
+        int[][] nextAttacks = toExamine.attacks(board, nextR, nextC);
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 // could have attacks be changed to boolean
@@ -121,5 +121,10 @@ public class Player {
     public Piece getLastMoved() {
         return lastMoved;
     }
+    
+    public int[][] getAttacks(){
+        return attacks;
+    }
+            
 
 }
