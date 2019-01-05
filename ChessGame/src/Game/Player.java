@@ -16,14 +16,14 @@ public class Player {
     private int piecesCentred;
     private int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
     private Piece lastMoved;
-    private int lastX, lastY;
+    private int lastR, lastC;
     private int[][] attacks;
 
     public Player(Colour c) {
         colour = c;
         piecesCentred = 0;
-        lastX = -1; // defaults that indicate no piece
-        lastY = -1; // defaults that indicate no piece
+        lastR = -1; // defaults that indicate no piece
+        lastC = -1; // defaults that indicate no piece
         attacks = new int[8][8];
     }
 
@@ -45,8 +45,8 @@ public class Player {
             // May need to have repeated check before move is considered (maybe in board)
             // valid action occurs
             lastMoved = board.getBoard()[startR][startC];
-            lastX = nextR;
-            lastY = nextC;
+            lastR = nextR;
+            lastC = nextC;
             // check if rook or king moves, if so castling not possible unless performed this move
             if (toMove.piece == PieceType.Rook || toMove.piece == PieceType.King) {
                 board.getBoard()[startR][startC].modifySpecial();
@@ -73,12 +73,12 @@ public class Player {
     public ArrayList<Action> actionTaken(
             Player opponent,
             Board board,
-            int startX,
-            int startY,
-            int nextX,
-            int nextY) {
-        Piece pieceMoved = board.getBoard()[startX][startY];
-        Piece pieceAt = board.getBoard()[nextX][nextY];
+            int startR,
+            int startC,
+            int nextR,
+            int nextC) {
+        Piece pieceMoved = board.getBoard()[startR][startC];
+        Piece pieceAt = board.getBoard()[nextR][nextC];
         ArrayList<Action> actions = new ArrayList<>();
         int backRow = colour == Colour.White ? 7 : 0;
         //Move
@@ -89,14 +89,14 @@ public class Player {
                 // can castle
                 if (pieceMoved.validSpecial()) {
                     // check queen side
-                    if (nextX == backRow && nextY == 2) {
+                    if (nextR == backRow && nextC == 2) {
                         // check if rook has moved
                         if (board.getBoard()[backRow][0] != null
                                 && board.getBoard()[backRow][0].validSpecial()) {
                             actions.add(Action.CastleQueenSide);
                         }
                     } // check king side
-                    else if (nextX == backRow && nextY == 6) {
+                    else if (nextR == backRow && nextC == 6) {
                         // check if rook has moved
                         if (board.getBoard()[backRow][7] != null
                                 && board.getBoard()[backRow][7].validSpecial()) {
@@ -119,7 +119,7 @@ public class Player {
         }
         if (pieceMoved.getType() == PieceType.Pawn) {
             //Promotion
-            if (colour == Colour.White && nextX == 0 || colour == Colour.Black && nextX == 7) {
+            if (colour == Colour.White && nextR == 0 || colour == Colour.Black && nextR == 7) {
                 actions.add(Action.Promotion);
             }
             //check if opponent last moved pawn by two spaces
@@ -127,16 +127,16 @@ public class Player {
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
 
-                if (colour == Colour.White && startY == 3
-                        && (opponent.getLastX() == startX - 1
-                        || opponent.getLastX() == startX + 1)) {
-                    if (nextY == opponent.getLastY()) {
+                if (colour == Colour.White && startC == 3
+                        && (opponent.getLastR() == startR - 1
+                        || opponent.getLastR() == startR + 1)) {
+                    if (nextC == opponent.getLastC()) {
                         actions.add(Action.EnPassant);
                     }
-                } else if (colour == Colour.Black && startY == 4
-                        && (opponent.getLastX() == startX - 1
-                        || opponent.getLastX() == startX + 1)) {
-                    if (nextY == opponent.getLastY()) {
+                } else if (colour == Colour.Black && startC == 4
+                        && (opponent.getLastR() == startR - 1
+                        || opponent.getLastR() == startR + 1)) {
+                    if (nextC == opponent.getLastC()) {
                         actions.add(Action.EnPassant);
                     }
                 }
@@ -147,7 +147,7 @@ public class Player {
 
     public boolean checkRepeat(Player opponent, Board board, int startR, int startC, int nextR, int nextC) {
         Piece toMove = board.getBoard()[startR][startC];
-        if (lastMoved.equals(toMove) && lastX == nextR && lastY == nextC) {
+        if (lastMoved.equals(toMove) && lastR == nextR && lastC == nextC) {
             this.updateRepeat(false);
         } else {
             this.updateRepeat(true);
@@ -206,12 +206,12 @@ public class Player {
         }
     }
 
-    public int getLastX() {
-        return lastX;
+    public int getLastR() {
+        return lastR;
     }
 
-    public int getLastY() {
-        return lastY;
+    public int getLastC() {
+        return lastC;
     }
 
     public Piece getLastMoved() {
