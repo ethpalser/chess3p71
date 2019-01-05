@@ -19,7 +19,6 @@ public class Game {
     private final Player black;
     private Board currentBoard;
     private Colour currentTurn;
-    int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
 
     Piece promotionTo;
     boolean castleKingSide;
@@ -74,13 +73,13 @@ public class Game {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(black, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(black, currentBoard, startX, startY, nextX, nextY, promotionTo);
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(white, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(white, currentBoard, startX, startY, nextX, nextY, promotionTo);
         }
     }
 
@@ -96,77 +95,4 @@ public class Game {
         return false;
     }
 
-    //check repeated moves
-    public boolean checkRepeat(Board board, int startX, int startY, int nextX, int nextY) {
-        Player p = black;
-        if (currentTurn == Colour.White) {
-            p = white;
-        }
-        Piece toMove = board.getBoard()[startX][startY];
-        if (p.getLastMoved().equals(toMove) && p.getLastX() == nextX && p.getLastY() == nextY && repeatedMoves < 3) {
-            repeatedMoves++;
-        } else {
-            repeatedMoves = 0;
-        }
-        return repeatedMoves == 6;
-    }
-
-    public ArrayList<Action> actionTaken(Board board, int startX, int startY, int nextX, int nextY) {
-        Piece pieceMoved = board.getBoard()[startX][startY];
-        Piece pieceAt = board.getBoard()[nextX][nextY];
-        ArrayList<Action> actions = new ArrayList<>();
-
-        //Move
-        if (pieceAt == null) {
-            actions.add(Action.Move);
-        } else {
-            //Capture
-            if (pieceAt.getColour() != currentTurn) {
-                //Checkmate
-                if (pieceAt.getType() == PieceType.King) {
-                    actions.add(Action.Checkmate);
-                }
-                actions.add(Action.Capture);
-            } else {
-                //Castling
-                if (pieceAt.getType() == PieceType.Rook) {
-                    actions.add(Action.Castle);
-                    if (startX < nextX) {
-                        castleKingSide = true;
-                    }
-                }
-            }
-        }
-        if (pieceMoved.getType() == PieceType.Pawn) {
-            //Promotion
-            if (currentTurn == Colour.White && nextX == 0 || currentTurn == Colour.Black && nextX == 7) {
-                actions.add(Action.Promotion);
-            }
-            Player player = white;
-            Player opponent = black;
-            if (currentTurn != Colour.White) {
-                player = black;
-                opponent = white;
-            }
-            //check if opponent last moved pawn by two spaces
-            Piece lastMoved = opponent.getLastMoved();
-            if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
-                //checks if my pawn is in right position and moves to right space
-
-                if (currentTurn == Colour.White && startY == 3
-                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
-                    if (nextY == player.getLastY()) {
-                        actions.add(Action.EnPassant);
-                    }
-                } else if (currentTurn == Colour.Black && startY == 4
-                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
-                    if (nextY == player.getLastY()) {
-                        actions.add(Action.EnPassant);
-                    }
-                }
-            }
-        }
-
-        return actions;
-    }
 }
