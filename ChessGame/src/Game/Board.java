@@ -101,7 +101,7 @@ public class Board {
         }
     }
 
-    public void printToLog(Piece piece, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo, boolean castleKingSide) {
+    public void printToLog(Piece piece, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo) {
         FileWriter fR;
         // Hopefully ensures that the move is valid before logging
         if (piece == null) {
@@ -123,12 +123,11 @@ public class Board {
                     case Promotion:
                         s += "=" + promotionTo.printToLog();
                         break;
-                    case Castle:
-                        if (castleKingSide) {
-                            s += "0-0";
-                        } else {
-                            s += "0-0-0";
-                        }
+                    case CastleKingSide:
+                        s += "0-0";
+                        break;
+                    case CastleQueenSide:
+                        s += "0-0-0";
                         break;
 //                    case EnPassant:
 //                        s += "e.p.";
