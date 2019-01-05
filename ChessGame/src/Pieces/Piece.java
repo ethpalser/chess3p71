@@ -340,6 +340,8 @@ public abstract class Piece {
         return this.piece;
     }
 
+    public abstract boolean getCanMove();
+    
     public boolean equals(Piece p) {
         return this.colour == p.getColour() && this.piece == p.getType();
     }

@@ -15,6 +15,8 @@ import Game.Player;
  */
 public class Knight extends Piece {
 
+    public boolean canMove;
+
     public Knight(Colour colour) {
         super(PieceType.Knight, colour, 3);
     }
@@ -139,65 +141,67 @@ public class Knight extends Piece {
     public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
+        // reset to false and check
+        canMove = false;
         boolean[][] validPositions = new boolean[8][8];
         // top-left
         if (row >= 2 && column >= 1) {
             toExamine = currentBoard[row - 2][column - 1];
-            validPositions[row - 2][column - 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row - 2][column - 1] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row - 2][column - 1] = true;
+                canMove = true;
             }
         }
         if (row >= 1 && column >= 2) {
             toExamine = currentBoard[row - 1][column - 2];
-            validPositions[row - 1][column - 2] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row - 1][column - 2] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row - 1][column - 2] = true;
+                canMove = true;
             }
         }
         // top-right
         if (row >= 2 && column <= 6) {
             toExamine = currentBoard[row - 2][column + 1];
-            validPositions[row - 2][column + 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row - 2][column + 1] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row - 2][column + 1] = true;
+                canMove = true;
             }
         }
         if (row >= 1 && column <= 5) {
             toExamine = currentBoard[row - 1][column + 2];
-            validPositions[row - 1][column + 2] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row - 1][column + 2] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row - 1][column + 2] = true;
+                canMove = true;
             }
         }
         // bottom-left
         if (row <= 5 && column >= 1) {
             toExamine = currentBoard[row + 2][column - 1];
-            validPositions[row + 2][column - 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row + 2][column - 1] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row + 2][column - 1] = true;
+                canMove = true;
             }
         }
         if (row <= 6 && column >= 2) {
             toExamine = currentBoard[row + 1][column - 2];
-            validPositions[row + 1][column - 2] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row + 1][column - 2] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row + 1][column - 2] = true;
+                canMove = true;
             }
         }
         // bottom-right
         if (row <= 5 && column <= 6) {
             toExamine = currentBoard[row + 2][column + 1];
-            validPositions[row + 2][column + 1] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row + 2][column + 1] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row + 2][column + 1] = true;
+                canMove = true;
             }
         }
         if (row <= 6 && column <= 5) {
             toExamine = currentBoard[row + 1][column + 2];
-            validPositions[row + 1][column + 2] = true;
-            if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[row + 1][column + 2] = false;
+            if (toExamine == null || this.isOppositeColour(toExamine)) {
+                validPositions[row + 1][column + 2] = true;
+                canMove = true;
             }
         }
         return validPositions;
@@ -221,6 +225,11 @@ public class Knight extends Piece {
     @Override
     public String printToLog() {
         return "N";
+    }
+
+    @Override
+    public boolean getCanMove() {
+        return canMove;
     }
 
 }

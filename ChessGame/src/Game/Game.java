@@ -91,8 +91,38 @@ public class Game {
     }
 
     // need a means to efficiently check this for main loop
-    public boolean checkmate(Player opponent) {
-        return false;
+    public boolean isGameEnd() {
+        boolean gameOver = white.getLoss() || black.getLoss();
+        if (gameOver) {
+            currentBoard.printToLogfinalOutcome(currentTurn);
+            return gameOver;
+        }
+        Player opponent = currentTurn == Colour.White ? black : white;
+        Piece toExamine;
+        boolean kingMove = false; // default cannot move
+        boolean otherMove = false; // default cannot move
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                // check to see if there is a piece that can move
+                toExamine = currentBoard.getBoard()[i][j];
+                if (toExamine.colour == currentTurn) {
+                    toExamine.validMoves(opponent, currentBoard, i, j);
+                    if (toExamine.piece == PieceType.King) {
+                        kingMove = toExamine.getCanMove();
+                    } else {
+                        otherMove = toExamine.getCanMove();
+                    }
+                    if (otherMove == true || kingMove == true) {
+                        break;
+                    }
+                }
+            }
+        }
+        gameOver = kingMove == false && otherMove == false; // gameOver if both false;
+        if(gameOver){
+            currentBoard.printToLogfinalOutcome(null);
+        }
+        return gameOver;
     }
 
 }

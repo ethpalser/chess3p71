@@ -15,6 +15,7 @@ public enum Action {
     Promotion,
     Check,
     Checkmate,
+    Stalemate,
     CastleKingSide,
     CastleQueenSide,
     EnPassant
