@@ -148,17 +148,17 @@ public class Game {
                 opponent = white;
             }
             //check if opponent last moved pawn by two spaces
-            Piece lastMoved = opponent.lastMoved;
+            Piece lastMoved = opponent.getLastMoved();
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
                 if (currentTurn == Colour.White && startY == 3
-                        && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
-                    if (nextY == player.lastY) {
+                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
+                    if (nextY == player.getLastY()) {
                         actions.add(Action.EnPassant);
                     }
                 } else if (currentTurn == Colour.Black && startY == 4
-                        && (player.lastX == startX - 1 || player.lastX == startX + 1)) {
-                    if (nextY == player.lastY) {
+                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
+                    if (nextY == player.getLastY()) {
                         actions.add(Action.EnPassant);
                     }
                 }
