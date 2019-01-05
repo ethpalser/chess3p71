@@ -2,6 +2,7 @@ package Pieces;
 
 import Game.Board;
 import Game.Colour;
+import Game.Player;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,45 +16,45 @@ import Game.Colour;
 public class Pawn extends Piece {
 
     public boolean hasMovedTwo;
-    
+
     public Pawn(Colour colour) {
         super(PieceType.Pawn, colour, 1);
         hasMovedTwo = false;
     }
 
     @Override
-    public int heuristic(Board board, int indexX, int indexY) {
-        return threats(board, indexX, indexY)
-                + this.isThreatened(board, indexX, indexY);
+    public int heuristic(Board board, int row, int column) {
+        return threats(board, row, column)
+                + this.isThreatened(board, row, column);
     }
 
     @Override
-    public int threats(Board board, int indexX, int indexY) {
+    public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
-        if (colour == Colour.White && indexY >= 1) {
-            if (indexX >= 1) {
-                toExamine = currentBoard[indexX - 1][indexY - 1];
+        if (colour == Colour.White && row >= 1) {
+            if (column >= 1) {
+                toExamine = currentBoard[row - 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
-            if (indexX <= 6) {
-                toExamine = currentBoard[indexX + 1][indexY - 1];
+            if (column <= 6) {
+                toExamine = currentBoard[row - 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
-        } else if (colour == Colour.Black && indexY <= 6) {
-            if (indexX >= 1) {
-                toExamine = currentBoard[indexX - 1][indexY + 1];
+        } else if (colour == Colour.Black && row <= 6) {
+            if (column >= 1) {
+                toExamine = currentBoard[row + 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
-            if (indexX <= 6) {
-                toExamine = currentBoard[indexX + 1][indexY + 1];
+            if (column <= 6) {
+                toExamine = currentBoard[row + 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
@@ -63,26 +64,26 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public int[][] attacks(Board board, int indexX, int indexY) {
+    public int[][] attacks(Board board, int row, int column) {
         int[][] attacked = new int[8][8];
-        if (colour == Colour.White && indexY >= 1) {
+        if (colour == Colour.White && row >= 1) {
             // check if there are pieces that can be taken
-            if (indexX >= 1) {
-                attacked[indexX - 1][indexY - 1]++;
+            if (column >= 1) {
+                attacked[row - 1][column - 1]++;
 
             }
-            if (indexX <= 6) {
-                attacked[indexX + 1][indexY - 1]++;
+            if (column <= 6) {
+                attacked[row - 1][column + 1]++;
 
             }
-        } else if (colour == Colour.Black && indexY <= 6) {
+        } else if (colour == Colour.Black && row <= 6) {
             // check if there are pieces that can be taken
-            if (indexX >= 1) {
-                attacked[indexX - 1][indexY + 1]++;
+            if (column >= 1) {
+                attacked[row + 1][column - 1]++;
 
             }
-            if (indexX <= 6) {
-                attacked[indexX + 1][indexY + 1]++;
+            if (column <= 6) {
+                attacked[row + 1][column + 1]++;
 
             }
         }
@@ -90,78 +91,86 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean[][] validMoves(Board board, int indexX, int indexY) {
+    public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         boolean[][] validPositions = new boolean[8][8];
-        if (colour == Colour.White && indexY >= 1) {
+        if (colour == Colour.White && row >= 1) {
+            // check if it can move up
+            toExamine = currentBoard[row - 1][column];
+            validPositions[row - 1][column] = true;
+            if (toExamine != null) {
+                validPositions[row - 1][column] = false;
+            }
             // check if there are pieces that can be taken
-            if (indexX >= 1) {
-                toExamine = currentBoard[indexX - 1][indexY - 1];
+            if (column >= 1) {
+                // check if there are pieces that can be taken
+                toExamine = currentBoard[row - 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY - 1] = true;
+                    validPositions[row - 1][column - 1] = true;
                 }
             }
-            if (indexX <= 6) {
-                toExamine = currentBoard[indexX + 1][indexY - 1];
+            if (column <= 6) {
+                toExamine = currentBoard[row - 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY - 1] = true;
+                    validPositions[row - 1][column + 1] = true;
                 }
             }
             // check if it can move up 2
-            if (indexY == 6) {
-                toExamine = currentBoard[indexX][indexY - 2];
-                validPositions[indexX][indexY - 2] = true;
+            if (row == 6) {
+                toExamine = currentBoard[row - 2][column];
+                validPositions[row - 2][column] = true;
                 if (toExamine != null) {
-                    validPositions[indexX][indexY - 2] = false;
+                    validPositions[row - 2][column] = false;
                 }
+            } // check if it can perform en passant
+            else if (row == 3) {
+                // use opponent info
             }
+        } else if (colour == Colour.Black && row <= 6) {
             // check if it can move up
-            toExamine = currentBoard[indexX][indexY - 1];
-            validPositions[indexX][indexY - 1] = true;
+            toExamine = currentBoard[row + 1][column];
+            validPositions[row + 1][column] = true;
             if (toExamine != null) {
-                validPositions[indexX][indexY - 1] = false;
+                validPositions[row + 1][column] = false;
             }
-        } else if (colour == Colour.Black && indexY <= 6) {
             // check if there are pieces that can be taken
-            if (indexX >= 1) {
-                toExamine = currentBoard[indexX - 1][indexY + 1];
+            if (column >= 1) {
+                toExamine = currentBoard[row + 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
-                    validPositions[indexX - 1][indexY + 1] = true;
+                    validPositions[row + 1][column - 1] = true;
                 }
             }
-            if (indexX <= 6) {
-                toExamine = currentBoard[indexX + 1][indexY + 1];
+            if (column <= 6) {
+                // check if there are pieces that can be taken
+                toExamine = currentBoard[row + 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
-                    validPositions[indexX + 1][indexY + 1] = true;
+                    validPositions[row + 1][column + 1] = true;
                 }
             }
             // check if it can move up 2
-            if (indexY == 1) {
-                toExamine = currentBoard[indexX][indexY + 2];
-                validPositions[indexX][indexY + 2] = true;
+            if (row == 1) {
+                toExamine = currentBoard[row][column + 2];
+                validPositions[row][column + 2] = true;
                 if (toExamine != null) {
-                    validPositions[indexX][indexY + 2] = false;
+                    validPositions[row][column + 2] = false;
                 }
-            }
-            // check if it can move up
-            toExamine = currentBoard[indexX][indexY + 1];
-            validPositions[indexX][indexY + 1] = true;
-            if (toExamine != null) {
-                validPositions[indexX][indexY + 1] = false;
+            } // check if it can perform en passant
+            else if (row == 4) {
+                // use opponent info
             }
         }
         return validPositions;
     }
- 
+
     @Override
-    public boolean validSpecial(){
+    public boolean validSpecial() {
         // has moved two, thus can be en passant (other conditions elsewhere)
         return hasMovedTwo;
     }
-    
+
     @Override
-    public void modifySpecial(){
+    public void modifySpecial() {
         // only call method if piece confirmed to move two
         hasMovedTwo = true;
     }
@@ -170,12 +179,9 @@ public class Pawn extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2659" : "\u265F";
     }
-    
-    public String printToLog(){
-        return "";
-    }
 
-    public boolean canEnPassant(Pawn pawn) {
-        return false; // need to check if target pawn has moved 2 last turn
+    @Override
+    public String printToLog() {
+        return "";
     }
 }

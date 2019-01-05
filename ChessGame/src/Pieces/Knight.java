@@ -7,6 +7,7 @@ package Pieces;
 
 import Game.Board;
 import Game.Colour;
+import Game.Player;
 
 /**
  *
@@ -19,27 +20,27 @@ public class Knight extends Piece {
     }
 
     @Override
-    public int heuristic(Board board, int indexX, int indexY) {
-        return threats(board, indexX, indexY)
-                + this.isThreatened(board, indexX, indexY);
+    public int heuristic(Board board, int row, int column) {
+        return threats(board, row, column)
+                + this.isThreatened(board, row, column);
     }
 
     @Override
-    public int threats(Board board, int indexX, int indexY) {
+    public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
         // top-left
-        if (indexX >= 2 && indexY >= 1) {
-            toExamine = currentBoard[indexX - 2][indexY - 1];
+        if (row >= 2 && column >= 1) {
+            toExamine = currentBoard[row - 2][column - 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         }
-        if (indexX >= 1 && indexY >= 2) {
-            toExamine = currentBoard[indexX - 1][indexY - 2];
+        if (row >= 1 && column >= 2) {
+            toExamine = currentBoard[row - 1][column - 2];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
@@ -47,16 +48,16 @@ public class Knight extends Piece {
             }
         }
         // top-right
-        if (indexX >= 2 && indexY <= 6) {
-            toExamine = currentBoard[indexX - 2][indexY + 1];
+        if (row >= 2 && column <= 6) {
+            toExamine = currentBoard[row - 2][column + 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         }
-        if (indexX >= 1 && indexY <= 5) {
-            toExamine = currentBoard[indexX - 1][indexY + 2];
+        if (row >= 1 && column <= 5) {
+            toExamine = currentBoard[row - 1][column + 2];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
@@ -64,16 +65,16 @@ public class Knight extends Piece {
             }
         }
         // bottom-left
-        if (indexX <= 5 && indexY >= 1) {
-            toExamine = currentBoard[indexX + 2][indexY - 1];
+        if (row <= 5 && column >= 1) {
+            toExamine = currentBoard[row + 2][column - 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         }
-        if (indexX <= 6 && indexY >= 2) {
-            toExamine = currentBoard[indexX + 1][indexY - 2];
+        if (row <= 6 && column >= 2) {
+            toExamine = currentBoard[row + 1][column - 2];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
@@ -81,16 +82,16 @@ public class Knight extends Piece {
             }
         }
         // bottom-right
-        if (indexX <= 5 && indexY <= 6) {
-            toExamine = currentBoard[indexX + 2][indexY + 1];
+        if (row <= 5 && column <= 6) {
+            toExamine = currentBoard[row + 2][column + 1];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
                 }
             }
         }
-        if (indexX <= 6 && indexY <= 5) {
-            toExamine = currentBoard[indexX + 1][indexY + 2];
+        if (row <= 6 && column <= 5) {
+            toExamine = currentBoard[row + 1][column + 2];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     threatened += toExamine.weight;
@@ -101,114 +102,114 @@ public class Knight extends Piece {
     }
 
     @Override
-    public int[][] attacks(Board board, int indexX, int indexY) {
+    public int[][] attacks(Board board, int row, int column) {
         int[][] attacked = new int[8][8];
         // top-left
-        if (indexX >= 2 && indexY >= 1) {
-            attacked[indexX - 2][indexY - 1]++;
+        if (row >= 2 && column >= 1) {
+            attacked[row - 2][column - 1]++;
         }
-        if (indexX >= 1 && indexY >= 2) {
-            attacked[indexX - 1][indexY - 2]++;
+        if (row >= 1 && column >= 2) {
+            attacked[row - 1][column - 2]++;
         }
         // top-right
-        if (indexX >= 2 && indexY <= 6) {
-            attacked[indexX - 2][indexY + 1]++;
+        if (row >= 2 && column <= 6) {
+            attacked[row - 2][column + 1]++;
         }
-        if (indexX >= 1 && indexY <= 5) {
-            attacked[indexX - 1][indexY + 2]++;
+        if (row >= 1 && column <= 5) {
+            attacked[row - 1][column + 2]++;
         }
         // bottom-left
-        if (indexX <= 5 && indexY >= 1) {
-            attacked[indexX + 2][indexY - 1]++;
+        if (row <= 5 && column >= 1) {
+            attacked[row + 2][column - 1]++;
         }
-        if (indexX <= 6 && indexY >= 2) {
-            attacked[indexX + 1][indexY - 2]++;
+        if (row <= 6 && column >= 2) {
+            attacked[row + 1][column - 2]++;
         }
         // bottom-right
-        if (indexX <= 5 && indexY <= 6) {
-            attacked[indexX + 2][indexY + 1]++;
+        if (row <= 5 && column <= 6) {
+            attacked[row + 2][column + 1]++;
         }
-        if (indexX <= 6 && indexY <= 5) {
-            attacked[indexX + 1][indexY + 2]++;
+        if (row <= 6 && column <= 5) {
+            attacked[row + 1][column + 2]++;
         }
         return attacked;
     }
 
     @Override
-    public boolean[][] validMoves(Board board, int indexX, int indexY) {
+    public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         boolean[][] validPositions = new boolean[8][8];
         // top-left
-        if (indexX >= 2 && indexY >= 1) {
-            toExamine = currentBoard[indexX - 2][indexY - 1];
-            validPositions[indexX - 2][indexY - 1] = true;
+        if (row >= 2 && column >= 1) {
+            toExamine = currentBoard[row - 2][column - 1];
+            validPositions[row - 2][column - 1] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX - 2][indexY - 1] = false;
+                validPositions[row - 2][column - 1] = false;
             }
         }
-        if (indexX >= 1 && indexY >= 2) {
-            toExamine = currentBoard[indexX - 1][indexY - 2];
-            validPositions[indexX - 1][indexY - 2] = true;
+        if (row >= 1 && column >= 2) {
+            toExamine = currentBoard[row - 1][column - 2];
+            validPositions[row - 1][column - 2] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX - 1][indexY - 2] = false;
+                validPositions[row - 1][column - 2] = false;
             }
         }
         // top-right
-        if (indexX >= 2 && indexY <= 6) {
-            toExamine = currentBoard[indexX - 2][indexY + 1];
-            validPositions[indexX - 2][indexY + 1] = true;
+        if (row >= 2 && column <= 6) {
+            toExamine = currentBoard[row - 2][column + 1];
+            validPositions[row - 2][column + 1] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX - 2][indexY + 1] = false;
+                validPositions[row - 2][column + 1] = false;
             }
         }
-        if (indexX >= 1 && indexY <= 5) {
-            toExamine = currentBoard[indexX - 1][indexY + 2];
-            validPositions[indexX - 1][indexY + 2] = true;
+        if (row >= 1 && column <= 5) {
+            toExamine = currentBoard[row - 1][column + 2];
+            validPositions[row - 1][column + 2] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX - 1][indexY + 2] = false;
+                validPositions[row - 1][column + 2] = false;
             }
         }
         // bottom-left
-        if (indexX <= 5 && indexY >= 1) {
-            toExamine = currentBoard[indexX + 2][indexY - 1];
-            validPositions[indexX + 2][indexY - 1] = true;
+        if (row <= 5 && column >= 1) {
+            toExamine = currentBoard[row + 2][column - 1];
+            validPositions[row + 2][column - 1] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX + 2][indexY - 1] = false;
+                validPositions[row + 2][column - 1] = false;
             }
         }
-        if (indexX <= 6 && indexY >= 2) {
-            toExamine = currentBoard[indexX + 1][indexY - 2];
-            validPositions[indexX + 1][indexY - 2] = true;
+        if (row <= 6 && column >= 2) {
+            toExamine = currentBoard[row + 1][column - 2];
+            validPositions[row + 1][column - 2] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX + 1][indexY - 2] = false;
+                validPositions[row + 1][column - 2] = false;
             }
         }
         // bottom-right
-        if (indexX <= 5 && indexY <= 6) {
-            toExamine = currentBoard[indexX + 2][indexY + 1];
-            validPositions[indexX + 2][indexY + 1] = true;
+        if (row <= 5 && column <= 6) {
+            toExamine = currentBoard[row + 2][column + 1];
+            validPositions[row + 2][column + 1] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX + 2][indexY + 1] = false;
+                validPositions[row + 2][column + 1] = false;
             }
         }
-        if (indexX <= 6 && indexY <= 5) {
-            toExamine = currentBoard[indexX + 1][indexY + 2];
-            validPositions[indexX + 1][indexY + 2] = true;
+        if (row <= 6 && column <= 5) {
+            toExamine = currentBoard[row + 1][column + 2];
+            validPositions[row + 1][column + 2] = true;
             if (toExamine != null && !this.isOppositeColour(toExamine)) {
-                validPositions[indexX + 1][indexY + 2] = false;
+                validPositions[row + 1][column + 2] = false;
             }
         }
         return validPositions;
     }
- 
+
     @Override
-    public boolean validSpecial(){
+    public boolean validSpecial() {
         return false;
     }
-    
+
     @Override
-    public void modifySpecial(){
+    public void modifySpecial() {
         // nothing
     }
 
@@ -216,8 +217,9 @@ public class Knight extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2658" : "\u265E";
     }
-    
-    public String printToLog(){
+
+    @Override
+    public String printToLog() {
         return "N";
     }
 

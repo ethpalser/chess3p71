@@ -74,13 +74,13 @@ public class Game {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(black, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard,startX, startY, nextX, nextY), promotionTo, castleKingSide);
+            return white.movePiece(white, currentBoard, startX, startY, nextX, nextY, actionTaken(currentBoard, startX, startY, nextX, nextY), promotionTo, castleKingSide);
         }
     }
 
@@ -149,15 +149,18 @@ public class Game {
                 opponent = white;
             }
             //check if opponent last moved pawn by two spaces
-            Piece lastMoved = opponent.lastMoved;
+            Piece lastMoved = opponent.getLastMoved();
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
-                if (currentTurn == Colour.White && startX == 3 && (player.lastY == startY - 1 || player.lastY == startY + 1)) {
-                    if (nextX == player.lastX) {
+
+                if (currentTurn == Colour.White && startY == 3
+                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
+                    if (nextY == player.getLastY()) {
                         actions.add(Action.EnPassant);
                     }
-                } else if (currentTurn == Colour.Black && startX == 4 && (player.lastY == startY - 1 || player.lastY == startY + 1)) {
-                    if (nextX == player.lastX) {
+                } else if (currentTurn == Colour.Black && startY == 4
+                        && (player.getLastX() == startX - 1 || player.getLastX() == startX + 1)) {
+                    if (nextY == player.getLastY()) {
                         actions.add(Action.EnPassant);
                     }
                 }
