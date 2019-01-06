@@ -2,6 +2,7 @@ package Pieces;
 
 import Game.Board;
 import Game.Colour;
+import Game.Move;
 import Game.Player;
 
 /*
@@ -18,6 +19,7 @@ public abstract class Piece {
     public final PieceType piece;
     public final Colour colour;
     public final int weight;
+    public Move bestMove;
 
     public Piece(PieceType piece, Colour colour, int weight) {
         this.piece = piece;
@@ -330,6 +332,32 @@ public abstract class Piece {
             }
         }
         return 0;
+    }
+    
+    public void calcBestMove (Player opponent, Board board, int row, int column){
+        boolean[][] validMoves = this.validMoves(opponent, board, row, column);
+        for(int i = 0; i < validMoves.length; i++){
+            for(int j = 0; j < validMoves[0].length; j++){
+                if(validMoves[i][j]){
+                    Move move = new Move(row, column, i, j);
+                    if (evalMove(board, move) > evalMove(board, bestMove)){
+                        bestMove = move;
+                    }
+                }
+            }
+        }
+    }
+    
+    private int evalMove(Board board, Move move){
+        if(move == null){
+            return -9999;
+        }
+        Piece capture = board.getBoard()[move.nextR][move.nextR];
+        return this.threats(board, move.nextR, move.nextC) - this.isThreatened(board, move.nextR, move.nextC) + (capture == null ? 0 : capture.weight);
+    }
+
+    public Move getBestMove() {
+        return bestMove;
     }
 
     public Colour getColour() {
