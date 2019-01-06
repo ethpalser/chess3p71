@@ -15,6 +15,8 @@ import Game.Player;
  */
 public class Bishop extends Piece {
 
+    public boolean canMove;
+
     public Bishop(Colour colour) {
         super(PieceType.Bishop, colour, 3);
     }
@@ -80,7 +82,7 @@ public class Bishop extends Piece {
         }
         return threatened;
     }
-    
+
     @Override
     public int[][] attacks(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
@@ -137,6 +139,8 @@ public class Bishop extends Piece {
     public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
+        // reset to false and check
+        canMove = false;
         boolean[][] validPositions = new boolean[8][8];
         int posx = row;
         int posy = column;
@@ -147,9 +151,12 @@ public class Bishop extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -160,9 +167,12 @@ public class Bishop extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -173,9 +183,12 @@ public class Bishop extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -186,20 +199,23 @@ public class Bishop extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         return validPositions;
     }
-    
+
     @Override
-    public boolean validSpecial(){
+    public boolean validSpecial() {
         return false;
     }
-    
+
     @Override
-    public void modifySpecial(){
+    public void modifySpecial() {
         // nothing
     }
 
@@ -207,10 +223,15 @@ public class Bishop extends Piece {
     public String printToBoard() {
         return this.colour == Colour.White ? "\u2657" : "\u265D";
     }
-    
+
     @Override
-    public String printToLog(){
+    public String printToLog() {
         return "B";
+    }
+
+    @Override
+    public boolean getCanMove() {
+        return canMove;
     }
 
 }

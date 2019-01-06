@@ -15,6 +15,7 @@ import Game.Player;
  */
 public class Pawn extends Piece {
 
+    public boolean canMove;
     public boolean hasMovedTwo;
 
     public Pawn(Colour colour) {
@@ -94,13 +95,15 @@ public class Pawn extends Piece {
     public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
+        // reset to false and check
+        canMove = false;
         boolean[][] validPositions = new boolean[8][8];
         if (colour == Colour.White && row >= 1) {
             // check if it can move up
             toExamine = currentBoard[row - 1][column];
-            validPositions[row - 1][column] = true;
-            if (toExamine != null) {
-                validPositions[row - 1][column] = false;
+            if (toExamine == null) {
+                validPositions[row - 1][column] = true;
+                canMove = true;
             }
             // check if there are pieces that can be taken
             if (column >= 1) {
@@ -108,37 +111,50 @@ public class Pawn extends Piece {
                 toExamine = currentBoard[row - 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     validPositions[row - 1][column - 1] = true;
+                    canMove = true;
                 }
             }
             if (column <= 6) {
                 toExamine = currentBoard[row - 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     validPositions[row - 1][column + 1] = true;
+                    canMove = true;
                 }
             }
             // check if it can move up 2
             if (row == 6) {
                 toExamine = currentBoard[row - 2][column];
-                validPositions[row - 2][column] = true;
-                if (toExamine != null) {
-                    validPositions[row - 2][column] = false;
+                if (toExamine == null && currentBoard[row - 1][column] == null) {
+                    validPositions[row - 2][column] = true;
+                    canMove = true;
                 }
             } // check if it can perform en passant
             else if (row == 3) {
                 // use opponent info
+                Piece lastMoved = opponent.getLastMoved();
+                if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
+                    //checks if my pawn is in right position and moves to right space
+                    if (opponent.getLastC() == column - 1
+                            || opponent.getLastC() == column + 1) {
+                        validPositions[row - 1][opponent.getLastC()] = true;
+                        canMove = true;
+                    }
+                }
             }
-        } else if (colour == Colour.Black && row <= 6) {
+        } else if (colour == Colour.Black && row
+                <= 6) {
             // check if it can move up
             toExamine = currentBoard[row + 1][column];
-            validPositions[row + 1][column] = true;
-            if (toExamine != null) {
-                validPositions[row + 1][column] = false;
+            if (toExamine == null) {
+                validPositions[row + 1][column] = true;
+                canMove = true;
             }
             // check if there are pieces that can be taken
             if (column >= 1) {
                 toExamine = currentBoard[row + 1][column - 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     validPositions[row + 1][column - 1] = true;
+                    canMove = true;
                 }
             }
             if (column <= 6) {
@@ -146,18 +162,28 @@ public class Pawn extends Piece {
                 toExamine = currentBoard[row + 1][column + 1];
                 if (toExamine != null && isOppositeColour(toExamine)) {
                     validPositions[row + 1][column + 1] = true;
+                    canMove = true;
                 }
             }
             // check if it can move up 2
             if (row == 1) {
-                toExamine = currentBoard[row][column + 2];
-                validPositions[row][column + 2] = true;
-                if (toExamine != null) {
-                    validPositions[row][column + 2] = false;
+                toExamine = currentBoard[row + 2][column];
+                if (toExamine == null && currentBoard[row + 1][column] == null) {
+                    validPositions[row + 2][column] = true;
+                    canMove = true;
                 }
             } // check if it can perform en passant
             else if (row == 4) {
                 // use opponent info
+                Piece lastMoved = opponent.getLastMoved();
+                if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
+                    //checks if my pawn is in right position and moves to right space
+                    if (opponent.getLastC() == column - 1
+                            || opponent.getLastC() == column + 1) {
+                        validPositions[row + 1][opponent.getLastC()] = true;
+                        canMove = true;
+                    }
+                }
             }
         }
         return validPositions;
@@ -183,5 +209,10 @@ public class Pawn extends Piece {
     @Override
     public String printToLog() {
         return "";
+    }
+
+    @Override
+    public boolean getCanMove() {
+        return canMove;
     }
 }

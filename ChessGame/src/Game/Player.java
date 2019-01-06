@@ -18,6 +18,8 @@ public class Player {
     private Piece lastMoved;
     private int lastR, lastC;
     private int[][] attacks;
+    private boolean lostGame;
+    
 
     public Player(Colour c) {
         colour = c;
@@ -25,6 +27,7 @@ public class Player {
         lastR = -1; // defaults that indicate no piece
         lastC = -1; // defaults that indicate no piece
         attacks = new int[8][8];
+        lostGame = false;
     }
 
     public Board movePiece(
@@ -112,6 +115,7 @@ public class Player {
                 //Checkmate
                 if (pieceAt.getType() == PieceType.King) {
                     actions.add(Action.Checkmate);
+                    opponent.setLoss();
                 }
             } else {
                 // Invalid action
@@ -126,16 +130,15 @@ public class Player {
             Piece lastMoved = opponent.getLastMoved();
             if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
-
-                if (colour == Colour.White && startC == 3
-                        && (opponent.getLastR() == startR - 1
-                        || opponent.getLastR() == startR + 1)) {
+                if (colour == Colour.White && startR == 3
+                        && (opponent.getLastC() == startC - 1
+                        || opponent.getLastC() == startC + 1)) {
                     if (nextC == opponent.getLastC()) {
                         actions.add(Action.EnPassant);
                     }
-                } else if (colour == Colour.Black && startC == 4
-                        && (opponent.getLastR() == startR - 1
-                        || opponent.getLastR() == startR + 1)) {
+                } else if (colour == Colour.Black && startR == 4
+                        && (opponent.getLastC() == startC - 1
+                        || opponent.getLastC() == startC + 1)) {
                     if (nextC == opponent.getLastC()) {
                         actions.add(Action.EnPassant);
                     }
@@ -222,4 +225,11 @@ public class Player {
         return attacks;
     }
 
+    public void setLoss(){
+        lostGame = true;
+    }
+    
+    public boolean getLoss(){
+        return lostGame;
+    }
 }
