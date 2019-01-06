@@ -101,7 +101,7 @@ public class Board {
         }
     }
 
-    public void printToLog(Piece piece, int nextX, int nextY, ArrayList<Action> actions, Piece promotionTo) {
+    public void printToLog(Piece piece, int nextR, int nextC, ArrayList<Action> actions, Piece promotionTo) {
         FileWriter fR;
         // Hopefully ensures that the move is valid before logging
         if (piece == null) {
@@ -115,10 +115,10 @@ public class Board {
             for (Action action : actions) {
                 switch (action) {
                     case Move:
-                        s += piece.printToLog() + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        s += piece.printToLog() + indexToBoardR(nextR) + indexToBoardC(nextC);
                         break;
                     case Capture:
-                        s += piece.printToLog() + "x" + indexToBoardX(nextX) + indexToBoardY(nextY);
+                        s += piece.printToLog() + "x" + indexToBoardR(nextR) + indexToBoardC(nextC);
                         break;
                     case Promotion:
                         s += "=" + promotionTo.printToLog();
@@ -201,8 +201,8 @@ public class Board {
         return board;
     }
 
-    public static int boardToIndexX(int boardX) {
-        switch (boardX) {
+    public static int boardToIndexR(int boardR) {
+        switch (boardR) {
             case 1:
                 return 7; // Bottom of Board in White's persepective
             case 2:
@@ -224,8 +224,8 @@ public class Board {
         }
     }
 
-    public static int boardToIndexY(char boardY) {
-        switch (boardY) {
+    public static int boardToIndexC(char boardC) {
+        switch (boardC) {
             case 'a':
                 return 0; // Left of Board in White's persepective
             case 'b':
@@ -247,8 +247,8 @@ public class Board {
         }
     }
 
-    public static int indexToBoardX(int indexX) {
-        switch (indexX) {
+    public static int indexToBoardR(int indexR) {
+        switch (indexR) {
             case 0:
                 return 8; // Top of Board in White's persepective
             case 1:
@@ -270,8 +270,8 @@ public class Board {
         }
     }
 
-    public static char indexToBoardY(int indexY) {
-        switch (indexY) {
+    public static char indexToBoardC(int indexC) {
+        switch (indexC) {
             case 0:
                 return 'a'; // Left of Board in White's persepective
             case 1:

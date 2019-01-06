@@ -19,9 +19,9 @@ public class Main {
             String columns = userInput.replaceAll("[^a-g]", "");
             String rows = userInput.replaceAll("[^1-8]", "");
             try {
-                int startC = Board.boardToIndexY(columns.charAt(0));
+                int startC = Board.boardToIndexC(columns.charAt(0));
                 int startR = Character.getNumericValue(rows.charAt(0));
-                int nextC = Board.boardToIndexY(columns.charAt(1));
+                int nextC = Board.boardToIndexC(columns.charAt(1));
                 int nextR = Character.getNumericValue(rows.charAt(1));
                 
                 System.out.println(startC + "" + startR + "   " + nextC + "" + nextR);

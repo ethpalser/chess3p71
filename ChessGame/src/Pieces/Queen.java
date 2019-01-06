@@ -15,6 +15,8 @@ import Game.Player;
  */
 public class Queen extends Piece {
 
+    public boolean canMove;
+
     public Queen(Colour colour) {
         super(PieceType.Queen, colour, 9);
     }
@@ -213,6 +215,8 @@ public class Queen extends Piece {
     public boolean[][] validMoves(Player opponent, Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
+        // reset to false and check
+        canMove = false;
         boolean[][] validPositions = new boolean[8][8];
         // check up
         for (int x = row - 1; x > 0; x--) {
@@ -221,9 +225,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     validPositions[x][column] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         // check down
         for (int x = row + 1; x < 8; x++) {
@@ -232,9 +239,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     validPositions[x][column] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         // check left
         for (int y = column - 1; y > 0; y--) {
@@ -243,9 +253,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     validPositions[row][y] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         // check right
         for (int y = column + 1; y < 8; y++) {
@@ -254,9 +267,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
                     validPositions[row][y] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         int posx = row;
         int posy = column;
@@ -267,9 +283,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -280,9 +299,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -293,9 +315,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         posx = row;
         posy = column;
@@ -306,9 +331,12 @@ public class Queen extends Piece {
             if (toExamine != null) {
                 if (!this.isOppositeColour(toExamine)) {
                     validPositions[posx][posy] = false;
+                    break;
                 }
+                canMove = true;
                 break;
             }
+            canMove = true;
         }
         return validPositions;
     }
@@ -331,5 +359,10 @@ public class Queen extends Piece {
     @Override
     public String printToLog() {
         return "Q";
+    }
+
+    @Override
+    public boolean getCanMove() {
+        return canMove;
     }
 }
