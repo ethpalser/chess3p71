@@ -21,7 +21,7 @@ public class Main {
         sc = new Scanner(System.in);
         // Get start values for game
         while (true) {
-            System.out.println("Input Player Colour (w/b): ");
+            System.out.print("Input Player Colour (w/b): ");
             String playerColour = sc.next();
             if (playerColour.equalsIgnoreCase("w")
                     || playerColour.equalsIgnoreCase("white")) {

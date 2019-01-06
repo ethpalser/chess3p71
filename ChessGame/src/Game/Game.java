@@ -124,6 +124,7 @@ public class Game {
         Piece toExamine;
         boolean kingMove = false; // default cannot move
         boolean otherMove = false; // default cannot move
+        boolean kingThreatened = false;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // check to see if there is a piece that can move
@@ -132,6 +133,9 @@ public class Game {
                     toExamine.validMoves(opponent, currentBoard, i, j);
                     if (toExamine.piece == PieceType.King) {
                         kingMove = toExamine.getCanMove();
+                        if(toExamine.isThreatened(currentBoard, i, j) > 0){
+                            kingThreatened = true;
+                        }
                     } else {
                         otherMove = toExamine.getCanMove();
                     }
@@ -140,6 +144,10 @@ public class Game {
                     }
                 }
             }
+        }
+        if(!kingMove && kingThreatened){
+            currentBoard.printToLogfinalOutcome(currentTurn);
+            return true;
         }
         gameOver = kingMove == false && otherMove == false; // gameOver if both false;
         if(gameOver){
