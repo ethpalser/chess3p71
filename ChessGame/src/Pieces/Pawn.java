@@ -24,18 +24,6 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public int heuristic(Board board, int row, int column) {
-        int heurVal = 0;
-        Piece toExamine = board.getBoard()[row][column];
-        if (toExamine != null) {
-            heurVal += toExamine.weight;
-        }
-        heurVal += (threats(board, row, column)
-                - this.isThreatened(board, row, column));
-        return heurVal;
-    }
-
-    @Override
     public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;

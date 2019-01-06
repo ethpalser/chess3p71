@@ -22,13 +22,7 @@ public class King extends Piece {
         super(PieceType.King, colour, Integer.MAX_VALUE);
         hasMoved = false;
     }
-
-    @Override
-    public int heuristic(Board board, int row, int column) {
-        return threats(board, row, column)
-                + this.isThreatened(board, row, column);
-    }
-
+    
     @Override
     public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
