@@ -30,6 +30,10 @@ public class Player {
         lostGame = false;
     }
 
+    public Board movePiece(Player opponent, Board board, Move move, Piece promotionTo){
+        return movePiece(opponent, board, move.startR, move.startC, move.nextR, move.nextC, promotionTo);
+    }
+    
     public Board movePiece(
             Player opponent,
             Board board,
@@ -73,6 +77,10 @@ public class Player {
         }
     }
 
+    public ArrayList<Action> actionTaken(Player opponent, Board board, Move move){
+        return actionTaken(opponent, board, move.startR, move.startC, move.nextR, move.nextC);
+    }
+    
     public ArrayList<Action> actionTaken(
             Player opponent,
             Board board,
@@ -148,6 +156,10 @@ public class Player {
         return actions;
     }
 
+    public boolean checkRepeat(Player opponent, Board board, Move move){
+        return checkRepeat(opponent, board, move.startR, move.startC, move.nextR, move.nextC);
+    }
+    
     public boolean checkRepeat(Player opponent, Board board, int startR, int startC, int nextR, int nextC) {
         Piece toMove = board.getBoard()[startR][startC];
         if (lastMoved.equals(toMove) && lastR == nextR && lastC == nextC) {
@@ -191,6 +203,10 @@ public class Player {
         }
     }
 
+    private void updateAttacks(Board board, Move move){
+        updateAttacks(board, move.startR, move.startC, move.nextR, move.nextC);
+    }
+    
     private void updateAttacks(Board board, int startR, int startC, int nextR, int nextC) {
         Piece toExamine = board.getBoard()[startR][startC];
         int[][] examinedAttacks = toExamine.attacks(board, startR, startC);

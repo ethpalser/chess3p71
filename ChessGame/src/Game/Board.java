@@ -30,6 +30,12 @@ public class Board {
     private int heuristicVal; // used to check value later without calculating again
     private File log;
 
+    public Board(Board copy){
+        board = copy.board;
+        heuristicVal = copy.heuristicVal;
+        log = copy.log;
+    }
+    
     public Board() {
         log = new File("log.txt");
 
