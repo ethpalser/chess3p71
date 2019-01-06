@@ -24,12 +24,6 @@ public class Rook extends Piece {
     }
 
     @Override
-    public int heuristic(Board board, int row, int column) {
-        return threats(board, row, column)
-                + this.isThreatened(board, row, column);
-    }
-
-    @Override
     public int threats(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;

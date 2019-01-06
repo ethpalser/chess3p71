@@ -53,6 +53,7 @@ public class Move {
     public String getLog(){
         String log = logMoveWithActions;
         if(log == null || log.equals("")){
+            // could be adjusted to include capture
             log = this.getMove();
         }
         return log;

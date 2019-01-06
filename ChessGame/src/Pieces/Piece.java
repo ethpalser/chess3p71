@@ -27,7 +27,23 @@ public abstract class Piece {
         this.weight = weight;
     }
 
-    public abstract int heuristic(Board board, int row, int column);
+    public int heuristic(Board board, int row, int column) {
+        int heurVal = 0;
+        Piece toExamine = board.getBoard()[row][column];
+        if (toExamine != null) {
+            heurVal += toExamine.weight;
+        }
+        heurVal += (threats(board, row, column)
+                - this.isThreatened(board, row, column));
+        return heurVal;
+    }
+
+    public int heuristic(Board board, Move move) {
+        if (move == null) {
+            return -9999;
+        }
+        return heuristic(board, move.nextR, move.nextC);
+    }
 
     public abstract int threats(Board board, int row, int column);
 
@@ -333,23 +349,23 @@ public abstract class Piece {
         }
         return 0;
     }
-    
-    public void calcBestMove (Player opponent, Board board, int row, int column){
+
+    public void calcBestMove(Player opponent, Board board, int row, int column) {
         boolean[][] validMoves = this.validMoves(opponent, board, row, column);
-        for(int i = 0; i < validMoves.length; i++){
-            for(int j = 0; j < validMoves[0].length; j++){
-                if(validMoves[i][j]){
+        for (int i = 0; i < validMoves.length; i++) {
+            for (int j = 0; j < validMoves[0].length; j++) {
+                if (validMoves[i][j]) {
                     Move move = new Move(row, column, i, j);
-                    if (evalMove(board, move) > evalMove(board, bestMove)){
+                    if (evalMove(board, move) > evalMove(board, bestMove)) {
                         bestMove = move;
                     }
                 }
             }
         }
     }
-    
-    private int evalMove(Board board, Move move){
-        if(move == null){
+
+    private int evalMove(Board board, Move move) {
+        if (move == null) {
             return -9999;
         }
         Piece capture = board.getBoard()[move.nextR][move.nextR];
@@ -369,7 +385,7 @@ public abstract class Piece {
     }
 
     public abstract boolean getCanMove();
-    
+
     public boolean equals(Piece p) {
         return this.colour == p.getColour() && this.piece == p.getType();
     }
