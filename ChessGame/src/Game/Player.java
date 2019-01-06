@@ -118,7 +118,6 @@ public class Player {
             }
         } else {
             //Capture
-            if (pieceAt.getColour() != colour) {
             if (pieceAt.colour != colour) {
                 actions.add(Action.Capture);
                 //Checkmate
