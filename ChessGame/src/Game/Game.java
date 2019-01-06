@@ -50,6 +50,10 @@ public class Game {
     public Player getBlack() {
         return black;
     }
+    
+    public Colour getCurrentTurn(){
+        return currentTurn;
+    }
 
     public Board getBoard() {
         return currentBoard;
@@ -77,19 +81,28 @@ public class Game {
 
     public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
+        Board next;
         if (currentTurn == Colour.White) {
             // ensure a move is not applied on wrong turn
             if (toMove.colour == Colour.Black) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(black, currentBoard, startR, startC, nextR, nextC, promotionTo);
+            next = white.movePiece(black, currentBoard, startR, startC, nextR, nextC, promotionTo);
+            if(!currentBoard.equals(next)){
+                setBoard(next);
+            }
+            return next;
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(white, currentBoard, startR, startC, nextR, nextC, promotionTo);
+            next = black.movePiece(white, currentBoard, startR, startC, nextR, nextC, promotionTo);
+            if(!currentBoard.equals(next)){
+                setBoard(next);
+            }
+            return next;
         }
     }
 
@@ -111,6 +124,7 @@ public class Game {
         Piece toExamine;
         boolean kingMove = false; // default cannot move
         boolean otherMove = false; // default cannot move
+        boolean kingThreatened = false;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // check to see if there is a piece that can move
@@ -119,6 +133,9 @@ public class Game {
                     toExamine.validMoves(opponent, currentBoard, i, j);
                     if (toExamine.piece == PieceType.King) {
                         kingMove = toExamine.getCanMove();
+                        if(toExamine.isThreatened(currentBoard, i, j) > 0){
+                            kingThreatened = true;
+                        }
                     } else {
                         otherMove = toExamine.getCanMove();
                     }
@@ -127,6 +144,10 @@ public class Game {
                     }
                 }
             }
+        }
+        if(!kingMove && kingThreatened){
+            currentBoard.printToLogfinalOutcome(currentTurn);
+            return true;
         }
         gameOver = kingMove == false && otherMove == false; // gameOver if both false;
         if(gameOver){

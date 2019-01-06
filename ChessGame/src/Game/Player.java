@@ -39,7 +39,7 @@ public class Player {
             int nextC,
             Piece promotionTo) {
         Piece toMove = board.getBoard()[startR][startC];
-        if (toMove.colour != colour) {
+        if (toMove == null || toMove.colour != colour) {
             return board; // nothing happens to board state or player states
         }
         if (toMove.validMoves(opponent, board, startR, startC)[nextR][nextC] == false) {
