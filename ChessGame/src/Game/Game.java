@@ -65,7 +65,7 @@ public class Game {
         return currentBoard;
     }
 
-    public Board nextBoard(int startR, int startC, int nextX, int nextY) {
+    public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
         if (currentTurn == Colour.White) {
             // ensure a move is not applied on wrong turn
@@ -73,13 +73,13 @@ public class Game {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(black, currentBoard, startR, startC, nextX, nextY, promotionTo);
+            return white.movePiece(black, currentBoard, startR, startC, nextR, nextC, promotionTo);
         } else {
             if (toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
-            return white.movePiece(white, currentBoard, startR, startC, nextX, nextY, promotionTo);
+            return white.movePiece(white, currentBoard, startR, startC, nextR, nextC, promotionTo);
         }
     }
 
