@@ -79,6 +79,10 @@ public class Game {
         return currentBoard;
     }
 
+    public Board nextBoard(Move move){
+        return nextBoard(move.startR, move.startC, move.nextR, move.nextC);
+    }
+    
     public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
         Board next;
@@ -104,6 +108,20 @@ public class Game {
             }
             return next;
         }
+    }
+    
+    public Board undoMove(Log moveStack){
+        Move toUndo = moveStack.undoMove();
+        return undoMove(toUndo);
+    }
+    
+    public Board undoMove(Move move){
+        Board previousBoard = new Board(currentBoard);
+        previousBoard.getBoard()[move.startR][move.startC]
+                = previousBoard.getBoard()[move.nextR][move.nextC];
+        previousBoard.getBoard()[move.nextR][move.nextC] = move.getCaptured();
+        setBoard(previousBoard); // will also change currentTurn colour
+        return previousBoard;
     }
 
     public void setBoard(Board board) {
