@@ -5,9 +5,11 @@
  */
 package Game;
 
+import Pieces.King;
+import Pieces.Pawn;
 import Pieces.Piece;
 import Pieces.PieceType;
-import java.util.ArrayList;
+import Pieces.Rook;
 
 /**
  *
@@ -50,8 +52,8 @@ public class Game {
     public Player getBlack() {
         return black;
     }
-    
-    public Colour getCurrentTurn(){
+
+    public Colour getCurrentTurn() {
         return currentTurn;
     }
 
@@ -79,10 +81,10 @@ public class Game {
         return currentBoard;
     }
 
-    public Board nextBoard(Move move){
+    public Board nextBoard(Move move) {
         return nextBoard(move.startR, move.startC, move.nextR, move.nextC);
     }
-    
+
     public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
         Board next;
@@ -93,7 +95,7 @@ public class Game {
             }
             // will check if move is valid, otherwise does nothing
             next = white.movePiece(black, currentBoard, startR, startC, nextR, nextC, promotionTo);
-            if(!currentBoard.equals(next)){
+            if (!currentBoard.equals(next)) {
                 setBoard(next);
             }
             return next;
@@ -103,22 +105,41 @@ public class Game {
             }
             // will check if move is valid, otherwise does nothing
             next = black.movePiece(white, currentBoard, startR, startC, nextR, nextC, promotionTo);
-            if(!currentBoard.equals(next)){
+            if (!currentBoard.equals(next)) {
                 setBoard(next);
             }
             return next;
         }
     }
-    
-    public Board undoMove(Log moveStack){
+
+    public Board undoMove(Log moveStack) {
         Move toUndo = moveStack.undoMove();
         return undoMove(toUndo);
     }
-    
-    public Board undoMove(Move move){
+
+    public Board undoMove(Move move) {
         Board previousBoard = new Board(currentBoard);
-        previousBoard.getBoard()[move.startR][move.startC]
-                = previousBoard.getBoard()[move.nextR][move.nextC];
+        Piece previous = previousBoard.getBoard()[move.nextR][move.nextC];
+        int row = previous.colour == Colour.White ? 7 : 0;
+        // checks if castle (queen side) was performed (O-O-O) not optional
+        if (move.getLog().matches("[A-Ga-g1-8BKNPQR]+(x)*[A-Ga-g1-8BKNPQR]+(O-O-O)(=[BNQR])*[+#]*")) {
+            previousBoard.getBoard()[row][2] = null; // king 'next'
+            previousBoard.getBoard()[row][3] = null; // rook 'next'
+            previousBoard.getBoard()[row][4] = new King(previous.colour); // king previous
+            previousBoard.getBoard()[row][0] = new Rook(previous.colour); // rook previous
+            return previousBoard;
+        } // check if castle (king side) was performed (O-O) not optional
+        else if (move.getLog().matches("[A-Ga-g1-8BKNPQR]+(x)*[A-Ga-g1-8BKNPQR]+(O-O)(=[BNQR])*[+#]*")) {
+            previousBoard.getBoard()[row][6] = null; // king 'next'
+            previousBoard.getBoard()[row][5] = null; // rook 'next'
+            previousBoard.getBoard()[row][4] = new King(previous.colour); // king previous
+            previousBoard.getBoard()[row][7] = new Rook(previous.colour); // rook previous
+            return previousBoard;
+        } // checks if promotion was performed (=[BNQR]) not optional
+        else if (move.getLog().matches("[A-Ga-g1-8BKNPQR]+(x)*[A-Ga-g1-8BKNPQR]+(O-O|O-O-O)*(=[BNQR])[+#]*")) {
+            previous = new Pawn(previous.colour);
+        }
+        previousBoard.getBoard()[move.startR][move.startC] = previous;
         previousBoard.getBoard()[move.nextR][move.nextC] = move.getCaptured();
         setBoard(previousBoard); // will also change currentTurn colour
         return previousBoard;
@@ -151,7 +172,7 @@ public class Game {
                     toExamine.validMoves(opponent, currentBoard, i, j);
                     if (toExamine.piece == PieceType.King) {
                         kingMove = toExamine.getCanMove();
-                        if(toExamine.isThreatened(currentBoard, i, j) > 0){
+                        if (toExamine.isThreatened(currentBoard, i, j) > 0) {
                             kingThreatened = true;
                         }
                     } else {
@@ -163,12 +184,12 @@ public class Game {
                 }
             }
         }
-        if(!kingMove && kingThreatened){
+        if (!kingMove && kingThreatened) {
             currentBoard.printToLogfinalOutcome(currentTurn);
             return true;
         }
         gameOver = kingMove == false && otherMove == false; // gameOver if both false;
-        if(gameOver){
+        if (gameOver) {
             currentBoard.printToLogfinalOutcome(null);
         }
         return gameOver;
