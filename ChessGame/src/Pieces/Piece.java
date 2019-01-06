@@ -19,7 +19,7 @@ public abstract class Piece {
     public final PieceType piece;
     public final Colour colour;
     public final int weight;
-    public Move bestMove;
+    private Move bestMove;
 
     public Piece(PieceType piece, Colour colour, int weight) {
         this.piece = piece;
@@ -356,7 +356,7 @@ public abstract class Piece {
             for (int j = 0; j < validMoves[0].length; j++) {
                 if (validMoves[i][j]) {
                     Move move = new Move(row, column, i, j);
-                    if (evalMove(board, move) > evalMove(board, bestMove)) {
+                    if (heuristic(board, move.nextR, move.nextC) > heuristic(board, bestMove.nextR, bestMove.nextC)){
                         bestMove = move;
                     }
                 }
@@ -364,30 +364,14 @@ public abstract class Piece {
         }
     }
 
-    private int evalMove(Board board, Move move) {
-        if (move == null) {
-            return -9999;
-        }
-        Piece capture = board.getBoard()[move.nextR][move.nextR];
-        return this.threats(board, move.nextR, move.nextC) - this.isThreatened(board, move.nextR, move.nextC) + (capture == null ? 0 : capture.weight);
-    }
-
     public Move getBestMove() {
         return bestMove;
-    }
-
-    public Colour getColour() {
-        return this.colour;
-    }
-
-    public PieceType getType() {
-        return this.piece;
     }
 
     public abstract boolean getCanMove();
 
     public boolean equals(Piece p) {
-        return this.colour == p.getColour() && this.piece == p.getType();
+        return this.colour == p.colour && this.piece == p.piece;
     }
 
 }

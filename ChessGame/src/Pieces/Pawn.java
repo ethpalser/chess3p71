@@ -126,7 +126,7 @@ public class Pawn extends Piece {
             else if (row == 3) {
                 // use opponent info
                 Piece lastMoved = opponent.getLastMoved();
-                if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
+                if (lastMoved.piece == PieceType.Pawn && lastMoved.validSpecial()) {
                     //checks if my pawn is in right position and moves to right space
                     if (opponent.getLastC() == column - 1
                             || opponent.getLastC() == column + 1) {
@@ -170,7 +170,7 @@ public class Pawn extends Piece {
             else if (row == 4) {
                 // use opponent info
                 Piece lastMoved = opponent.getLastMoved();
-                if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
+                if (lastMoved.piece == PieceType.Pawn && lastMoved.validSpecial()) {
                     //checks if my pawn is in right position and moves to right space
                     if (opponent.getLastC() == column - 1
                             || opponent.getLastC() == column + 1) {
