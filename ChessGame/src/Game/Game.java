@@ -55,6 +55,16 @@ public class Game {
         return currentBoard;
     }
 
+    public void parseUserInput(String userInput) {
+        String columns = userInput.replaceAll("[^a-g]", "");
+        String rows = userInput.replaceAll("[^1-8]", "");
+        int startC = Board.boardToIndexY(columns.charAt(0));
+        int startR = Character.getNumericValue(rows.charAt(0));
+        int nextC = Board.boardToIndexY(columns.charAt(1));
+        int nextR = Character.getNumericValue(rows.charAt(1));
+        nextBoard(startC, startR, nextC, nextR);
+    }
+
     public Board nextBoard(String log) {
         //exf8=Q+
         // Parse log input
