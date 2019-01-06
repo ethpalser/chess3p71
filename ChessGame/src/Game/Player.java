@@ -96,7 +96,7 @@ public class Player {
         if (pieceAt == null) {
             actions.add(Action.Move);
             //Castling (assume move has been validated already)
-            if (pieceMoved.getType() == PieceType.King) {
+            if (pieceMoved.piece == PieceType.King) {
                 // can castle
                 if (pieceMoved.validSpecial()) {
                     // check queen side
@@ -119,9 +119,10 @@ public class Player {
         } else {
             //Capture
             if (pieceAt.getColour() != colour) {
+            if (pieceAt.colour != colour) {
                 actions.add(Action.Capture);
                 //Checkmate
-                if (pieceAt.getType() == PieceType.King) {
+                if (pieceAt.piece == PieceType.King) {
                     actions.add(Action.Checkmate);
                     opponent.setLoss();
                 }
@@ -129,14 +130,14 @@ public class Player {
                 // Invalid action
             }
         }
-        if (pieceMoved.getType() == PieceType.Pawn) {
+        if (pieceMoved.piece == PieceType.Pawn) {
             //Promotion
             if (colour == Colour.White && nextR == 0 || colour == Colour.Black && nextR == 7) {
                 actions.add(Action.Promotion);
             }
             //check if opponent last moved pawn by two spaces
             Piece lastMoved = opponent.getLastMoved();
-            if (lastMoved.getType() == PieceType.Pawn && lastMoved.validSpecial()) {
+            if (lastMoved.piece == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
                 if (colour == Colour.White && startR == 3
                         && (opponent.getLastC() == startC - 1
@@ -182,7 +183,7 @@ public class Player {
     public int piecesCentered(Board board) {
         for (int i = 2; i < 6; i++) {
             for (int j = 2; j < 6; j++) {
-                if (board.getBoard()[i][j].getColour() == colour) {
+                if (board.getBoard()[i][j].colour == colour) {
                     piecesCentred++;
                 }
             }
