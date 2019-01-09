@@ -56,6 +56,11 @@ public class Game {
     public Colour getCurrentTurn() {
         return currentTurn;
     }
+    
+    // get opponent
+    public Player getOpponent() {
+        return currentTurn == Colour.White ? black : white;
+    }
 
     public Board getBoard() {
         return currentBoard;

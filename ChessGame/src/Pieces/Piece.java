@@ -350,18 +350,25 @@ public abstract class Piece {
         return 0;
     }
 
-    public void calcBestMove(Player opponent, Board board, int row, int column) {
+    public Move calcBestMove(Player opponent, Board board, int row, int column) {
         boolean[][] validMoves = this.validMoves(opponent, board, row, column);
+        Move currentBest = null;
         for (int i = 0; i < validMoves.length; i++) {
             for (int j = 0; j < validMoves[0].length; j++) {
                 if (validMoves[i][j]) {
                     Move move = new Move(row, column, i, j);
-                    if (heuristic(board, move.nextR, move.nextC) > heuristic(board, bestMove.nextR, bestMove.nextC)){
+                    if (bestMove == null) {
+                        currentBest = move;
+                        bestMove = currentBest;
+                    } else if (heuristic(board, move.nextR, move.nextC)
+                            > heuristic(board, bestMove.nextR, bestMove.nextC)) {
+                        currentBest = move;
                         bestMove = move;
                     }
                 }
             }
         }
+        return currentBest;
     }
 
     public Move getBestMove() {

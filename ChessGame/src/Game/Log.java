@@ -17,6 +17,10 @@ public class Log {
         moves = new ArrayList<>(10);
     }
     
+    public Log(){
+        this(false);
+    }
+    
     public void addMove(Move validMove){
         moves.add(validMove);
     }
