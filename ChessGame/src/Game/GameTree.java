@@ -11,12 +11,10 @@ import java.util.ArrayList;
 public class GameTree {
 
     public final int depth;
-    private Log moves; // may not have been used in build tree
-    private Node root;
+    public final Node root;
 
     public GameTree(Game currentGame, int searchDepth) {
         depth = searchDepth;
-        moves = new Log();
         root = new Node();
         root.children = this.buildTree(currentGame, searchDepth, 0, 0, 0, 0);
     }
