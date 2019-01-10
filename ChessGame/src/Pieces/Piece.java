@@ -364,6 +364,16 @@ public abstract class Piece {
         }
     }
 
+    /**
+     * This method checks all horizonal, vertical and knight-shaped positions,
+     * and if that spot corresponds to the PieceType required
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @param required
+     * @return
+     */
     private int checkPiece(Piece[][] board, int row, int column,
             PieceType required) {
         Piece toExamine = board[row][column];
@@ -380,7 +390,8 @@ public abstract class Piece {
     }
 
     /**
-     * Checks if piece is at location on board
+     *This method checks all horizonal, vertical and knight-shaped positions,
+     * and if that spot corresponds to the PieceType required or required2
      *
      * @param board
      * @param row
@@ -406,7 +417,7 @@ public abstract class Piece {
     }
 
     /**
-     * Check is white pawn is at location on board
+     * This method checks if white pawn is at location on board
      *
      * @param board
      * @param row
@@ -430,7 +441,7 @@ public abstract class Piece {
     }
 
     /**
-     * Checks if black pawn is at location on board
+     * This method checks if black pawn is at location on board
      *
      * @param board
      * @param row

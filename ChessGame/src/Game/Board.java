@@ -48,6 +48,7 @@ public class Board {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        board = new Piece[8][8];
         //Initializ White Pieces
         board[7][0] = new Rook(Colour.White); // Bottom left square black
         board[7][1] = new Knight(Colour.White);
