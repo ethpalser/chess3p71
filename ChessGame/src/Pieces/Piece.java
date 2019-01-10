@@ -5,28 +5,39 @@ import Game.Colour;
 import Game.Move;
 import Game.Player;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * This class represents a chess piece and all it can do on the board.
  *
- * @author E
+ * @author Ethan Palser, Param Jansari
  */
 public abstract class Piece {
 
-    public final PieceType piece;
-    public final Colour colour;
-    public final int weight;
-    private Move bestMove;
+    public final PieceType piece; // what kind of piece it is
+    public final Colour colour; // what colour is it
+    public final int weight; // what's its value
+    private Move bestMove; // the best move it can do from its current position
 
+    /**
+     * Creates Chess piece
+     *
+     * @param piece
+     * @param colour
+     * @param weight
+     */
     public Piece(PieceType piece, Colour colour, int weight) {
         this.piece = piece;
         this.colour = colour;
         this.weight = weight;
     }
 
+    /**
+     * This method checks how good the position of the piece on the board is.
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return heuristic value
+     */
     public int heuristic(Board board, int row, int column) {
         int heurVal = 0;
         Piece toExamine = board.getBoard()[row][column];
@@ -38,6 +49,13 @@ public abstract class Piece {
         return heurVal;
     }
 
+    /**
+     * This method checks how good the position of the piece on the board is.
+     *
+     * @param board
+     * @param move
+     * @return
+     */
     public int heuristic(Board board, Move move) {
         if (move == null) {
             return -9999;
@@ -45,23 +63,77 @@ public abstract class Piece {
         return heuristic(board, move.nextR, move.nextC);
     }
 
+    /**
+     * This method calculates the number of threats the piece has based on its
+     * position
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     public abstract int threats(Board board, int row, int column);
 
-    // could have attacks be changed to boolean[][] instead of int[][]
+    /**
+     * This method calculates the number of attacks the piece can make based on
+     * its position
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     public abstract int[][] attacks(Board board, int row, int column);
 
+    /**
+     * This method calculate all the valid positions the piece can move to based
+     * on its current position
+     *
+     * @param opponent
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     public abstract boolean[][] validMoves(Player opponent, Board board, int row, int column);
 
-    // check if an action it can perform a special action
+    /**
+     * This method checks if a piece has a special rule that applies to it Such
+     * a promotion for pawns, or castling for king/rook
+     *
+     * @return
+     */
     public abstract boolean validSpecial();
 
-    // execute under condition a move confirms (pawn) or invalidates (king/rook) its special action
+    /**
+     * This method executes the special rule of the piece, in the case it has a
+     * special move i.e. execute under condition a move confirms (pawn) or
+     * invalidates (king/rook) its special action
+     */
     public abstract void modifySpecial();
 
+    /**
+     * This method prints piece to board
+     *
+     * @return
+     */
     public abstract String printToBoard(); // prints piece board
 
-    public abstract String printToLog(); // prints piece to log
+    /**
+     * This method prints piece to log
+     *
+     * @return
+     */
+    public abstract String printToLog();
 
+    /**
+     * This method calculates the number of pieces currently threaten it
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     public int isThreatened(Board board, int row, int column) {
         Piece[][] currentBoard = board.getBoard();
         int threatCounter = 0; // increment if opponent, decrement if own
@@ -278,6 +350,12 @@ public abstract class Piece {
         return false;
     }
      */
+    /**
+     * This method is used to check if a piece is opposite to the current piece
+     *
+     * @param otherPiece
+     * @return
+     */
     public boolean isOppositeColour(Piece otherPiece) {
         if (this.colour == Colour.White) {
             return this.colour == Colour.Black;
@@ -301,6 +379,16 @@ public abstract class Piece {
         return 0;
     }
 
+    /**
+     * Checks if piece is at location on board
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @param required1
+     * @param required2
+     * @return
+     */
     private int checkPiece(Piece[][] board, int row, int column,
             PieceType required1, PieceType required2) {
         Piece toExamine = board[row][column];
@@ -317,6 +405,14 @@ public abstract class Piece {
         return 0;
     }
 
+    /**
+     * Check is white pawn is at location on board
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     private int checkPawnWhite(Piece[][] board, int row, int column) {
         Piece toExamine = board[row][column];
         if (toExamine != null) {
@@ -333,6 +429,14 @@ public abstract class Piece {
         return 0;
     }
 
+    /**
+     * Checks if black pawn is at location on board
+     *
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     private int checkPawnBlack(Piece[][] board, int row, int column) {
         // ensure that for the current piece the piece to check is previous
         Piece toExamine = board[row][column];
@@ -350,6 +454,16 @@ public abstract class Piece {
         return 0;
     }
 
+    /**
+     * This method calculate the best move the piece can make based on its
+     * current position
+     *
+     * @param opponent
+     * @param board
+     * @param row
+     * @param column
+     * @return
+     */
     public Move calcBestMove(Player opponent, Board board, int row, int column) {
         boolean[][] validMoves = this.validMoves(opponent, board, row, column);
         Move currentBest = null;
@@ -371,12 +485,28 @@ public abstract class Piece {
         return currentBest;
     }
 
+    /**
+     * This method returns the best move which the piece can perform
+     *
+     * @return
+     */
     public Move getBestMove() {
         return bestMove;
     }
 
+    /**
+     * This method determines if the piece can move
+     *
+     * @return
+     */
     public abstract boolean getCanMove();
 
+    /**
+     * This method compares this piece to another piece
+     *
+     * @param p
+     * @return
+     */
     public boolean equals(Piece p) {
         return this.colour == p.colour && this.piece == p.piece;
     }

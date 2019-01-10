@@ -20,22 +20,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class represents the chess board
  *
  * @author Ethan Palser, Param Jansari
  */
 public class Board {
 
-    private Piece board[][];
+    private Piece board[][]; // the chess board
     private int heuristicVal; // used to check value later without calculating again
-    private File log;
+    private File log; // used to log moves
 
-    public Board(Board copy){
+    public Board(Board copy) {
         board = copy.board;
         heuristicVal = copy.heuristicVal;
         log = copy.log;
     }
-    
+
     public Board() {
         log = new File("log.txt");
 
@@ -76,6 +76,13 @@ public class Board {
         }
     }
 
+    /**
+     * This method determines the board value of a player (colour) As in how
+     * well does the board look for the player
+     *
+     * @param playerColour
+     * @return
+     */
     public int heristic(Colour playerColour) {
         Piece piece;
         int result = 0;
@@ -91,6 +98,9 @@ public class Board {
         return result;
     }
 
+    /**
+     * This method output the board to console
+     */
     public void printBoard() {
         System.out.println("+---+---+---+---+---+---+---+---+");
         for (int i = 0; i < board[0].length; i++) {
@@ -107,6 +117,15 @@ public class Board {
         }
     }
 
+    /**
+     * This method prints the moves to log
+     *
+     * @param piece
+     * @param nextR
+     * @param nextC
+     * @param actions
+     * @param promotionTo
+     */
     public void printToLog(Piece piece, int nextR, int nextC, ArrayList<Action> actions, Piece promotionTo) {
         FileWriter fR;
         // Hopefully ensures that the move is valid before logging
@@ -157,6 +176,11 @@ public class Board {
         }
     }
 
+    /**
+     * This method prints the final outcome to log
+     *
+     * @param winner
+     */
     public void printToLogfinalOutcome(Colour winner) {
         FileWriter fR;
         try {
@@ -187,6 +211,9 @@ public class Board {
 
     }
 
+    /**
+     * This method output the log to console
+     */
     public void printLog() {
         BufferedReader bR;
         try {
@@ -203,10 +230,21 @@ public class Board {
 
     }
 
+    /**
+     * This method returns the board
+     *
+     * @return
+     */
     public Piece[][] getBoard() {
         return board;
     }
 
+    /**
+     * This method converts the board row index to code index
+     *
+     * @param boardR
+     * @return
+     */
     public static int boardToIndexR(int boardR) {
         switch (boardR) {
             case 1:
@@ -230,6 +268,12 @@ public class Board {
         }
     }
 
+    /**
+     * This method converts the board column to code index
+     *
+     * @param boardC
+     * @return
+     */
     public static int boardToIndexC(char boardC) {
         switch (boardC) {
             case 'a':
@@ -253,6 +297,12 @@ public class Board {
         }
     }
 
+    /**
+     * This method convert the code index value to row on board
+     *
+     * @param indexR
+     * @return
+     */
     public static int indexToBoardR(int indexR) {
         switch (indexR) {
             case 0:
@@ -276,6 +326,12 @@ public class Board {
         }
     }
 
+    /**
+     * This method convert the code index input to column on board
+     *
+     * @param indexC
+     * @return
+     */
     public static char indexToBoardC(int indexC) {
         switch (indexC) {
             case 0:

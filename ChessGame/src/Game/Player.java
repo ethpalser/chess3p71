@@ -5,21 +5,19 @@ import Pieces.PieceType;
 import java.util.ArrayList;
 
 /**
- *
+ * This class represents the player who will be playing chess
  *
  * @author Ethan Palser, Param Jansari
  */
 public class Player {
 
     private final Colour colour; // Black or White
-    // Part 3 Param
-    private int piecesCentred;
+    private int piecesCentred; // number of pieces in center of board
     private int repeatedMoves; // counts to 3 (draw), resets if either doesn't repeat
-    private Piece lastMoved;
-    private int lastR, lastC;
-    private int[][] attacks;
-    private boolean lostGame;
-    
+    private Piece lastMoved; // the last piece moved
+    private int lastR, lastC; // previous postion of the last piece moved
+    private int[][] attacks; // where player can attack
+    private boolean lostGame; // if they lost the game
 
     public Player(Colour c) {
         colour = c;
@@ -30,10 +28,31 @@ public class Player {
         lostGame = false;
     }
 
-    public Board movePiece(Player opponent, Board board, Move move, Piece promotionTo){
+    /**
+     * This method moves the piece on the board
+     *
+     * @param opponent
+     * @param board
+     * @param move
+     * @param promotionTo
+     * @return
+     */
+    public Board movePiece(Player opponent, Board board, Move move, Piece promotionTo) {
         return movePiece(opponent, board, move.startR, move.startC, move.nextR, move.nextC, promotionTo);
     }
-    
+
+    /**
+     * This method moves the piece on the board
+     *
+     * @param opponent
+     * @param board
+     * @param startR
+     * @param startC
+     * @param nextR
+     * @param nextC
+     * @param promotionTo
+     * @return
+     */
     public Board movePiece(
             Player opponent,
             Board board,
@@ -77,10 +96,31 @@ public class Player {
         }
     }
 
-    public ArrayList<Action> actionTaken(Player opponent, Board board, Move move){
+    /**
+     * This method determines what action did the player perform i.e. Castle, En
+     * Passant, Capture ... etc.
+     *
+     * @param opponent
+     * @param board
+     * @param move
+     * @return
+     */
+    public ArrayList<Action> actionTaken(Player opponent, Board board, Move move) {
         return actionTaken(opponent, board, move.startR, move.startC, move.nextR, move.nextC);
     }
-    
+
+    /**
+     * This method determines what action did the player perform i.e. Castle, En
+     * Passant, Capture ... etc.
+     *
+     * @param opponent
+     * @param board
+     * @param startR
+     * @param startC
+     * @param nextR
+     * @param nextC
+     * @return
+     */
     public ArrayList<Action> actionTaken(
             Player opponent,
             Board board,
@@ -156,10 +196,29 @@ public class Player {
         return actions;
     }
 
-    public boolean checkRepeat(Player opponent, Board board, Move move){
+    /**
+     * This method check if the Player has repeated the same move 3 times
+     *
+     * @param opponent
+     * @param board
+     * @param move
+     * @return
+     */
+    public boolean checkRepeat(Player opponent, Board board, Move move) {
         return checkRepeat(opponent, board, move.startR, move.startC, move.nextR, move.nextC);
     }
-    
+
+    /**
+     * This method check if the Player has repeated the same move 3 times
+     *
+     * @param opponent
+     * @param board
+     * @param startR
+     * @param startC
+     * @param nextR
+     * @param nextC
+     * @return
+     */
     public boolean checkRepeat(Player opponent, Board board, int startR, int startC, int nextR, int nextC) {
         Piece toMove = board.getBoard()[startR][startC];
         if (lastMoved.equals(toMove) && lastR == nextR && lastC == nextC) {
@@ -170,15 +229,28 @@ public class Player {
         }
         return repeatedMoves == 3 && opponent.repeatedMoves == 3;
     }
-    
-    public void updateRepeat(boolean reset){
-        if(reset){
+
+    /**
+     * This method updates the counter for the number of times the player has
+     * repeated a move
+     *
+     * @param reset
+     */
+    public void updateRepeat(boolean reset) {
+        if (reset) {
             repeatedMoves = 0;
-        }else{
+        } else {
             repeatedMoves++;
         }
     }
 
+    /**
+     * This method calculates the number of pieces the player has in the center
+     * of the board
+     *
+     * @param board
+     * @return
+     */
     public int piecesCentered(Board board) {
         for (int i = 2; i < 6; i++) {
             for (int j = 2; j < 6; j++) {
@@ -190,6 +262,13 @@ public class Player {
         return piecesCentred;
     }
 
+    /**
+     * This method determines where the player can attack
+     *
+     * @param board
+     * @param startR
+     * @param startC
+     */
     public void setupAttacks(Board board, int startR, int startC) {
         Piece toExamine = board.getBoard()[startR][startC];
         int[][] examinedAttacks = toExamine.attacks(board, startR, startC);
@@ -203,10 +282,25 @@ public class Player {
         }
     }
 
-    private void updateAttacks(Board board, Move move){
+    /**
+     * This method updates where the player can attack
+     *
+     * @param board
+     * @param move
+     */
+    private void updateAttacks(Board board, Move move) {
         updateAttacks(board, move.startR, move.startC, move.nextR, move.nextC);
     }
-    
+
+    /**
+     * This method updates where the player can attack
+     *
+     * @param board
+     * @param startR
+     * @param startC
+     * @param nextR
+     * @param nextC
+     */
     private void updateAttacks(Board board, int startR, int startC, int nextR, int nextC) {
         Piece toExamine = board.getBoard()[startR][startC];
         int[][] examinedAttacks = toExamine.attacks(board, startR, startC);
@@ -225,27 +319,56 @@ public class Player {
         }
     }
 
+    /**
+     * This method returns last row position of the last piece moved by player
+     *
+     * @return
+     */
     public int getLastR() {
         return lastR;
     }
 
+    /**
+     * This method returns last column position of the last piece moved by
+     * player
+     *
+     * @return
+     */
     public int getLastC() {
         return lastC;
     }
 
+    /**
+     * This method returns the last piece moved by player
+     *
+     * @return
+     */
     public Piece getLastMoved() {
         return lastMoved;
     }
 
+    /**
+     * This method returns where the player can attack
+     *
+     * @return
+     */
     public int[][] getAttacks() {
         return attacks;
     }
 
-    public void setLoss(){
+    /**
+     * This method gives the loss to the player
+     */
+    public void setLoss() {
         lostGame = true;
     }
-    
-    public boolean getLoss(){
+
+    /**
+     * This method determines if the player has lost
+     *
+     * @return
+     */
+    public boolean getLoss() {
         return lostGame;
     }
 }
