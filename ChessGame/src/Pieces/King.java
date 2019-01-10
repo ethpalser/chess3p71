@@ -4,13 +4,8 @@ import Game.Board;
 import Game.Colour;
 import Game.Player;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * This class represents the King piece
  * @author E
  */
 public class King extends Piece {
