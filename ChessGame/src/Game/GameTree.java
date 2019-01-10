@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Game;
 
 import Pieces.Piece;
@@ -25,16 +21,7 @@ public class GameTree {
         root.children = this.buildTree(currentGame, searchDepth, 0, 0, 0, 0);
     }
 
-    public Node findBestMove(Colour player, Colour currentTurn, Node node) {
-        /**
-         * ISSUE: need to return node in depth 1 that resulted from the best
-         * child Need a means of getting the branch with best leaf node Node
-         * could store a local log of moves instead of last performed move and
-         * then look at move from top of stack that would be undo instead of the
-         * current (only) move stored in the node.
-         *
-         */
-
+    public Node findBestMove(Colour player, Colour currentTurn, Node node, Move branchMove) {
         Colour nextTurn = currentTurn == Colour.White ? Colour.Black : Colour.White;
         // store nodes so max/min can be found among them
         ArrayList<Node> childNodes = new ArrayList<>();
@@ -45,13 +32,23 @@ public class GameTree {
         // if true, then maximize
         if (player == currentTurn) {
             for (Node child : node.children) {
-                childNodes.add(findBestMove(player, nextTurn, child));
+                // only care about the move that will be applied next
+                if (branchMove == null) {
+                    childNodes.add(findBestMove(player, nextTurn, child, node.move));
+                } else {
+                    childNodes.add(findBestMove(player, nextTurn, child, branchMove));
+                }
             }
             return findMax(childNodes); // returns leaf node with best results
         } // otherwise, minimize
         else {
             for (Node child : node.children) {
-                childNodes.add(findBestMove(player, nextTurn, child));
+                // only care about the move that will be applied next
+                if (branchMove == null) {
+                    childNodes.add(findBestMove(player, nextTurn, child, node.move));
+                } else {
+                    childNodes.add(findBestMove(player, nextTurn, child, branchMove));
+                }
             }
             return findMin(childNodes); // returns leaf node with worst results
         }
@@ -70,10 +67,7 @@ public class GameTree {
         for (int i = 0; i < currentBoard.length; i++) {
             for (int j = 0; j < currentBoard[i].length; j++) {
                 Piece piece = currentBoard[i][j];
-                //
-                // Could possibly perform check for alpha-beta here to limit search expansion
-                // May use game.currentTurn and branchMax or branchMin
-                //
+                // only check best move for current player's pieces
                 if (piece != null && piece.colour == game.getCurrentTurn()) {
                     // get best move of piece
                     Move best = piece.calcBestMove(game.getOpponent(), game.getBoard(), i, j);
@@ -81,8 +75,18 @@ public class GameTree {
                     if (best != null) {
                         // change game state
                         game.nextBoard(best);
-                        // evaluate game state using A* (sum previous + current) algorithm might NOT use A*
-                        nodeList.add(new Node(best, game.getBoard().heristic(game.getCurrentTurn()) + parentVal));
+                        int boardValue = game.getBoard().heristic(game.getCurrentTurn()) + parentVal;
+                        // alpha beta pruning (not adding branches that wont be considered)
+
+                        // if depth is odd then parent nodes are max player,
+                        // will opponent ignores values greater than max (wants to minimize)
+                        // if depth is even then parent nodes are min player,
+                        // will ignore values less than min (wants to maximize)
+                        if ((currentDepth % 2 != 0 && boardValue <= branchMax)
+                                || (currentDepth % 2 != 0 && boardValue >= branchMin)) {
+                            // evaluate game state using A* (sum previous + current) algorithm might NOT use A*
+                            nodeList.add(new Node(best, boardValue));
+                        }
                         // undo move and appy next
                         game.undoMove(best);
                     }
