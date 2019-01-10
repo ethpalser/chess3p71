@@ -5,8 +5,13 @@ import Pieces.Piece;
 import java.util.ArrayList;
 
 /**
- *
- * @author E
+ * This class is used to perform a game tree algorithm on a current game state
+ * to determine the next best move to be performed by each player and using a
+ * Min and Max approach to determine the best-worst case action.<&nbsp>This
+ * class performs alpha-beta pruning to reduce the nodes expanded on to reduce
+ * memory and improve performance, and this is doing iterative deepening search.
+ * 
+ * @author Ep16fb
  */
 public class GameTree {
 
@@ -19,6 +24,18 @@ public class GameTree {
         root.children = this.buildTree(currentGame, searchDepth, 0, 0, 0, 0);
     }
 
+    /**
+     * This method uses the expanded tree that is created to search through
+     * the series of moves performed to determine which action resulted in the
+     * best performing at a defined search depth, determined when the tree was
+     * built.
+     * 
+     * @param player
+     * @param currentTurn
+     * @param node
+     * @param branchMove
+     * @return 
+     */
     public Node findBestMove(Colour player, Colour currentTurn, Node node, Move branchMove) {
         Colour nextTurn = currentTurn == Colour.White ? Colour.Black : Colour.White;
         // store nodes so max/min can be found among them
@@ -52,6 +69,19 @@ public class GameTree {
         }
     }
 
+    /**
+     * This method builds a tree of nodes which contain moves, in order to trace
+     * the series of action performed, and is performing alpha-beta pruning to
+     * reduce the amount of nodes to expand on.
+     * 
+     * @param game
+     * @param searchDepth
+     * @param currentDepth
+     * @param parentVal
+     * @param branchMax
+     * @param branchMin
+     * @return 
+     */
     private ArrayList<Node> buildTree(
             Game game,
             int searchDepth,
@@ -73,7 +103,14 @@ public class GameTree {
                     if (best != null) {
                         // change game state
                         game.nextBoard(best);
-                        int boardValue = game.getBoard().heristic(game.getCurrentTurn()) + parentVal;
+                        int boardValue;
+                        // maximize
+                        if(currentDepth % 2 == 0){
+                            boardValue = parentVal + game.getBoard().heristic(game.getCurrentTurn());
+                        } // minimize
+                        else{
+                            boardValue = parentVal - game.getBoard().heristic(game.getCurrentTurn());
+                        }
                         // alpha beta pruning (not adding branches that wont be considered)
 
                         // if depth is odd then parent nodes are max player,
@@ -108,11 +145,19 @@ public class GameTree {
                     node.value,
                     findMax(nodeList).value,
                     findMin(nodeList).value);
+            // avoid having the next node in list expand on previous node
+            tempGame.undoMove(node.move);
         }
         return nodeList;
     }
 
-    // find max value of nodes in current depth of tree
+    /**
+     * This method looks at an array list of nodes, which is also the children
+     * of the nodes, to determine the highest evaluated move performed.
+     * 
+     * @param nodes
+     * @return 
+     */
     private Node findMax(ArrayList<Node> nodes) {
         Node max = new Node(null, Integer.MIN_VALUE);
         if (nodes.isEmpty()) {
@@ -126,7 +171,13 @@ public class GameTree {
         return max;
     }
 
-    // find min value of nodes in current depth of tree
+    /**
+     * This method looks at an array list of nodes, which is also the children
+     * of the nodes, to determine the lowest evaluated move performed.
+     * 
+     * @param nodes
+     * @return 
+     */
     private Node findMin(ArrayList<Node> nodes) {
         Node min = new Node(null, Integer.MIN_VALUE);
         if (nodes.isEmpty()) {

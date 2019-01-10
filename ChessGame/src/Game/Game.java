@@ -12,8 +12,10 @@ import Pieces.PieceType;
 import Pieces.Rook;
 
 /**
- *
- * @author E
+ * This class manages the full game state containing both players, the board,
+ * and the turn order to ensure the game operates according to the game rules.
+ * 
+ * @author Ep16fb
  */
 public class Game {
 
@@ -57,7 +59,6 @@ public class Game {
         return currentTurn;
     }
     
-    // get opponent
     public Player getOpponent() {
         return currentTurn == Colour.White ? black : white;
     }
@@ -66,6 +67,13 @@ public class Game {
         return currentBoard;
     }
 
+    /**
+     * This method retrieves a string that has been inputted by a user and
+     * determines the first and second part of the move by removing invalid
+     * characters and then splitting the string.
+     * 
+     * @param userInput 
+     */
     public void parseUserInput(String userInput) {
         String columns = userInput.replaceAll("[^a-g]", "");
         String rows = userInput.replaceAll("[^1-8]", "");
@@ -76,6 +84,12 @@ public class Game {
         nextBoard(startC, startR, nextC, nextR);
     }
 
+    /**
+     * Depreciated
+     * 
+     * @param log
+     * @return 
+     */
     public Board nextBoard(String log) {
         //exf8=Q+
         // Parse log input
@@ -86,16 +100,33 @@ public class Game {
         return currentBoard;
     }
 
+    /**
+     * See nextBoard(int startR, int startC, int nextR, int nextC)
+     * 
+     * @param move
+     * @return
+     */
     public Board nextBoard(Move move) {
         return nextBoard(move.startR, move.startC, move.nextR, move.nextC);
     }
 
+    /**
+     * This method checks that the piece moved on the board is valid and
+     * then applies the move and changes the board state, as there is no other
+     * situation the board needs to be overridden.
+     * 
+     * @param startR
+     * @param startC
+     * @param nextR
+     * @param nextC
+     * @return 
+     */
     public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
         Board next;
         if (currentTurn == Colour.White) {
             // ensure a move is not applied on wrong turn
-            if (toMove.colour == Colour.Black) {
+            if (toMove == null || toMove.colour == Colour.Black) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
@@ -105,7 +136,7 @@ public class Game {
             }
             return next;
         } else {
-            if (toMove.colour == Colour.White) {
+            if (toMove == null || toMove.colour == Colour.White) {
                 return currentBoard;
             }
             // will check if move is valid, otherwise does nothing
@@ -117,11 +148,27 @@ public class Game {
         }
     }
 
+    /**
+     * This ensured that a log defining a proper order of actions is used
+     * to ensure that the board is undone in the reverse order it was applied
+     * See undoMove(Move move).
+     * 
+     * @param moveStack
+     * @return 
+     */
     public Board undoMove(Log moveStack) {
         Move toUndo = moveStack.undoMove();
         return undoMove(toUndo);
     }
 
+    /**
+     * This takes the move and reverts the action applied on the board and
+     * replaces the previous position with a piece it may have captured, and it
+     * also uses the log to check if any special action was performed.
+     * 
+     * @param move
+     * @return 
+     */
     public Board undoMove(Move move) {
         Board previousBoard = new Board(currentBoard);
         Piece previous = previousBoard.getBoard()[move.nextR][move.nextC];
@@ -157,7 +204,12 @@ public class Game {
         currentBoard = board;
     }
 
-    // need a means to efficiently check this for main loop
+    /**
+     * This checks if a king has been captured or if the king cannot move and
+     * is in check or stalemate to end the game.
+     * 
+     * @return 
+     */
     public boolean isGameEnd() {
         boolean gameOver = white.getLoss() || black.getLoss();
         if (gameOver) {
@@ -189,11 +241,13 @@ public class Game {
                 }
             }
         }
+        // check if it is checkmate
         if (!kingMove && kingThreatened) {
             currentBoard.printToLogfinalOutcome(currentTurn);
             return true;
         }
-        gameOver = kingMove == false && otherMove == false; // gameOver if both false;
+        // stalemate occurs if both false
+        gameOver = kingMove == false && otherMove == false;
         if (gameOver) {
             currentBoard.printToLogfinalOutcome(null);
         }

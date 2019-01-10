@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Game;
 
 /**
- *
- * @author E
+ * This is used to differentiate the different actions that a piece can perform.
+ * 
+ * @author Ep16fb
  */
 public enum Action {
     Move,

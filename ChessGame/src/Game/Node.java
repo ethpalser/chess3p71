@@ -1,15 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Game;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author E
+ * This class is used to store a move that is performed during a chess game
+ * and a value associated with that action, which the value is determined
+ * by the move itself or cumulative actions for the GameTree A* expansion.<&nbsp>
+ * This has a variable amount of children which depends on how many valid actions
+ * can occur at a given board state.
+ * 
+ * @author Ep16fb
  */
 public class Node {
     
