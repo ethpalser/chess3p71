@@ -17,7 +17,8 @@ public class Main {
         String columnsA, columnsB, rowsA, rowsB;
         int cStart, rStart;
         int startR, startC, nextR, nextC;
-        Colour player;
+        int searchDepth = 1; // need user input to change
+        Colour player, opponent;
         sc = new Scanner(System.in);
         // Get start values for game
         while (true) {
@@ -26,10 +27,12 @@ public class Main {
             if (playerColour.equalsIgnoreCase("w")
                     || playerColour.equalsIgnoreCase("white")) {
                 player = Colour.White;
+                opponent = Colour.Black;
                 break;
             } else if (playerColour.equalsIgnoreCase("b")
                     || playerColour.equalsIgnoreCase("black")) {
                 player = Colour.Black;
+                opponent = Colour.White;
                 break;
             } else {
                 System.out.println("Invalid Input");
@@ -81,12 +84,10 @@ public class Main {
                 }
             }else{
                 // GAME TREE ALGORITHM
-                // ai determines next move to perform
-                startR = 0;
-                startC = 0;
-                nextR = 0;
-                nextC = 0;
-                game.nextBoard(startR, startC, nextR, nextC);
+                // ai determines next move to perform (may be slow)
+                GameTree gameTree = new GameTree(game, searchDepth);
+                Node bestMove = gameTree.findBestMove(opponent, opponent, gameTree.root, null);
+                game.nextBoard(bestMove.move);
             }
         }
 
