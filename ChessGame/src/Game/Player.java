@@ -82,12 +82,12 @@ public class Player {
                     || toMove.colour == Colour.Black && nextR == startR + 2)) {
                 board.getBoard()[startR][startC].modifySpecial();
             }
+            // get a list of actions that will occur
+            ArrayList<Action> actions = actionTaken(opponent, board, startR, startC, nextR, nextC);
             // gets a copy of the board to modify
             Board nextBoard = board;
             nextBoard.getBoard()[nextR][nextC] = nextBoard.getBoard()[startR][startC];
             nextBoard.getBoard()[startR][startC] = null;
-            // get a list of actions
-            ArrayList<Action> actions = actionTaken(opponent, board, startR, startC, nextR, nextC);
             // update player state of attacks
             this.updateAttacks(board, startR, startC, nextR, nextC);
             // output results to board

@@ -164,50 +164,58 @@ public abstract class Piece {
         // Queen + Rook
         int result;
         // check left
-        for (int x = row - 1; x > 0; x--) {
-            result = checkPiece(currentBoard, x, column,
-                    PieceType.Queen, PieceType.Rook);
-            // piece encountered
-            if (result != 0) {
-                threatCounter += result;
-                break;
+        if (row > 0) {
+            for (int x = row - 1; x >= 0; x--) {
+                result = checkPiece(currentBoard, x, column,
+                        PieceType.Queen, PieceType.Rook);
+                // piece encountered
+                if (result != 0) {
+                    threatCounter += result;
+                    break;
+                }
             }
         }
         // check right
-        for (int x = row + 1; x < 8; x++) {
-            result = checkPiece(currentBoard, x, column,
-                    PieceType.Queen, PieceType.Rook);
-            // piece encountered
-            if (result != 0) {
-                threatCounter += result;
-                break;
+        if (row < 7) {
+            for (int x = row + 1; x <= 7; x++) {
+                result = checkPiece(currentBoard, x, column,
+                        PieceType.Queen, PieceType.Rook);
+                // piece encountered
+                if (result != 0) {
+                    threatCounter += result;
+                    break;
+                }
             }
         }
         // check up
-        for (int y = column; y < 0; y--) {
-            result = checkPiece(currentBoard, row, y,
-                    PieceType.Queen, PieceType.Rook);
-            // piece encountered
-            if (result != 0) {
-                threatCounter += result;
-                break;
+        if (column > 0) {
+            for (int y = column; y <= 0; y--) {
+                result = checkPiece(currentBoard, row, y,
+                        PieceType.Queen, PieceType.Rook);
+                // piece encountered
+                if (result != 0) {
+                    threatCounter += result;
+                    break;
+                }
             }
         }
         // check down
-        for (int y = column + 1; y < 8; y++) {
-            result = checkPiece(currentBoard, row, y,
-                    PieceType.Queen, PieceType.Rook);
-            // piece encountered
-            if (result != 0) {
-                threatCounter += result;
-                break;
+        if (column < 7) {
+            for (int y = column + 1; y <= 7; y++) {
+                result = checkPiece(currentBoard, row, y,
+                        PieceType.Queen, PieceType.Rook);
+                // piece encountered
+                if (result != 0) {
+                    threatCounter += result;
+                    break;
+                }
             }
         }
         // Queen + Bishop
         int posx = row;
         int posy = column;
         // diagonal top-left
-        while (posx < 0 && posy < 0) {
+        while (posx > 0 && posy > 0) {
             posx--;
             posy--;
             result = checkPiece(currentBoard, posx, posy,
@@ -221,7 +229,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal top-right
-        while (posx > 8 && posy < 0) {
+        while (posx < 8 && posy > 0) {
             posx++;
             posy--;
             result = checkPiece(currentBoard, posx, posy,
@@ -235,7 +243,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal bottom-left
-        while (posx < 0 && posy > 8) {
+        while (posx > 0 && posy < 8) {
             posx--;
             posy++;
             result = checkPiece(currentBoard, posx, posy,
@@ -249,7 +257,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal bottom-right
-        while (posx > 8 && posy > 8) {
+        while (posx < 8 && posy < 8) {
             posx++;
             posy++;
             result = checkPiece(currentBoard, posx, posy,
