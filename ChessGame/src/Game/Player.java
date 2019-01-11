@@ -84,12 +84,12 @@ public class Player {
             }
             // get a list of actions that will occur
             ArrayList<Action> actions = actionTaken(opponent, board, startR, startC, nextR, nextC);
+            // update player state of attacks
+            this.updateAttacks(board, startR, startC, nextR, nextC);
             // gets a copy of the board to modify
             Board nextBoard = board;
             nextBoard.getBoard()[nextR][nextC] = nextBoard.getBoard()[startR][startC];
             nextBoard.getBoard()[startR][startC] = null;
-            // update player state of attacks
-            this.updateAttacks(board, startR, startC, nextR, nextC);
             // output results to board
             nextBoard.printToLog(toMove, nextR, nextC, actions, promotionTo);
             return nextBoard; // returns new board state after applying move
