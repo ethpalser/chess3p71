@@ -27,7 +27,7 @@ public class Rook extends Piece {
 
         // check up
         if (row > 0) {
-            for (int x = row - 1; x > 0; x--) {
+            for (int x = row - 1; x >= 0; x--) {
                 toExamine = currentBoard[x][column];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
@@ -39,7 +39,7 @@ public class Rook extends Piece {
         }
         if (row < 8) {
             // check down
-            for (int x = row + 1; x < 8; x++) {
+            for (int x = row + 1; x <= 7; x++) {
                 toExamine = currentBoard[x][column];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
@@ -51,7 +51,7 @@ public class Rook extends Piece {
         }
         if (column > 0) {
             // check left
-            for (int y = column - 1; y > 0; y--) {
+            for (int y = column - 1; y >= 0; y--) {
                 toExamine = currentBoard[row][y];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
@@ -63,7 +63,7 @@ public class Rook extends Piece {
         }
         if (column > 8) {
             // check right
-            for (int y = column + 1; y < 8; y++) {
+            for (int y = column + 1; y <= 7; y++) {
                 toExamine = currentBoard[row][y];
                 if (toExamine != null) {
                     if (this.isOppositeColour(toExamine)) {
@@ -83,7 +83,7 @@ public class Rook extends Piece {
         int[][] attacked = new int[8][8];
         if (row > 0) {
             // check up
-            for (int x = row - 1; x > 0; x--) {
+            for (int x = row - 1; x >= 0; x--) {
                 toExamine = currentBoard[x][column];
                 attacked[x][column]++;
                 if (toExamine != null) {
@@ -94,7 +94,7 @@ public class Rook extends Piece {
         }
         if (row < 8) {
             // check down
-            for (int x = row + 1; x < 8; x++) {
+            for (int x = row + 1; x <= 7; x++) {
                 toExamine = currentBoard[x][column];
                 attacked[x][column]++;
                 if (toExamine != null) {
@@ -105,7 +105,7 @@ public class Rook extends Piece {
         }
         if (column > 0) {
             // check left
-            for (int y = column - 1; y > 0; y--) {
+            for (int y = column - 1; y >= 0; y--) {
                 toExamine = currentBoard[row][y];
                 attacked[row][y]++;
                 if (toExamine != null) {
@@ -116,7 +116,7 @@ public class Rook extends Piece {
         }
         if (column < 8) {
             // check right
-            for (int y = column + 1; y < 8; y++) {
+            for (int y = column + 1; y <= 7; y++) {
                 toExamine = currentBoard[row][y];
                 attacked[row][y]++;
                 if (toExamine != null) {
@@ -137,7 +137,7 @@ public class Rook extends Piece {
         boolean[][] validPositions = new boolean[8][8];
         if (row > 0) {
             // check up
-            for (int x = row - 1; x > 0; x--) {
+            for (int x = row - 1; x >= 0; x--) {
                 toExamine = currentBoard[x][column];
                 validPositions[x][column] = true;
                 if (toExamine != null) {
@@ -153,7 +153,7 @@ public class Rook extends Piece {
         }
         if (row < 8) {
             // check down
-            for (int x = row + 1; x < 8; x++) {
+            for (int x = row + 1; x <= 7; x++) {
                 toExamine = currentBoard[x][column];
                 validPositions[x][column] = true;
                 if (toExamine != null) {
@@ -169,7 +169,7 @@ public class Rook extends Piece {
         }
         if (column > 0) {
             // check left
-            for (int y = column - 1; y > 0; y--) {
+            for (int y = column - 1; y >= 0; y--) {
                 toExamine = currentBoard[row][y];
                 validPositions[row][y] = true;
                 if (toExamine != null) {
@@ -185,7 +185,7 @@ public class Rook extends Piece {
         }
         if (column < 8) {
             // check right
-            for (int y = column + 1; y < 8; y++) {
+            for (int y = column + 1; y <= 7; y++) {
                 toExamine = currentBoard[row][y];
                 validPositions[row][y] = true;
                 if (toExamine != null) {
