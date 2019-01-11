@@ -102,9 +102,10 @@ public class Board {
      * This method output the board to console
      */
     public void printBoard() {
-        System.out.println("+---+---+---+---+---+---+---+---+");
+        System.out.println("   a   b   c   d   e   f   g   h");
+        System.out.println(" +---+---+---+---+---+---+---+---+");
         for (int i = 0; i < board[0].length; i++) {
-            System.out.print("|");
+            System.out.print((8-i) + "|");
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j] == null) {
                     System.out.print("   |");
@@ -113,7 +114,7 @@ public class Board {
                     System.out.print(piece);
                 }
             }
-            System.out.println("\n+---+---+---+---+---+---+---+---+");
+            System.out.println("\n +---+---+---+---+---+---+---+---+");
         }
     }
 
