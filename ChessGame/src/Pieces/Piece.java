@@ -229,7 +229,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal top-right
-        while (posx < 8 && posy > 0) {
+        while (posx < 7 && posy > 0) {
             posx++;
             posy--;
             result = checkPiece(currentBoard, posx, posy,
@@ -243,7 +243,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal bottom-left
-        while (posx > 0 && posy < 8) {
+        while (posx > 0 && posy < 7) {
             posx--;
             posy++;
             result = checkPiece(currentBoard, posx, posy,
@@ -257,7 +257,7 @@ public abstract class Piece {
         posx = row;
         posy = column;
         // diagonal bottom-right
-        while (posx < 8 && posy < 8) {
+        while (posx < 7 && posy < 7) {
             posx++;
             posy++;
             result = checkPiece(currentBoard, posx, posy,
