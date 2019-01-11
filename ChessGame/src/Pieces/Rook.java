@@ -25,7 +25,7 @@ public class Rook extends Piece {
         Piece toExamine;
         int threatened = 0;
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -45,7 +45,7 @@ public class Rook extends Piece {
             }
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -73,7 +73,7 @@ public class Rook extends Piece {
         Piece toExamine;
         int[][] attacked = new int[8][8];
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             attacked[x][column]++;
             if (toExamine != null) {
@@ -91,7 +91,7 @@ public class Rook extends Piece {
             }
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             attacked[row][y]++;
             if (toExamine != null) {
@@ -119,7 +119,7 @@ public class Rook extends Piece {
         canMove = false;
         boolean[][] validPositions = new boolean[8][8];
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             validPositions[x][column] = true;
             if (toExamine != null) {
@@ -147,7 +147,7 @@ public class Rook extends Piece {
             canMove = true;
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             validPositions[row][y] = true;
             if (toExamine != null) {
