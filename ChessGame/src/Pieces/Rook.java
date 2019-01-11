@@ -24,6 +24,9 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
+        if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return threatened;
+        }
         // check up
         for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
@@ -72,6 +75,9 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int[][] attacked = new int[8][8];
+          if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return attacked;
+        }
         // check up
         for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
@@ -118,6 +124,9 @@ public class Rook extends Piece {
         // reset to false and check
         canMove = false;
         boolean[][] validPositions = new boolean[8][8];
+        if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return validPositions;
+        }
         // check up
         for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
