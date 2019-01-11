@@ -128,7 +128,9 @@ public class Player {
             int startC,
             int nextR,
             int nextC) {
+        //System.out.println(startR + "  " + startC);
         Piece pieceMoved = board.getBoard()[startR][startC];
+        //System.out.println(pieceMoved == null);
         Piece pieceAt = board.getBoard()[nextR][nextC];
         ArrayList<Action> actions = new ArrayList<>();
         int backRow = colour == Colour.White ? 7 : 0;

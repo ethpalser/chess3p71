@@ -150,7 +150,7 @@ public abstract class Piece {
             }
         }
         // Pawn - Black
-        if (column <= 6) {
+        if (column <= 6 && column > 0) {
             if (row >= 1) {
                 threatCounter += checkPawnBlack(
                         currentBoard, row - 1, column - 1);
@@ -184,7 +184,7 @@ public abstract class Piece {
             }
         }
         // check up
-        for (int y = column - 1; y < 0; y--) {
+        for (int y = column; y < 0; y--) {
             result = checkPiece(currentBoard, row, y,
                     PieceType.Queen, PieceType.Rook);
             // piece encountered
@@ -390,7 +390,7 @@ public abstract class Piece {
     }
 
     /**
-     *This method checks all horizonal, vertical and knight-shaped positions,
+     * This method checks all horizonal, vertical and knight-shaped positions,
      * and if that spot corresponds to the PieceType required or required2
      *
      * @param board

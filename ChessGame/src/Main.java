@@ -41,7 +41,9 @@ public class Main {
         // create game
         Game game = new Game();
 
+        System.out.println(game.isGameEnd());
         while (!game.isGameEnd()) {
+            game.getBoard().printBoard();
             // could have ai determine next move first on a separate thread
             // get player input
             if (game.getCurrentTurn() == player) {
@@ -54,35 +56,37 @@ public class Main {
                     String rows = userInput.replaceAll("[^1-8]", "");
                      */
                     columnSplit = userInput.split("[^A-Za-z]+");
-                    cStart = columnSplit[0].equals("") ? 1 : 0;
-                    columnsA = columnSplit[cStart].replaceAll("[^a-g]", "");
-                    columnsB = columnSplit[cStart + 1].replaceAll("[^a-g]", "");
-
-                    rowSplit = userInput.split("[^0-9]+");
-                    rStart = rowSplit[0].equals("") ? 1 : 0;
-                    rowsA = rowSplit[rStart].replaceAll("[^1-8]", "");
-                    rowsB = rowSplit[rStart + 1].replaceAll("[^1-8]", "");
 
                     try {
+                        cStart = columnSplit[0].equals("") ? 1 : 0;
+                        columnsA = columnSplit[cStart].replaceAll("[^a-h]", "");
+                        columnsB = columnSplit[cStart + 1].replaceAll("[^a-h]", "");
+
+                        rowSplit = userInput.split("[^0-9]+");
+                        rStart = rowSplit[0].equals("") ? 1 : 0;
+                        rowsA = rowSplit[rStart].replaceAll("[^1-8]", "");
+                        rowsB = rowSplit[rStart + 1].replaceAll("[^1-8]", "");
+
                         startC = Board.boardToIndexC(columnsA.charAt(0));
                         startR = Character.getNumericValue(rowsA.charAt(0));
                         nextC = Board.boardToIndexC(columnsB.charAt(0));
                         nextR = Character.getNumericValue(rowsB.charAt(0));
 
-                        System.out.println("Start Position: " + columnsA.charAt(0) + "" + rowsA.charAt(0));
-                        System.out.println("Next Position: " + columnsA.charAt(1) + "" + rowsA.charAt(1));
+//                        System.out.println("Start Position: " + columnsA.charAt(0) + "" + rowsA.charAt(0));
+//                        System.out.println("Next Position: " + columnsA.charAt(1) + "" + rowsA.charAt(1));
                         /*
                         System.out.print("Start and Next Indecies: ");
                         System.out.println(startC + "" + startR + "   " + nextC + "" + nextR);
                          */
                         // Set the next board and change turn, if move is valid
-                        game.nextBoard(startR, startC, nextR, nextC);
+                        game.setBoard(game.nextBoard(startR, startC, nextR, nextC));
                         break;
                     } catch (Exception e) {
                         System.out.println("Invalid Input");
+//                        System.out.println(rowsA.length() + "  " + columnsA.length());
                     }
                 }
-            }else{
+            } else {
                 // GAME TREE ALGORITHM
                 // ai determines next move to perform (may be slow)
                 GameTree gameTree = new GameTree(game, searchDepth);

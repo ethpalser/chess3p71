@@ -14,7 +14,7 @@ import Pieces.Rook;
 /**
  * This class manages the full game state containing both players, the board,
  * and the turn order to ensure the game operates according to the game rules.
- * 
+ *
  * @author Ep16fb
  */
 public class Game {
@@ -58,7 +58,7 @@ public class Game {
     public Colour getCurrentTurn() {
         return currentTurn;
     }
-    
+
     public Player getOpponent() {
         return currentTurn == Colour.White ? black : white;
     }
@@ -71,8 +71,8 @@ public class Game {
      * This method retrieves a string that has been inputted by a user and
      * determines the first and second part of the move by removing invalid
      * characters and then splitting the string.
-     * 
-     * @param userInput 
+     *
+     * @param userInput
      */
     public void parseUserInput(String userInput) {
         String columns = userInput.replaceAll("[^a-g]", "");
@@ -86,9 +86,9 @@ public class Game {
 
     /**
      * Depreciated
-     * 
+     *
      * @param log
-     * @return 
+     * @return
      */
     public Board nextBoard(String log) {
         //exf8=Q+
@@ -102,7 +102,7 @@ public class Game {
 
     /**
      * See nextBoard(int startR, int startC, int nextR, int nextC)
-     * 
+     *
      * @param move
      * @return
      */
@@ -111,15 +111,15 @@ public class Game {
     }
 
     /**
-     * This method checks that the piece moved on the board is valid and
-     * then applies the move and changes the board state, as there is no other
+     * This method checks that the piece moved on the board is valid and then
+     * applies the move and changes the board state, as there is no other
      * situation the board needs to be overridden.
-     * 
+     *
      * @param startR
      * @param startC
      * @param nextR
      * @param nextC
-     * @return 
+     * @return
      */
     public Board nextBoard(int startR, int startC, int nextR, int nextC) {
         Piece toMove = currentBoard.getBoard()[startR][startC];
@@ -149,12 +149,12 @@ public class Game {
     }
 
     /**
-     * This ensured that a log defining a proper order of actions is used
-     * to ensure that the board is undone in the reverse order it was applied
-     * See undoMove(Move move).
-     * 
+     * This ensured that a log defining a proper order of actions is used to
+     * ensure that the board is undone in the reverse order it was applied See
+     * undoMove(Move move).
+     *
      * @param moveStack
-     * @return 
+     * @return
      */
     public Board undoMove(Log moveStack) {
         Move toUndo = moveStack.undoMove();
@@ -165,9 +165,9 @@ public class Game {
      * This takes the move and reverts the action applied on the board and
      * replaces the previous position with a piece it may have captured, and it
      * also uses the log to check if any special action was performed.
-     * 
+     *
      * @param move
-     * @return 
+     * @return
      */
     public Board undoMove(Move move) {
         Board previousBoard = new Board(currentBoard);
@@ -205,10 +205,10 @@ public class Game {
     }
 
     /**
-     * This checks if a king has been captured or if the king cannot move and
-     * is in check or stalemate to end the game.
-     * 
-     * @return 
+     * This checks if a king has been captured or if the king cannot move and is
+     * in check or stalemate to end the game.
+     *
+     * @return
      */
     public boolean isGameEnd() {
         boolean gameOver = white.getLoss() || black.getLoss();
@@ -225,18 +225,20 @@ public class Game {
             for (int j = 0; j < 8; j++) {
                 // check to see if there is a piece that can move
                 toExamine = currentBoard.getBoard()[i][j];
-                if (toExamine.colour == currentTurn) {
-                    toExamine.validMoves(opponent, currentBoard, i, j);
-                    if (toExamine.piece == PieceType.King) {
-                        kingMove = toExamine.getCanMove();
-                        if (toExamine.isThreatened(currentBoard, i, j) > 0) {
-                            kingThreatened = true;
+                if (toExamine != null) {
+                    if (toExamine.colour == currentTurn) {
+                        toExamine.validMoves(opponent, currentBoard, i, j);
+                        if (toExamine.piece == PieceType.King) {
+                            kingMove = toExamine.getCanMove();
+                            if (toExamine.isThreatened(currentBoard, i, j) > 0) {
+                                kingThreatened = true;
+                            }
+                        } else {
+                            otherMove = toExamine.getCanMove();
                         }
-                    } else {
-                        otherMove = toExamine.getCanMove();
-                    }
-                    if (otherMove == true || kingMove == true) {
-                        break;
+                        if (otherMove == true || kingMove == true) {
+                            break;
+                        }
                     }
                 }
             }

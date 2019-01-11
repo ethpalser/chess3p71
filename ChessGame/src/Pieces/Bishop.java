@@ -6,6 +6,7 @@ import Game.Player;
 
 /**
  * This class represents the Bishop piece
+ *
  * @author Param
  */
 public class Bishop extends Piece {
@@ -91,7 +92,7 @@ public class Bishop extends Piece {
         posx = row;
         posy = column;
         // diagonal top-right
-        while (posx < 8 && posy > 0) {
+        while (posx > 0 && posx < 8 && posy > 0) {
             toExamine = currentBoard[posx--][posy++];
             attacked[posx][posy]++;
             if (toExamine != null) {
@@ -102,7 +103,7 @@ public class Bishop extends Piece {
         posx = row;
         posy = column;
         // diagonal bottom-left
-        while (posx > 0 && posy < 8) {
+        while (posx > 0 && posx < 7 && posy < 8) {
             toExamine = currentBoard[posx++][posy--];
             attacked[posx][posy]++;
             if (toExamine != null) {
@@ -113,7 +114,7 @@ public class Bishop extends Piece {
         posx = row;
         posy = column;
         // diagonal bottom-right
-        while (posx < 8 && posy < 8) {
+        while (posx < 7 && posy < 8) {
             toExamine = currentBoard[posx++][posy++];
             attacked[posx][posy]++;
             if (toExamine != null) {

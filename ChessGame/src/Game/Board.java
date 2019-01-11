@@ -61,9 +61,8 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             board[6][i] = new Pawn(Colour.White);
         }
-
+        
         //initailize Black Pieces
-        board = new Piece[8][8];
         board[0][0] = new Rook(Colour.Black); // Top left square white
         board[0][1] = new Knight(Colour.Black);
         board[0][2] = new Bishop(Colour.Black);
