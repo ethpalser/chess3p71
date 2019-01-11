@@ -24,8 +24,11 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
+        if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return threatened;
+        }
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -45,7 +48,7 @@ public class Rook extends Piece {
             }
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             if (toExamine != null) {
                 if (this.isOppositeColour(toExamine)) {
@@ -72,8 +75,11 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int[][] attacked = new int[8][8];
+          if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return attacked;
+        }
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             attacked[x][column]++;
             if (toExamine != null) {
@@ -91,7 +97,7 @@ public class Rook extends Piece {
             }
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             attacked[row][y]++;
             if (toExamine != null) {
@@ -118,8 +124,11 @@ public class Rook extends Piece {
         // reset to false and check
         canMove = false;
         boolean[][] validPositions = new boolean[8][8];
+        if (row < 0 || row > 7 || column < 0 || column > 7) {
+            return validPositions;
+        }
         // check up
-        for (int x = row - 1; x > 0; x--) {
+        for (int x = row - 1; x >= 0; x--) {
             toExamine = currentBoard[x][column];
             validPositions[x][column] = true;
             if (toExamine != null) {
@@ -147,7 +156,7 @@ public class Rook extends Piece {
             canMove = true;
         }
         // check left
-        for (int y = column - 1; y > 0; y--) {
+        for (int y = column - 1; y >= 0; y--) {
             toExamine = currentBoard[row][y];
             validPositions[row][y] = true;
             if (toExamine != null) {
