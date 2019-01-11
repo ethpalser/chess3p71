@@ -131,9 +131,10 @@ public class Game {
             }
             // will check if move is valid, otherwise does nothing
             next = white.movePiece(black, currentBoard, startR, startC, nextR, nextC, promotionTo);
-            if (!currentBoard.equals(next)) {
-                setBoard(next);
+            if (currentBoard.equals(next)) {
+                return currentBoard;
             }
+            //setBoard(next);
             return next;
         } else {
             if (toMove == null || toMove.colour == Colour.White) {
@@ -141,9 +142,10 @@ public class Game {
             }
             // will check if move is valid, otherwise does nothing
             next = black.movePiece(white, currentBoard, startR, startC, nextR, nextC, promotionTo);
-            if (!currentBoard.equals(next)) {
-                setBoard(next);
+            if (currentBoard.equals(next)) {
+                return currentBoard;
             }
+            //setBoard(next);
             return next;
         }
     }
@@ -199,9 +201,16 @@ public class Game {
 
     public void setBoard(Board board) {
         // Ensure the next board is changed using nextBoard before setting
-        // changes turn to next player
-        currentTurn = currentTurn == Colour.Black ? Colour.White : Colour.Black;
         currentBoard = board;
+    }
+
+    public void changeTurn() {
+        // changes turn to next player
+        if (currentTurn == Colour.Black) {
+            currentTurn = Colour.White;
+        } else if (currentTurn == Colour.White) {
+            currentTurn = Colour.Black;
+        }
     }
 
     /**

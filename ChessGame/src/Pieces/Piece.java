@@ -43,9 +43,9 @@ public abstract class Piece {
         Piece toExamine = board.getBoard()[row][column];
         if (toExamine != null) {
             heurVal += toExamine.weight;
+            heurVal += (threats(board, row, column)
+                    - this.isThreatened(board, row, column));
         }
-        heurVal += (threats(board, row, column)
-                - this.isThreatened(board, row, column));
         return heurVal;
     }
 
@@ -309,7 +309,7 @@ public abstract class Piece {
         if (row >= 1) {
             // top
             threatCounter += checkPiece(
-                    currentBoard, row, column - 1, PieceType.King);
+                    currentBoard, row - 1, column, PieceType.King);
             if (column >= 1) {
                 // top-left
                 threatCounter += checkPiece(
@@ -318,17 +318,17 @@ public abstract class Piece {
             if (column <= 6) {
                 // top-right
                 threatCounter += checkPiece(
-                        currentBoard, row + 1, column - 1, PieceType.King);
+                        currentBoard, row - 1, column + 1, PieceType.King);
             }
         }
         if (row <= 6) {
             // bottom
             threatCounter += checkPiece(
-                    currentBoard, row, column + 1, PieceType.King);
+                    currentBoard, row + 1, column, PieceType.King);
             if (column >= 1) {
                 // bottom-left
                 threatCounter += checkPiece(
-                        currentBoard, row - 1, column + 1, PieceType.King);
+                        currentBoard, row + 1, column - 1, PieceType.King);
             }
             if (column <= 6) {
                 // bottom-right
@@ -339,12 +339,12 @@ public abstract class Piece {
         if (column >= 1) {
             // left
             threatCounter += checkPiece(
-                    currentBoard, row - 1, column, PieceType.King);
+                    currentBoard, row, column - 1, PieceType.King);
         }
         if (column <= 6) {
             // right
             threatCounter += checkPiece(
-                    currentBoard, row + 1, column, PieceType.King);
+                    currentBoard, row, column + 1, PieceType.King);
         }
         return threatCounter;
     }
@@ -529,6 +529,21 @@ public abstract class Piece {
      */
     public boolean equals(Piece p) {
         return this.colour == p.colour && this.piece == p.piece;
+    }
+
+    public void printValidMoves(boolean[][] positions) {
+        System.out.println("+---+---+---+---+---+---+---+---+");
+        for (int i = 0; i < positions.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < positions[i].length; j++) {
+                if (positions[i][j] == false) {
+                    System.out.print("   |");
+                } else {
+                    System.out.print(" T |");
+                }
+            }
+            System.out.println("\n+---+---+---+---+---+---+---+---+");
+        }
     }
 
 }

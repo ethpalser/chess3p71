@@ -136,14 +136,14 @@ public class Knight extends Piece {
         // top-left
         if (row >= 2 && column >= 1) {
             toExamine = currentBoard[row - 2][column - 1];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row - 2][column - 1] = true;
                 canMove = true;
             }
         }
         if (row >= 1 && column >= 2) {
             toExamine = currentBoard[row - 1][column - 2];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row - 1][column - 2] = true;
                 canMove = true;
             }
@@ -151,14 +151,14 @@ public class Knight extends Piece {
         // top-right
         if (row >= 2 && column <= 6) {
             toExamine = currentBoard[row - 2][column + 1];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row - 2][column + 1] = true;
                 canMove = true;
             }
         }
         if (row >= 1 && column <= 5) {
             toExamine = currentBoard[row - 1][column + 2];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row - 1][column + 2] = true;
                 canMove = true;
             }
@@ -166,14 +166,14 @@ public class Knight extends Piece {
         // bottom-left
         if (row <= 5 && column >= 1) {
             toExamine = currentBoard[row + 2][column - 1];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row + 2][column - 1] = true;
                 canMove = true;
             }
         }
         if (row <= 6 && column >= 2) {
             toExamine = currentBoard[row + 1][column - 2];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row + 1][column - 2] = true;
                 canMove = true;
             }
@@ -181,14 +181,14 @@ public class Knight extends Piece {
         // bottom-right
         if (row <= 5 && column <= 6) {
             toExamine = currentBoard[row + 2][column + 1];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row + 2][column + 1] = true;
                 canMove = true;
             }
         }
         if (row <= 6 && column <= 5) {
             toExamine = currentBoard[row + 1][column + 2];
-            if (toExamine == null || this.isOppositeColour(toExamine)) {
+            if (toExamine == null | toExamine != null && this.isOppositeColour(toExamine)) {
                 validPositions[row + 1][column + 2] = true;
                 canMove = true;
             }

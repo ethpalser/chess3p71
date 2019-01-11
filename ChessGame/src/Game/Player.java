@@ -61,11 +61,15 @@ public class Player {
             int nextR,
             int nextC,
             Piece promotionTo) {
+        System.out.println("Player attempting move.");
         Piece toMove = board.getBoard()[startR][startC];
         if (toMove == null || toMove.colour != colour) {
+            System.out.println("Failed to move piece");
             return board; // nothing happens to board state or player states
         }
-        if (toMove.validMoves(opponent, board, startR, startC)[nextR][nextC] == false) {
+        boolean[][] validPositions = toMove.validMoves(opponent, board, startR, startC);
+        if (validPositions[nextR][nextC] == false) {
+            System.out.println("Invalid move");
             return board; // invalid action
         } else {
             // May need to have repeated check before move is considered (maybe in board)
@@ -92,6 +96,7 @@ public class Player {
             nextBoard.getBoard()[startR][startC] = null;
             // output results to board
             nextBoard.printToLog(toMove, nextR, nextC, actions, promotionTo);
+            System.out.println("Move complete!");
             return nextBoard; // returns new board state after applying move
         }
     }
@@ -178,7 +183,7 @@ public class Player {
             }
             //check if opponent last moved pawn by two spaces
             Piece lastMoved = opponent.getLastMoved();
-            if (lastMoved.piece == PieceType.Pawn && lastMoved.validSpecial()) {
+            if (lastMoved != null && lastMoved.piece == PieceType.Pawn && lastMoved.validSpecial()) {
                 //checks if my pawn is in right position and moves to right space
                 if (colour == Colour.White && startR == 3
                         && (opponent.getLastC() == startC - 1

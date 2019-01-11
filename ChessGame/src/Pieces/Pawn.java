@@ -131,8 +131,7 @@ public class Pawn extends Piece {
                     }
                 }
             }
-        } else if (colour == Colour.Black && row
-                <= 6) {
+        } else if (colour == Colour.Black && row <= 6) {
             // check if it can move up
             toExamine = currentBoard[row + 1][column];
             if (toExamine == null) {

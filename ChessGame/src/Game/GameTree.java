@@ -21,7 +21,7 @@ public class GameTree {
     public GameTree(Game currentGame, int searchDepth) {
         depth = searchDepth;
         root = new Node();
-        root.children = this.buildTree(currentGame, searchDepth, 0, 0, 0, 0);
+        root.children = this.buildTree(currentGame, searchDepth, 0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**

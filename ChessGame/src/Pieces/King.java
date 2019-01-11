@@ -166,7 +166,7 @@ public class King extends Piece {
             nextX = row - 1;
             nextY = column;
             toExamine = currentBoard[nextX][nextY];
-            if ((toExamine == null || this.isOppositeColour(toExamine))
+            if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                     && this.isThreatened(board, nextX, nextY) == 0) {
                 validPositions[nextX][nextY] = true;
                 canMove = true;
@@ -176,7 +176,7 @@ public class King extends Piece {
                 nextX = row - 1;
                 nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
@@ -187,7 +187,7 @@ public class King extends Piece {
                 nextX = row - 1;
                 nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
@@ -199,7 +199,7 @@ public class King extends Piece {
             nextX = row + 1;
             nextY = column;
             toExamine = currentBoard[nextX][nextY];
-            if ((toExamine == null || this.isOppositeColour(toExamine))
+            if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                     && this.isThreatened(board, nextX, nextY) == 0) {
                 validPositions[nextX][nextY] = true;
                 canMove = true;
@@ -209,7 +209,7 @@ public class King extends Piece {
                 nextX = row + 1;
                 nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
@@ -220,7 +220,7 @@ public class King extends Piece {
                 nextX = row + 1;
                 nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
@@ -231,7 +231,7 @@ public class King extends Piece {
                 nextX = row;
                 nextY = column + 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
@@ -242,7 +242,7 @@ public class King extends Piece {
                 nextX = row;
                 nextY = column - 1;
                 toExamine = currentBoard[nextX][nextY];
-                if ((toExamine == null || this.isOppositeColour(toExamine))
+                if ((toExamine == null | toExamine != null && this.isOppositeColour(toExamine))
                         && this.isThreatened(board, nextX, nextY) == 0) {
                     validPositions[nextX][nextY] = true;
                     canMove = true;
