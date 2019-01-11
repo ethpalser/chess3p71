@@ -196,6 +196,7 @@ public class Game {
         previousBoard.getBoard()[move.startR][move.startC] = previous;
         previousBoard.getBoard()[move.nextR][move.nextC] = move.getCaptured();
         setBoard(previousBoard); // will also change currentTurn colour
+        System.out.println("Undo Complete!");
         return previousBoard;
     }
 
@@ -204,13 +205,14 @@ public class Game {
         currentBoard = board;
     }
 
-    public void changeTurn() {
+    public boolean changeTurn() {
         // changes turn to next player
         if (currentTurn == Colour.Black) {
             currentTurn = Colour.White;
         } else if (currentTurn == Colour.White) {
             currentTurn = Colour.Black;
         }
+        return true;
     }
 
     /**

@@ -61,43 +61,42 @@ public class Player {
             int nextR,
             int nextC,
             Piece promotionTo) {
-        System.out.println("Player attempting move.");
-        Piece toMove = board.getBoard()[startR][startC];
+        Board next = new Board(board);
+        Piece toMove = next.getBoard()[startR][startC];
         if (toMove == null || toMove.colour != colour) {
-            System.out.println("Failed to move piece");
+            System.out.println("Failed to Move Piece");
             return board; // nothing happens to board state or player states
         }
-        boolean[][] validPositions = toMove.validMoves(opponent, board, startR, startC);
+        boolean[][] validPositions = toMove.validMoves(opponent, next, startR, startC);
         if (validPositions[nextR][nextC] == false) {
-            System.out.println("Invalid move");
+            System.out.println("Invalid Move");
             return board; // invalid action
         } else {
             // May need to have repeated check before move is considered (maybe in board)
             // valid action occurs
-            lastMoved = board.getBoard()[startR][startC];
+            lastMoved = next.getBoard()[startR][startC];
             lastR = nextR;
             lastC = nextC;
             // check if rook or king moves, if so castling not possible unless performed this move
             if (toMove.piece == PieceType.Rook || toMove.piece == PieceType.King) {
-                board.getBoard()[startR][startC].modifySpecial();
+                next.getBoard()[startR][startC].modifySpecial();
             } // check if pawn moved and if it can be en passant after
             else if (toMove.piece == PieceType.Pawn
                     && (toMove.colour == Colour.White && nextR == startR - 2
                     || toMove.colour == Colour.Black && nextR == startR + 2)) {
-                board.getBoard()[startR][startC].modifySpecial();
+                next.getBoard()[startR][startC].modifySpecial();
             }
             // get a list of actions that will occur
-            ArrayList<Action> actions = actionTaken(opponent, board, startR, startC, nextR, nextC);
+            ArrayList<Action> actions = actionTaken(opponent, next, startR, startC, nextR, nextC);
             // update player state of attacks
-            this.updateAttacks(board, startR, startC, nextR, nextC);
+            this.updateAttacks(next, startR, startC, nextR, nextC);
             // gets a copy of the board to modify
-            Board nextBoard = board;
-            nextBoard.getBoard()[nextR][nextC] = nextBoard.getBoard()[startR][startC];
-            nextBoard.getBoard()[startR][startC] = null;
+            next.getBoard()[nextR][nextC] = next.getBoard()[startR][startC];
+            next.getBoard()[startR][startC] = null;
             // output results to board
-            nextBoard.printToLog(toMove, nextR, nextC, actions, promotionTo);
-            System.out.println("Move complete!");
-            return nextBoard; // returns new board state after applying move
+            next.printToLog(toMove, nextR, nextC, actions, promotionTo);
+            System.out.println("Move Complete!");
+            return next; // returns new board state after applying move
         }
     }
 

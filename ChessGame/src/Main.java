@@ -87,6 +87,7 @@ public class Main {
                         // Set the next board and change turn, if move is valid
                         Board next = game.nextBoard(startR, startC, nextR, nextC);
                         if (!next.equals(game.getBoard())) {
+                            System.out.println("Changing Turn");
                             game.setBoard(next);
                             game.changeTurn();
                         }
