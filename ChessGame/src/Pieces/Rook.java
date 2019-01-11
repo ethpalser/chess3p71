@@ -24,47 +24,53 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int threatened = 0;
-        if (row < 0 || row > 7 || column < 0 || column > 7) {
-            return threatened;
-        }
+
         // check up
-        for (int x = row - 1; x >= 0; x--) {
-            toExamine = currentBoard[x][column];
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    threatened += toExamine.weight;
+        if (row > 0) {
+            for (int x = row - 1; x > 0; x--) {
+                toExamine = currentBoard[x][column];
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        threatened += toExamine.weight;
+                    }
+                    break;
                 }
-                break;
             }
         }
-        // check down
-        for (int x = row + 1; x < 8; x++) {
-            toExamine = currentBoard[x][column];
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    threatened += toExamine.weight;
+        if (row < 8) {
+            // check down
+            for (int x = row + 1; x < 8; x++) {
+                toExamine = currentBoard[x][column];
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        threatened += toExamine.weight;
+                    }
+                    break;
                 }
-                break;
             }
         }
-        // check left
-        for (int y = column - 1; y >= 0; y--) {
-            toExamine = currentBoard[row][y];
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    threatened += toExamine.weight;
+        if (column > 0) {
+            // check left
+            for (int y = column - 1; y > 0; y--) {
+                toExamine = currentBoard[row][y];
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        threatened += toExamine.weight;
+                    }
+                    break;
                 }
-                break;
             }
         }
-        // check right
-        for (int y = column + 1; y < 8; y++) {
-            toExamine = currentBoard[row][y];
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    threatened += toExamine.weight;
+        if (column > 8) {
+            // check right
+            for (int y = column + 1; y < 8; y++) {
+                toExamine = currentBoard[row][y];
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        threatened += toExamine.weight;
+                    }
+                    break;
                 }
-                break;
             }
         }
         return threatened;
@@ -75,43 +81,48 @@ public class Rook extends Piece {
         Piece[][] currentBoard = board.getBoard();
         Piece toExamine;
         int[][] attacked = new int[8][8];
-          if (row < 0 || row > 7 || column < 0 || column > 7) {
-            return attacked;
-        }
-        // check up
-        for (int x = row - 1; x >= 0; x--) {
-            toExamine = currentBoard[x][column];
-            attacked[x][column]++;
-            if (toExamine != null) {
-                attacked[x][column]--;
-                break;
+        if (row > 0) {
+            // check up
+            for (int x = row - 1; x > 0; x--) {
+                toExamine = currentBoard[x][column];
+                attacked[x][column]++;
+                if (toExamine != null) {
+                    attacked[x][column]--;
+                    break;
+                }
             }
         }
-        // check down
-        for (int x = row + 1; x < 8; x++) {
-            toExamine = currentBoard[x][column];
-            attacked[x][column]++;
-            if (toExamine != null) {
-                attacked[x][column]--;
-                break;
+        if (row < 8) {
+            // check down
+            for (int x = row + 1; x < 8; x++) {
+                toExamine = currentBoard[x][column];
+                attacked[x][column]++;
+                if (toExamine != null) {
+                    attacked[x][column]--;
+                    break;
+                }
             }
         }
-        // check left
-        for (int y = column - 1; y >= 0; y--) {
-            toExamine = currentBoard[row][y];
-            attacked[row][y]++;
-            if (toExamine != null) {
-                attacked[row][y]--;
-                break;
+        if (column > 0) {
+            // check left
+            for (int y = column - 1; y > 0; y--) {
+                toExamine = currentBoard[row][y];
+                attacked[row][y]++;
+                if (toExamine != null) {
+                    attacked[row][y]--;
+                    break;
+                }
             }
         }
-        // check right
-        for (int y = column + 1; y < 8; y++) {
-            toExamine = currentBoard[row][y];
-            attacked[row][y]++;
-            if (toExamine != null) {
-                attacked[row][y]--;
-                break;
+        if (column < 8) {
+            // check right
+            for (int y = column + 1; y < 8; y++) {
+                toExamine = currentBoard[row][y];
+                attacked[row][y]++;
+                if (toExamine != null) {
+                    attacked[row][y]--;
+                    break;
+                }
             }
         }
         return attacked;
@@ -124,64 +135,69 @@ public class Rook extends Piece {
         // reset to false and check
         canMove = false;
         boolean[][] validPositions = new boolean[8][8];
-        if (row < 0 || row > 7 || column < 0 || column > 7) {
-            return validPositions;
-        }
-        // check up
-        for (int x = row - 1; x >= 0; x--) {
-            toExamine = currentBoard[x][column];
-            validPositions[x][column] = true;
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    validPositions[x][column] = false;
+        if (row > 0) {
+            // check up
+            for (int x = row - 1; x > 0; x--) {
+                toExamine = currentBoard[x][column];
+                validPositions[x][column] = true;
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        validPositions[x][column] = false;
+                        break;
+                    }
+                    canMove = true;
                     break;
                 }
                 canMove = true;
-                break;
             }
-            canMove = true;
         }
-        // check down
-        for (int x = row + 1; x < 8; x++) {
-            toExamine = currentBoard[x][column];
-            validPositions[x][column] = true;
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    validPositions[x][column] = false;
+        if (row < 8) {
+            // check down
+            for (int x = row + 1; x < 8; x++) {
+                toExamine = currentBoard[x][column];
+                validPositions[x][column] = true;
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        validPositions[x][column] = false;
+                        break;
+                    }
+                    canMove = true;
                     break;
                 }
                 canMove = true;
-                break;
             }
-            canMove = true;
         }
-        // check left
-        for (int y = column - 1; y >= 0; y--) {
-            toExamine = currentBoard[row][y];
-            validPositions[row][y] = true;
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    validPositions[row][y] = false;
+        if (column > 0) {
+            // check left
+            for (int y = column - 1; y > 0; y--) {
+                toExamine = currentBoard[row][y];
+                validPositions[row][y] = true;
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        validPositions[row][y] = false;
+                        break;
+                    }
+                    canMove = true;
                     break;
                 }
                 canMove = true;
-                break;
             }
-            canMove = true;
         }
-        // check right
-        for (int y = column + 1; y < 8; y++) {
-            toExamine = currentBoard[row][y];
-            validPositions[row][y] = true;
-            if (toExamine != null) {
-                if (this.isOppositeColour(toExamine)) {
-                    validPositions[row][y] = false;
+        if (column < 8) {
+            // check right
+            for (int y = column + 1; y < 8; y++) {
+                toExamine = currentBoard[row][y];
+                validPositions[row][y] = true;
+                if (toExamine != null) {
+                    if (this.isOppositeColour(toExamine)) {
+                        validPositions[row][y] = false;
+                        break;
+                    }
+                    canMove = true;
                     break;
                 }
                 canMove = true;
-                break;
             }
-            canMove = true;
         }
         return validPositions;
     }
