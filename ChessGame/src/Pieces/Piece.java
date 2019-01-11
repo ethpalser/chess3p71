@@ -306,42 +306,43 @@ public abstract class Piece {
                     currentBoard, row + 1, column + 2, PieceType.Knight);
         }
         // King
-        if (column >= 1) {
+        if (row >= 1) {
             // top
             threatCounter += checkPiece(
                     currentBoard, row, column - 1, PieceType.King);
-            if (row >= 1) {
+            if (column >= 1) {
                 // top-left
                 threatCounter += checkPiece(
                         currentBoard, row - 1, column - 1, PieceType.King);
             }
-            if (row <= 6) {
+            if (column <= 6) {
                 // top-right
                 threatCounter += checkPiece(
                         currentBoard, row + 1, column - 1, PieceType.King);
             }
         }
-        if (column <= 6) {
+        if (row <= 6) {
             // bottom
             threatCounter += checkPiece(
                     currentBoard, row, column + 1, PieceType.King);
-            if (row >= 1) {
+            if (column >= 1) {
                 // bottom-left
                 threatCounter += checkPiece(
                         currentBoard, row - 1, column + 1, PieceType.King);
             }
-            if (row <= 6) {
+            if (column <= 6) {
                 // bottom-right
                 threatCounter += checkPiece(
                         currentBoard, row + 1, column + 1, PieceType.King);
             }
         }
-        if (row >= 1) {
-            // right
+        if (column >= 1) {
+            // left
             threatCounter += checkPiece(
                     currentBoard, row - 1, column, PieceType.King);
         }
-        if (column <= 6) {// left
+        if (column <= 6) {
+            // right
             threatCounter += checkPiece(
                     currentBoard, row + 1, column, PieceType.King);
         }
