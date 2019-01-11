@@ -38,6 +38,26 @@ public class Main {
                 System.out.println("Invalid Input");
             }
         }
+        
+        // Get the depth
+        while (true) {
+            System.out.print("Input Search Depth (Minimum 1): ");
+            String depth = sc.next();
+            int depthVal = 0;
+            try{
+                depthVal = Integer.parseInt(depth);
+            }catch(Exception ex){
+                System.out.println("Invalid Depth");
+            }
+            if(depthVal > 0){
+                searchDepth = depthVal;
+                break;
+            }
+            else{
+                searchDepth = 1;
+                break;
+            }
+        }
         // create game
         Game game = new Game();
 
